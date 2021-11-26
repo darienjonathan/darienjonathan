@@ -27,7 +27,6 @@ module.exports = {
     'quotes': ['error', 'single'],
     'prettier/prettier': 'error',
     'prefer-const': 'error',
-    'vue/multi-word-component-names': 'off'
   },
   ignorePatterns: ['.eslintrc.js']
 }
