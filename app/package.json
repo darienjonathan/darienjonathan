@@ -8,6 +8,7 @@
     "start": "node .output/server/index.mjs"
   },
   "devDependencies": {
+    "@nuxtjs/eslint-config-typescript": "^7.0.2",
     "@prettier/plugin-pug": "^1.17.3",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",

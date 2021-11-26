@@ -19,14 +19,16 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'plugin:prettier-vue/recommended',
     'plugin:vue/vue3-recommended',
+    'plugin:prettier-vue/recommended',
+    '@nuxtjs/eslint-config-typescript',
     'prettier'
   ],
   rules: {
     'quotes': ['error', 'single'],
     'prettier/prettier': 'error',
     'prefer-const': 'error',
+    '@typescript-eslint/no-unused-vars': ['error', { 'varsIgnorePattern': '^_', 'argsIgnorePattern': '^_' }]
   },
   ignorePatterns: ['.eslintrc.js']
 }
