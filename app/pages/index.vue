@@ -1,6 +1,6 @@
 <template lang="pug">
-  div
-    NuxtWelcome
+div
+  NuxtWelcome
 </template>
 
 <script lang="ts">

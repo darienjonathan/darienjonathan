@@ -2,7 +2,6 @@
   "arrowParens": "avoid",
   "printWidth": 100,
   "pugAttributeSeparator": "none",
-  "pugSingleFileComponentIndentation": true,
   "pugSingleQuote": false,
   "pugWrapAttributesThreshold": 1,
   "semi": false,
