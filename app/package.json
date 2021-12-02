@@ -1,8 +1,9 @@
 {
   "private": true,
   "scripts": {
+    "copy-types": "sh sh/copyTypes.sh",
     "dev": "nuxi dev",
-    "build": "nuxi build",
+    "build": "nuxi build && yarn copy-types",
     "build:firebase": "NITRO_PRESET=firebase yarn build",
     "deploy:firebase": "yarn build:firebase && firebase deploy --only hosting,functions:server",
     "start": "node .output/server/index.mjs"
