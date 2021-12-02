@@ -28,6 +28,7 @@ module.exports = {
     'quotes': ['error', 'single'],
     'import/no-unresolved': 0,
     'object-curly-spacing': 0,
+    '@typescript-eslint/explicit-module-boundary-types': 0
   },
   ignorePatterns: ['/lib/**/*', '.eslintrc.js']
 };
