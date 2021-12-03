@@ -28,7 +28,7 @@ module.exports = {
     'quotes': ['error', 'single'],
     'prettier/prettier': 'error',
     'prefer-const': 'error',
-    '@typescript-eslint/no-unused-vars': ['error', { 'varsIgnorePattern': '^_', 'argsIgnorePattern': '^_' }]
+    '@typescript-eslint/no-unused-vars': ['error', { 'varsIgnorePattern': '^_', 'argsIgnorePattern': '^_' }],
   },
   ignorePatterns: ['.eslintrc.js']
 }
