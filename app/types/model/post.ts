@@ -5,6 +5,7 @@ import { parseArray, parseNumber, parseString } from '~/types/model/parse'
 import { parseTag, Tag } from '~/types/model/tag'
 
 export interface Post {
+  slug: string
   title: string
   description: string
   createdAt: number
@@ -25,6 +26,7 @@ export interface PostComment {
 }
 
 export const parsePost = (data: any): Post => ({
+  slug: parseString(data.slug),
   title: parseString(data.title),
   description: parseString(data.description),
   createdAt: parseNumber(data.createdAt),

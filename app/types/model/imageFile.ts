@@ -3,12 +3,12 @@
 
 import { parseString } from '~/types/model/parse'
 
-export interface Image {
+export interface ImageFile {
   url: string
   caption: string
 }
 
-export const parseImage = (data: any): Image => ({
+export const parseImageFile = (data: any): ImageFile => ({
   url: parseString(data.url),
   caption: parseString(data.caption),
 })

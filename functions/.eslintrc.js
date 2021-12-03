@@ -30,5 +30,5 @@ module.exports = {
     'object-curly-spacing': 0,
     '@typescript-eslint/explicit-module-boundary-types': 0
   },
-  ignorePatterns: ['/lib/**/*', '.eslintrc.js']
+  ignorePatterns: ['/dist/**/*', '.eslintrc.js']
 };
