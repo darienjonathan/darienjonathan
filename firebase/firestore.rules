@@ -1,6 +1,71 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    //-------------------------------------------------------------
+    // functions
+    //-------------------------------------------------------------
+    
+    function isAuthenticated() {
+      return request.auth.uid != null;
+    }
+
+    function isSelf(uid) {
+      return request.auth.uid == uid;
+    }
+
+    function getPost(postUid) {
+      return get(/databases/$(database)/documents/posts/$(postUid))
+    }
+
+    function getPostContent(postUid, contentUid) {
+      return get(/databases/$(database)/documents/posts/$(postUid)/contents/$(contentUid))
+    }
+
+    function getPostComment(postUid, commentUid) {
+      return get(/databases/$(database)/documents/posts/$(postUid)/comments/$(commentUid))
+    }
+
+    function getImageFile(imageFileUid) {
+      return get(/databases/$(database)/documents/imageFiles/$(imageFileUid))
+    }
+
+    function getTag(tagUid) {
+      return get(/databases/$(database)/documents/tags/$(tagUid))
+    }
+
+    function getUser(userUid) {
+      return get(/databases/$(database)/documents/users/$(userUid))
+    }
+
+    function getRole(roleUid) {
+      return get(/databases/$(database)/documents/roles/$(roleUid))
+    }
+
+    function getUserRole(userUid) {
+      let user = getUser(userUid)
+      let role = getRole(user.data.role)
+      return role
+    }
+
+    function getSelfRole() {
+      return getUserRole(request.auth.uid)
+    }
+
+    function hasReadPermission(dataType) {
+      let role = getRoleFromUser()
+      return dataType in role.data.readPermission
+    }
+
+    function hasWritePermission(dataType) {
+      let role = getRoleFromUser()
+      return dataType in role.data.writePermission
+    }
+    
+    //-------------------------------------------------------------
+    // rules
+    //-------------------------------------------------------------
+
     match /{document=**} {
       allow read, write: if
           request.time < timestamp.date(2021, 12, 16);
