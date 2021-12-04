@@ -12,4 +12,5 @@ export default defineNuxtConfig({
       appId: process.env.APP_ID,
     },
   },
+  css: ['@/assets/css/global.scss'],
 })
