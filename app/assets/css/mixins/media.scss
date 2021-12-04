@@ -1,0 +1,31 @@
+@use 'sass:map';
+
+@mixin sp {
+  @media (max-width: map.get($media, sp)) {
+    @content;
+  }
+}
+@mixin tablet {
+  @media (min-width: #{map.get($media, sp) + 1px}) and (max-width: map.get($media, tablet)) {
+    @content;
+  }
+}
+
+@mixin pc {
+  @media (min-width: #{map.get($media, tablet) + 1px}) {
+    @content;
+  }
+}
+
+@mixin non-sp {
+  @media (min-width: #{map.get($media, sp) + 1px}) {
+    @content;
+  }
+}
+
+
+@mixin non-pc {
+  @media (max-width: map.get($media, tablet)) {
+    @content;
+  }
+}
