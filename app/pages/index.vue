@@ -5,7 +5,7 @@
       .heading__main darienjonathan.com
       .heading__sub is under construction
         img.heading__icon(src="@/assets/images/under-construction/dogebread.png")
-    .vertical-line
+    .line
     .sns
       a.sns__item(
         href="https://github.com/darienjonathan/darienjonathan"
@@ -33,19 +33,29 @@ export default defineComponent({
 @import '~/assets/css/main';
 
 .index {
-  width: 100vw;
+  width: 200vw;
   height: 100vh;
   background: $navy-dark;
 }
 
 .content {
   @include absolute-center;
-  @include flex;
+  @include non-sp {
+    @include flex;
+  }
+  @include sp {
+    @include flex($direction: column, $align-items: flex-start);
+  }
 }
 
 .heading {
   @include font-family('roboto-slab');
-  margin-right: 24px;
+  @include non-sp {
+    margin-right: 24px;
+  }
+  @include sp {
+    margin-bottom: 16px;
+  }
 
   &__main {
     @include font($size: 2rem) {
@@ -63,14 +73,24 @@ export default defineComponent({
   }
 }
 
-.vertical-line {
-  @include size(1px, 100px);
+.line {
   background-color: $white;
+  @include non-sp {
+    @include size(1px, 100px);
+  }
+  @include sp {
+    @include size(100%, 1px);
+  }
 }
 
 .sns {
   @include font-family('cabin');
-  margin-left: 24px;
+  @include non-sp {
+    margin-left: 24px;
+  }
+  @include sp {
+    margin-top: 16px;
+  }
 
   &__item {
     @include flex($justify: flex-start);
