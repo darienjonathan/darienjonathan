@@ -28,7 +28,16 @@ module.exports = {
     'quotes': ['error', 'single'],
     'prettier/prettier': 'error',
     'prefer-const': 'error',
+    'vue/multi-word-component-names': 'error',
     '@typescript-eslint/no-unused-vars': ['error', { 'varsIgnorePattern': '^_', 'argsIgnorePattern': '^_' }],
   },
+  overrides: [
+    {
+      files: ['./layouts/**/*.vue', './pages/**/*.vue', './**/index.vue'],
+      rules: {
+        'vue/multi-word-component-names': 'off',
+      },
+    },
+  ],
   ignorePatterns: ['.eslintrc.js']
 }
