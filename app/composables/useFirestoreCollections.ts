@@ -1,4 +1,4 @@
-import { ImageFile, parseImageFile } from '~/types/model/imageFile'
+import { Media, parseMedia } from '~/types/model/imageFile'
 import {
   parsePost,
   parsePostComment,
@@ -18,7 +18,7 @@ const useFirestoreCollections = () => {
     useFirestore<PostContent>(`posts/${postId}/contents`, parsePostContent)
   const usePostComments = (postId: string) =>
     useFirestore<PostComment>(`posts/${postId}/comments`, parsePostComment)
-  const useImageFiles = () => useFirestore<ImageFile>('imageFiles', parseImageFile)
+  const useMedias = () => useFirestore<Media>('medias', parseMedia)
   const useTags = () => useFirestore<Tag>('tags', parseTag)
   const useUsers = () => useFirestore<User>('users', parseUser)
   const useUserInfo = () => useFirestore<UserInfo>('userInfo', parseUserInfo)
@@ -27,7 +27,7 @@ const useFirestoreCollections = () => {
     usePosts,
     usePostContents,
     usePostComments,
-    useImageFiles,
+    useMedias,
     useTags,
     useUsers,
     useUserInfo,
