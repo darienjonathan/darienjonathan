@@ -9,7 +9,7 @@ import {
 } from '~/types/model/post'
 import { parseRole, Role } from '~/types/model/role'
 import { parseTag, Tag } from '~/types/model/tag'
-import { parseUser, User } from '~/types/model/user'
+import { parseUser, parseUserInfo, User, UserInfo } from '~/types/model/user'
 import useFirestore from '~/composables/firebase/firestore/useFirestore'
 
 const useFirestoreCollections = () => {
@@ -21,6 +21,7 @@ const useFirestoreCollections = () => {
   const useImageFiles = () => useFirestore<ImageFile>('imageFiles', parseImageFile)
   const useTags = () => useFirestore<Tag>('tags', parseTag)
   const useUsers = () => useFirestore<User>('users', parseUser)
+  const useUserInfo = () => useFirestore<UserInfo>('userInfo', parseUserInfo)
   const useRoles = () => useFirestore<Role>('roles', parseRole)
   return {
     usePosts,
@@ -29,6 +30,7 @@ const useFirestoreCollections = () => {
     useImageFiles,
     useTags,
     useUsers,
+    useUserInfo,
     useRoles,
   }
 }
