@@ -1,0 +1,8 @@
+@mixin line($orientation: x, $thickness: 1px, $length: 100%, $color: $white) {
+  background-color: $color;
+  @if $orientation == x {
+    @include size($length, $thickness);
+  } @else if $orientation == y {
+    @include size($thickness, $length);
+  }
+}
