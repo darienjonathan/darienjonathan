@@ -1,5 +1,5 @@
 import FirestoreWrapper from '~/lib/firebase/firestore/Firestore'
-import { ImageFile, parseImageFile } from '~/types/model/imageFile'
+import { Media, parseMedia } from '~/types/model/media'
 import {
   parsePost,
   parsePostComment,
@@ -25,12 +25,11 @@ const postComments = (postId: string) =>
     'posts/{postUid}/comments/{commentUid}',
     parsePostComment
   )
-const imageFiles = () =>
-  new FirestoreWrapper<ImageFile>('imageFiles', 'imageFiles/{imageFileUid}', parseImageFile)
+const medias = () => new FirestoreWrapper<Media>('medias', 'medias/{mediaUid}', parseMedia)
 const tags = () => new FirestoreWrapper<Tag>('tags', 'tags/{tagUid}', parseTag)
 const users = () => new FirestoreWrapper<User>('users', 'users/{userUid}', parseUser)
 const userInfo = () =>
   new FirestoreWrapper<UserInfo>('userInfo', 'userInfo/{userUid}', parseUserInfo)
 const roles = () => new FirestoreWrapper<Role>('roles', 'roles/{roleUid}', parseRole)
 
-export { posts, postContents, postComments, imageFiles, tags, users, userInfo, roles }
+export { posts, postContents, postComments, medias, tags, users, userInfo, roles }
