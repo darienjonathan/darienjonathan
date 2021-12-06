@@ -3,12 +3,25 @@
 
 import { parseString } from '~/types/model/parse'
 
+export type MediaType = 'image' | 'video'
+
 export interface Media {
   url: string
+  type: MediaType
   caption: string
+}
+
+const isMediaType = (mediaType: any): mediaType is MediaType => {
+  return mediaType === 'image' || mediaType === 'video'
+}
+
+export const parseMediaType = (mediaType: any): MediaType => {
+  if (!isMediaType(mediaType)) return 'image' as MediaType
+  return mediaType
 }
 
 export const parseMedia = (data: any): Media => ({
   url: parseString(data.url),
+  type: parseMediaType(data.type),
   caption: parseString(data.caption),
 })
