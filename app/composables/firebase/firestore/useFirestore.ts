@@ -58,6 +58,23 @@ const useFirestore = <T>(path: string, parse: (data: DocumentData) => T) => {
     return snapshot.exists ? parse(snapshot.data()) : null
   }
 
+  const loadDocumentByQuery = async (): Promise<
+    | {
+        id: string
+        data: T
+      }
+    | undefined
+  > => {
+    const querySnapshot = await getDocs(queryBuilder.currentQuery.value)
+    if (querySnapshot.empty) return
+    const map = querySnapshotToMap(querySnapshot)
+    const item = [...map][0]
+    return {
+      id: [...item][0] as string,
+      data: [...item][1] as T,
+    }
+  }
+
   const subscribeDocument = (id: string, fn: (data: T | null) => void): Unsubscribe => {
     return onSnapshot(getDocumentReference(id), querySnapshot => {
       const data = querySnapshot.exists ? parse(querySnapshot.data()) : null
@@ -87,6 +104,7 @@ const useFirestore = <T>(path: string, parse: (data: DocumentData) => T) => {
     loadCollection,
     subscribeCollection,
     loadDocument,
+    loadDocumentByQuery,
     subscribeDocument,
     push,
     set,
