@@ -15,12 +15,22 @@ import {
   updateDoc,
   getFirestore,
   Unsubscribe,
+  connectFirestoreEmulator,
 } from 'firebase/firestore'
 import { Ref } from 'nuxt3/dist/app/compat/capi'
 import useFirestoreQueryBuilder from '~/composables/firebase/firestore/useFirestoreQueryBuilder'
 
 const useFirestore = <T>(path: string, parse: (data: DocumentData) => T) => {
   const firestore = getFirestore(useNuxtApp().$firebase.app)
+
+  if (process.env.NODE_ENV === 'development') {
+    connectFirestoreEmulator(
+      firestore,
+      process.env.EMULATOR_HOST,
+      Number(process.env.EMULATOR_FIRESTORE_PORT)
+    )
+  }
+
   const collectionReference: Ref<CollectionReference> = computed(() => collection(firestore, path))
   const queryBuilder = useFirestoreQueryBuilder(collectionReference.value)
 

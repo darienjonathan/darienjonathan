@@ -1,5 +1,6 @@
 import {
   AuthError,
+  connectAuthEmulator,
   createUserWithEmailAndPassword,
   deleteUser as deleteUserFn,
   EmailAuthProvider,
@@ -19,6 +20,11 @@ import * as firebaseui from 'firebaseui'
 
 const useAuth = (email: string, password: string) => {
   const auth = getAuth(useNuxtApp().$firebase.app)
+
+  if (process.env.NODE_ENV === 'development') {
+    connectAuthEmulator(auth, process.env.EMULATOR_HOST + ':' + process.env.EMULATOR_AUTH_PORT)
+  }
+
   const ui = new firebaseui.auth.AuthUI(auth)
   const unsubscribe = ref<Unsubscribe>(undefined)
   const user = ref<User>(undefined)
