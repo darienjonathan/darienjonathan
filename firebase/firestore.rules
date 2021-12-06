@@ -26,8 +26,8 @@ service cloud.firestore {
     //   return get(/databases/$(database)/documents/posts/$(postUid)/comments/$(commentUid));
     // }
 
-    // function getImageFile(imageFileUid) {
-    //   return get(/databases/$(database)/documents/imageFiles/$(imageFileUid));
+    // function getMedia(imageFileUid) {
+    //   return get(/databases/$(database)/documents/medias/$(imageFileUid));
     // }
 
     // function getTag(tagUid) {
@@ -84,11 +84,11 @@ service cloud.firestore {
       }
     }
 
-    match /imageFiles/{imageFileUid} {
+    match /medias/{imageFileUid} {
       allow read: if true;
-      allow create: if hasWritePermission('imageFiles');
-      allow update: if hasWritePermission('imageFiles');
-      allow delete: if hasWritePermission('imageFiles');
+      allow create: if hasWritePermission('medias');
+      allow update: if hasWritePermission('medias');
+      allow delete: if hasWritePermission('medias');
     }
 
     match /tags/{tagId} {
