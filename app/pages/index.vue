@@ -33,8 +33,7 @@ export default defineComponent({
 @import '~/assets/css/main';
 
 .index {
-  width: 200vw;
-  height: 100vh;
+  @include size(vw(100), vh(100));
   background: $navy-dark;
 }
 
