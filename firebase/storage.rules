@@ -1,9 +1,9 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    match /{allPaths=**} {
-      allow read, write: if true;
+    match /assets/{asset=**} {
+      allow read: if true;
+      allow write: if resource.metadata.authorUid == request.auth.uid;
     }
   }
 }
-
