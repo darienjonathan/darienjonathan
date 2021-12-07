@@ -1,5 +1,4 @@
 import {
-  connectStorageEmulator,
   deleteObject,
   getDownloadURL as getItemDownloadURL,
   getStorage,
@@ -25,14 +24,6 @@ interface PutStringArgs extends PutArgs<string> {
 
 const useStorage = (path: string, allowedTypes?: string[]) => {
   const storage = getStorage(useNuxtApp().$firebase.app)
-
-  if (process.env.NODE_ENV === 'development') {
-    connectStorageEmulator(
-      storage,
-      process.env.EMULATOR_HOST,
-      Number(process.env.EMULATOR_STORAGE_PORT)
-    )
-  }
 
   const storageRef = computed(() => reference(storage, path))
 

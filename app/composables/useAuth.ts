@@ -1,9 +1,7 @@
 import {
   AuthError,
-  connectAuthEmulator,
   createUserWithEmailAndPassword,
   deleteUser as deleteUserFn,
-  EmailAuthProvider,
   getAuth,
   onAuthStateChanged,
   sendPasswordResetEmail as sendPasswordResetEmailFn,
@@ -16,18 +14,12 @@ import {
   User,
   UserCredential,
 } from 'firebase/auth'
-import * as firebaseui from 'firebaseui'
 
-const useAuth = (email: string, password: string) => {
+const useAuth = () => {
   const auth = getAuth(useNuxtApp().$firebase.app)
 
-  if (process.env.NODE_ENV === 'development') {
-    connectAuthEmulator(auth, process.env.EMULATOR_HOST + ':' + process.env.EMULATOR_AUTH_PORT)
-  }
-
-  const ui = new firebaseui.auth.AuthUI(auth)
   const unsubscribe = ref<Unsubscribe>(undefined)
-  const user = ref<User>(undefined)
+  const user = ref<User>(auth.currentUser)
   onMounted(() => {
     unsubscribe.value = onAuthStateChanged(auth, authUser => {
       user.value = authUser
@@ -37,13 +29,7 @@ const useAuth = (email: string, password: string) => {
     unsubscribe.value()
   })
 
-  const startUI = (elementID: string) => {
-    ui.start(elementID, {
-      signInOptions: [EmailAuthProvider.PROVIDER_ID],
-    })
-  }
-
-  const signUp = (): Promise<UserCredential> => {
+  const signUp = (email: string, password: string): Promise<UserCredential> => {
     try {
       return createUserWithEmailAndPassword(auth, email, password)
     } catch (error) {
@@ -52,7 +38,7 @@ const useAuth = (email: string, password: string) => {
     }
   }
 
-  const signIn = (): Promise<UserCredential> => {
+  const signIn = (email: string, password: string): Promise<UserCredential> => {
     try {
       return signInWithEmailAndPassword(auth, email, password)
     } catch (error) {
@@ -84,7 +70,7 @@ const useAuth = (email: string, password: string) => {
     return updatePasswordFn(user.value, newPassword)
   }
 
-  const sendPasswordResetEmail = () => {
+  const sendPasswordResetEmail = (email: string) => {
     if (!user.value) return
     return sendPasswordResetEmailFn(auth, email)
   }
@@ -95,7 +81,6 @@ const useAuth = (email: string, password: string) => {
   }
 
   return {
-    startUI,
     signUp,
     signIn,
     signOut,
