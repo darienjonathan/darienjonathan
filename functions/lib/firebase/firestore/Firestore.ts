@@ -112,6 +112,24 @@ class FirestoreCollection<T> {
     return data
   }
 
+  public async loadDocumentByQuery(query?: FirestoreQueryBuilder<T>): Promise<
+    | {
+        id: string
+        data: T
+      }
+    | undefined
+  > {
+    const q = query ? query.build(this.ref) : this.ref
+    const querySnapshot = await q.get()
+    if (querySnapshot.empty) return
+    const map = this.querySnapshotToMap(querySnapshot)
+    const item = [...map][0]
+    return {
+      id: [...item][0] as string,
+      data: [...item][1] as T,
+    }
+  }
+
   public subscribeDocument(id: string, fn: (data: T | null) => void) {
     return this.ref.doc(id).onSnapshot(querySnapshot => {
       const data = querySnapshot.exists

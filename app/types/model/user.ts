@@ -2,16 +2,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { parseString } from '~/types/model/parse'
-import { parseRole, Role } from '~/types/model/role'
 
 export interface User {
   username: string
-  email: string
-  role: Role
+  roleUid: string
 }
 
 export const parseUser = (data: any): User => ({
   username: parseString(data.username),
+  roleUid: parseString(data.roleUid),
+})
+
+export interface UserInfo {
+  email: string
+}
+
+export const parseUserInfo = (data: any): UserInfo => ({
   email: parseString(data.email),
-  role: parseRole(data.role),
 })

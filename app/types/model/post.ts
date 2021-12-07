@@ -2,14 +2,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { parseArray, parseNumber, parseString } from '~/types/model/parse'
-import { parseTag, Tag } from '~/types/model/tag'
 
 export interface Post {
+  authorUid: string
   slug: string
   title: string
   description: string
   createdAt: number
-  tags: Tag[]
+  tagUids: string[]
 }
 
 export const Langs = ['en', 'id', 'ja'] as const
@@ -26,11 +26,12 @@ export interface PostComment {
 }
 
 export const parsePost = (data: any): Post => ({
+  authorUid: parseString(data.authorUid),
   slug: parseString(data.slug),
   title: parseString(data.title),
   description: parseString(data.description),
   createdAt: parseNumber(data.createdAt),
-  tags: parseArray(data.tags, parseTag),
+  tagUids: parseArray(data.tagUids, parseString),
 })
 
 export const isLang = (lang: any): lang is Lang => Langs.includes(lang as Lang)
