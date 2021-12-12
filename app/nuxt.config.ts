@@ -23,4 +23,10 @@ export default defineNuxtConfig({
     },
   },
   css: ['@/assets/css/global.scss'],
+  vue: {
+    config: {
+      devtools: true,
+      productionTip: false,
+    },
+  },
 })
