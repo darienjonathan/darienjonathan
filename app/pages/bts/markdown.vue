@@ -1,20 +1,51 @@
 <template lang="pug">
 .markdown
   h1.title Markdown
-  .textarea-to-markdown
-    .section
-      label.label textarea
-      textarea.content(@input="handleTextareaInput")
-    .line
-    .section
-      label.label markdown output
-      .content(v-html="markdownHTML")
-  button.save-btn(@click="handleSave") Save
+  .textarea-to-md
+    .textarea-to-md__content
+      .section
+        label.label textarea
+        textarea.content(
+          ref="textareaRef"
+          @input="handleTextareaInput"
+          :value="val"
+        )
+      .line
+      .section
+        label.label markdown output
+        .content(v-html="markdownHTML")
+    .textarea-to-md__form
+      .form__label filename
+      input.form__input(
+        @input="handleFilenameInput"
+        :value="filename"
+      )
+      button.form__save-btn(@click="handleSaveFile") Save
+  .section-line
+  .storage
+    .storage__heading
+      h3.storage__title Storage Items
+      button.storage__retrieve-btn(@click="handleRetrieveItemList") Retrieve Items
+    .storage__items
+      .storage__item(
+        v-for="item in itemList"
+        :key="item.name"
+        @click="handleOutputStorageItem(item.name)"
+      ) {{ item.name }}
+    .storage__output(v-if="storageHTMLOutput")
+      h4.storage__output-title Selected File Content
+      .storage__output-html(v-html="storageHTMLOutput")
 </template>
 <script lang="ts" setup>
+import { getDownloadURL } from '@firebase/storage'
+
+const EXTENSION = '.md'
+
 const { $md } = useNuxtApp()
+const { userUid } = useAuth()
 const { usePosts } = useStorageItems()
 const posts = usePosts()
+const { usePosts: useFirestorePosts } = useFirestoreCollections()
 
 const val = ref('')
 const markdownHTML = computed(() => {
@@ -24,15 +55,68 @@ const handleTextareaInput = (e: Event) => {
   val.value = (e.target as HTMLTextAreaElement).value
 }
 
-const handleSave = async () => {
+const filename = ref('')
+const handleFilenameInput = (e: Event) => {
+  filename.value = (e.target as HTMLTextAreaElement).value
+}
+
+const handleSaveFile = async () => {
   await posts.putString({
     file: val.value,
-    fileName: 'test.md',
+    fileName: filename.value.match(new RegExp(EXTENSION + '$'))
+      ? filename.value
+      : filename.value + EXTENSION,
+    customMetadata: posts.authorUidMetadata(userUid.value),
   })
+}
+
+const textareaRef = ref<HTMLTextAreaElement>(null)
+onMounted(() => {
+  textareaRef.value.value = ''
+})
+
+const itemList = ref<
+  {
+    name: string
+    url: string
+    content: string
+  }[]
+>()
+const handleRetrieveItemList = async () => {
+  const itemListResult = await posts.list()
+  itemList.value = await Promise.all(
+    itemListResult.items.map(async item => ({
+      name: item.name,
+      url: await getDownloadURL(item),
+      content: '',
+    }))
+  )
+}
+
+const storageHTMLOutput = ref<string>('')
+const handleOutputStorageItem = async (name: string) => {
+  const item = itemList.value.find(item => item.name === name)
+  if (!item) {
+    return
+  }
+  let htmlOutput = ''
+  if (item.content) {
+    htmlOutput = item.content
+  } else {
+    const res = await fetch(item.url)
+    item.content = await res.text()
+    htmlOutput = item.content
+  }
+  storageHTMLOutput.value = $md.render(htmlOutput)
 }
 </script>
 <style lang="scss" scoped>
 @import '@/assets/css/main';
+
+.button {
+  @include button($bg-color: rgba($navy-blue-light, 0.5), $font-size: $font-sm);
+  margin-left: 16px;
+}
 
 .markdown {
   @include size(vw(100), vh(100));
@@ -42,15 +126,21 @@ const handleSave = async () => {
 
 .title {
   @include font-family('roboto-slab');
-  @include font($size: 2rem);
+  @include font($size: $font-huge);
   margin-bottom: 32px;
 }
 
-.textarea-to-markdown {
-  @include sp {
-    @include flex($direction: column);
+.textarea-to-md {
+  &__content {
+    margin-bottom: 16px;
+    @include sp {
+      @include flex($direction: column, $align-items: stretch);
+    }
+    @include non-sp {
+      @include flex($align-items: stretch);
+    }
   }
-  @include non-sp {
+  &__form {
     @include flex;
   }
 }
@@ -78,8 +168,6 @@ const handleSave = async () => {
   @include size(fit-content);
   display: block;
   margin-bottom: 8px;
-  padding-bottom: 4px;
-  border-bottom: 1px solid $white;
 }
 
 .content {
@@ -89,19 +177,75 @@ const handleSave = async () => {
 
 .line {
   @include sp {
-    @include line(y, 100%, 1px);
+    @include line(y, auto, 1px);
   }
   @include non-sp {
-    @include line(x, 100%, 1px);
+    @include line(x, auto, 1px);
   }
 }
 
-.markdown-output {
-  @include sp {
-    margin-top: 16px;
+.form {
+  &__label {
+    margin-right: 8px;
   }
-  @include non-sp {
+  &__save-btn {
+    @include button($bg-color: rgba($navy-blue-light, 0.5), $font-size: $font-sm);
     margin-left: 16px;
+  }
+}
+
+.section-line {
+  @include line(y, 768px, 1px);
+  margin: 20px auto;
+}
+.storage {
+  @include non-sp {
+    width: 768px;
+  }
+  @include sp {
+    width: 100%;
+    padding: 20px;
+  }
+
+  &__heading {
+    @include flex($justify: space-between);
+    margin-bottom: 20px;
+  }
+
+  &__title {
+    @include font($size: $font-lg);
+  }
+
+  &__retrieve-btn {
+    @include button($bg-color: rgba($navy-blue-light, 0.5), $font-size: $font-sm);
+  }
+
+  &__items {
+    padding-left: 12px;
+    border-left: 2px solid white;
+  }
+
+  &__item {
+    cursor: pointer;
+    transition: text-decoration 0s;
+    &:hover {
+      text-decoration: underline;
+    }
+    &:not(:last-child) {
+      margin-bottom: 8px;
+    }
+  }
+
+  &__output {
+    padding-top: 24px;
+    &-title {
+      @include font($size: $font-lg);
+      margin-bottom: 8px;
+    }
+    &-html {
+      padding-left: 12px;
+      border-left: 2px solid white;
+    }
   }
 }
 </style>
