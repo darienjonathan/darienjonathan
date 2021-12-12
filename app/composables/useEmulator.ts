@@ -12,7 +12,7 @@ const useEmulator = () => {
     [key: string]: string
   }
   onMounted(() => {
-    connectAuthEmulator(auth, `${firebaseEmulator.host}:${firebaseEmulator.authPort}`)
+    connectAuthEmulator(auth, `http://${firebaseEmulator.host}:${firebaseEmulator.authPort}`)
     connectFirestoreEmulator(
       firestore,
       firebaseEmulator.host,
