@@ -3,21 +3,26 @@
 
 import { parseArray, parseNumber, parseString } from '~/types/model/parse'
 
+export interface Lang {
+  en: string
+  id: string
+  ja: string
+}
+
+export const parseLang = (data: any): Lang => ({
+  en: parseString(data.en),
+  id: parseString(data.id),
+  ja: parseString(data.ja),
+})
+
 export interface Post {
   authorUid: string
   slug: string
-  title: string
+  title: Lang
   description: string
   createdAt: number
   tagUids: string[]
-}
-
-export const Langs = ['en', 'id', 'ja'] as const
-export type Lang = typeof Langs[number]
-
-export interface PostContent {
-  lang: Lang
-  html: string
+  contentURL: Lang
 }
 
 export interface PostComment {
@@ -28,19 +33,11 @@ export interface PostComment {
 export const parsePost = (data: any): Post => ({
   authorUid: parseString(data.authorUid),
   slug: parseString(data.slug),
-  title: parseString(data.title),
+  title: parseLang(data.title),
   description: parseString(data.description),
   createdAt: parseNumber(data.createdAt),
   tagUids: parseArray(data.tagUids, parseString),
-})
-
-export const isLang = (lang: any): lang is Lang => Langs.includes(lang as Lang)
-
-export const parseLang = (lang: any): Lang => (isLang(lang) ? lang : 'en')
-
-export const parsePostContent = (data: any): PostContent => ({
-  lang: parseLang(data.lang),
-  html: parseString(data.html),
+  contentURL: parseLang(data.contentURL),
 })
 
 export const parsePostComment = (data: any): PostComment => ({
