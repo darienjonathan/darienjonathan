@@ -8,12 +8,12 @@
         textarea.content(
           ref="textareaRef"
           @input="handleTextareaInput"
-          :value="val"
+          :value="textareaVal"
         )
       .line
       .section
         label.label markdown output
-        .content(v-html="markdownHTML")
+        AMarkdown.content(:content="textareaVal")
     .textarea-to-md__form
       .form__label filename
       input.form__input(
@@ -32,27 +32,28 @@
         :key="item.name"
         @click="handleOutputStorageItem(item.name)"
       ) {{ item.name }}
-    .storage__output(v-if="storageHTMLOutput")
+    .storage__output(v-if="selectedItem")
       h4.storage__output-title Selected File Content
-      .storage__output-html(v-html="storageHTMLOutput")
+      AMarkdown.storage__output-html(:content="selectedItem?.content")
 </template>
 <script lang="ts" setup>
 import { getDownloadURL } from '@firebase/storage'
+import AMarkdown from '~/components/atoms/AMarkdown.vue'
+
+interface Item {
+  name: string
+  url: string
+  content: string
+}
 
 const EXTENSION = '.md'
-
-const { $md } = useNuxtApp()
 const { userUid } = useAuth()
 const { usePosts } = useStorageItems()
 const posts = usePosts()
-const { usePosts: useFirestorePosts } = useFirestoreCollections()
 
-const val = ref('')
-const markdownHTML = computed(() => {
-  return $md.render(val.value)
-})
+const textareaVal = ref('')
 const handleTextareaInput = (e: Event) => {
-  val.value = (e.target as HTMLTextAreaElement).value
+  textareaVal.value = (e.target as HTMLTextAreaElement).value
 }
 
 const filename = ref('')
@@ -62,7 +63,7 @@ const handleFilenameInput = (e: Event) => {
 
 const handleSaveFile = async () => {
   await posts.putString({
-    file: val.value,
+    file: textareaVal.value,
     fileName: filename.value.match(new RegExp(EXTENSION + '$'))
       ? filename.value
       : filename.value + EXTENSION,
@@ -75,13 +76,7 @@ onMounted(() => {
   textareaRef.value.value = ''
 })
 
-const itemList = ref<
-  {
-    name: string
-    url: string
-    content: string
-  }[]
->()
+const itemList = ref<Item[]>()
 const handleRetrieveItemList = async () => {
   const itemListResult = await posts.list()
   itemList.value = await Promise.all(
@@ -92,23 +87,29 @@ const handleRetrieveItemList = async () => {
     }))
   )
 }
+onMounted(async () => {
+  await nextTick()
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
+  handleRetrieveItemList()
+})
 
-const storageHTMLOutput = ref<string>('')
-const handleOutputStorageItem = async (name: string) => {
-  const item = itemList.value.find(item => item.name === name)
-  if (!item) {
-    return
-  }
-  let htmlOutput = ''
-  if (item.content) {
-    htmlOutput = item.content
-  } else {
+const selectedItem = ref<Item>()
+const handleOutputStorageItem = (name: string) => {
+  selectedItem.value = itemList.value.find(item => item.name === name)
+}
+
+watch(
+  selectedItem,
+  async item => {
+    if (!item) return
+    if (item.content) return
     const res = await fetch(item.url)
     item.content = await res.text()
-    htmlOutput = item.content
+  },
+  {
+    deep: true,
   }
-  storageHTMLOutput.value = $md.render(htmlOutput)
-}
+)
 </script>
 <style lang="scss" scoped>
 @import '@/assets/css/main';
