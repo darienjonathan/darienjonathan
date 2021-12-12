@@ -31,6 +31,10 @@ const useStorage = (path: string, allowedTypes?: string[]) => {
 
   const validate = (type: string): boolean => (allowedTypes ? allowedTypes.includes(type) : true)
 
+  const authorUidMetadata = (authorUid: string) => ({
+    authorUid,
+  })
+
   const createMetadata = (
     customMetadata: UploadMetadata['customMetadata'],
     type: string | undefined
@@ -44,7 +48,7 @@ const useStorage = (path: string, allowedTypes?: string[]) => {
   const getDownloadURL = (fileName: string): Promise<string> =>
     getItemDownloadURL(getFileRef(fileName))
 
-  const list = computed(() => listAll(storageRef.value))
+  const list = () => listAll(storageRef.value)
 
   const put = async ({ file, fileName, customMetadata }: PutArgs<File>) => {
     const type = await getMime(file)
@@ -89,6 +93,7 @@ const useStorage = (path: string, allowedTypes?: string[]) => {
   const deleteItem = (fileName: string) => deleteObject(getFileRef(fileName))
 
   return {
+    authorUidMetadata,
     getDownloadURL,
     list,
     put,
