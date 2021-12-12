@@ -3,7 +3,7 @@ service firebase.storage {
   match /b/{bucket}/o {
     match /assets/{asset=**} {
       allow read: if true;
-      allow write: if resource.metadata.authorUid == request.auth.uid;
+      allow write: if request.auth.uid != null;
     }
   }
 }
