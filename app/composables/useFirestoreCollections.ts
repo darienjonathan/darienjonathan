@@ -1,12 +1,5 @@
 import { Media, parseMedia } from '~/types/model/imageFile'
-import {
-  parsePost,
-  parsePostComment,
-  parsePostContent,
-  Post,
-  PostComment,
-  PostContent,
-} from '~/types/model/post'
+import { parsePost, parsePostComment, Post, PostComment } from '~/types/model/post'
 import { parseRole, Role } from '~/types/model/role'
 import { parseTag, Tag } from '~/types/model/tag'
 import { parseUser, parseUserInfo, User, UserInfo } from '~/types/model/user'
@@ -14,8 +7,6 @@ import useFirestore from '~/composables/firebase/firestore/useFirestore'
 
 const useFirestoreCollections = () => {
   const usePosts = () => useFirestore<Post>('posts', parsePost)
-  const usePostContents = (postId: string) =>
-    useFirestore<PostContent>(`posts/${postId}/contents`, parsePostContent)
   const usePostComments = (postId: string) =>
     useFirestore<PostComment>(`posts/${postId}/comments`, parsePostComment)
   const useMedias = () => useFirestore<Media>('medias', parseMedia)
@@ -25,7 +16,6 @@ const useFirestoreCollections = () => {
   const useRoles = () => useFirestore<Role>('roles', parseRole)
   return {
     usePosts,
-    usePostContents,
     usePostComments,
     useMedias,
     useTags,
