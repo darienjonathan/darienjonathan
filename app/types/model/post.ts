@@ -22,7 +22,7 @@ export interface Post {
   description: string
   createdAt: number
   tagUids: string[]
-  content: Lang
+  contentURL: Lang
 }
 
 export interface PostComment {
@@ -37,7 +37,7 @@ export const parsePost = (data: any): Post => ({
   description: parseString(data.description),
   createdAt: parseNumber(data.createdAt),
   tagUids: parseArray(data.tagUids, parseString),
-  content: parseLang(data.content),
+  contentURL: parseLang(data.contentURL),
 })
 
 export const parsePostComment = (data: any): PostComment => ({
