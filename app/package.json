@@ -11,6 +11,8 @@
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "^7.0.2",
     "@prettier/plugin-pug": "^1.17.3",
+    "@types/highlightjs": "^9.12.2",
+    "@types/markdown-it": "^12.2.3",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "eslint": "^8.3.0",
@@ -32,6 +34,8 @@
   },
   "dependencies": {
     "firebase": "^9.5.0",
+    "highlight.js": "^11.3.1",
+    "markdown-it": "^12.2.0",
     "firebaseui": "^6.0.0"
   }
 }

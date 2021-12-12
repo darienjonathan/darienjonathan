@@ -19,7 +19,7 @@ const useAuth = () => {
   const auth = getAuth(useNuxtApp().$firebase.app)
 
   const unsubscribe = ref<Unsubscribe>(undefined)
-  const user = ref<User>(auth.currentUser)
+  const user = ref<User | null>(auth.currentUser)
   onMounted(() => {
     unsubscribe.value = onAuthStateChanged(auth, authUser => {
       user.value = authUser
@@ -28,6 +28,8 @@ const useAuth = () => {
   onUnmounted(() => {
     unsubscribe.value()
   })
+
+  const userUid = computed(() => user.value?.uid)
 
   const signUp = (email: string, password: string): Promise<UserCredential> => {
     try {
@@ -81,6 +83,7 @@ const useAuth = () => {
   }
 
   return {
+    userUid,
     signUp,
     signIn,
     signOut,
