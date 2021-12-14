@@ -73,6 +73,7 @@ watch(isOpen, boolean => {
   border-radius: $radius-sm;
   background-color: $black;
   color: $white;
+  box-shadow: 0 0 12.5px $black;
   &[data-size='default'] {
     height: vh(80);
     @include sp {
@@ -95,5 +96,9 @@ watch(isOpen, boolean => {
 .material-icons-outlined {
   @include font($size: 3rem);
   cursor: pointer;
+  transition: filter 0.25s;
+  &:hover {
+    filter: drop-shadow(0 0 2px $white);
+  }
 }
 </style>
