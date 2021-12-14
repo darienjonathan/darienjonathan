@@ -20,7 +20,10 @@
         @input="handleFilenameInput"
         :value="filename"
       )
-      button.form__save-btn(@click="handleSaveFile") Save
+      button.form__save-btn(
+        @click="handleSaveFile"
+        :disabled="!textareaVal.length === true"
+      ) Save
   .section-line
   .storage
     .storage__heading
