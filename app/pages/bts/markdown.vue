@@ -32,13 +32,17 @@
         :key="item.name"
         @click="handleOutputStorageItem(item.name)"
       ) {{ item.name }}
-    .storage__output(v-if="selectedItem")
-      h4.storage__output-title Selected File Content
-      AMarkdown.storage__output-html(:content="selectedItem?.content")
+  AModal(
+    :is-open="!!selectedItem"
+    @close="selectedItem = undefined"
+  )
+    h4.storage__output-title Selected File Content
+    AMarkdown.storage__output-html(:content="selectedItem?.content")
 </template>
 <script lang="ts" setup>
 import { getDownloadURL } from '@firebase/storage'
 import AMarkdown from '~/components/atoms/AMarkdown.vue'
+import AModal from '~/components/atoms/AModal.vue'
 
 interface Item {
   name: string
@@ -240,12 +244,8 @@ watch(
   &__output {
     padding-top: 24px;
     &-title {
-      @include font($size: $font-lg);
-      margin-bottom: 8px;
-    }
-    &-html {
-      padding-left: 12px;
-      border-left: 2px solid white;
+      @include font($size: $font-huge, $color: inherit);
+      margin-bottom: 24px;
     }
   }
 }
