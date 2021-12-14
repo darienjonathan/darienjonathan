@@ -20,7 +20,10 @@
         @input="handleFilenameInput"
         :value="filename"
       )
-      button.form__save-btn(@click="handleSaveFile") Save
+      button.form__save-btn(
+        @click="handleSaveFile"
+        :disabled="!textareaVal.length === true"
+      ) Save
   .section-line
   .storage
     .storage__heading
@@ -30,14 +33,16 @@
       .storage__item(
         v-for="item in itemList"
         :key="item.name"
-        @click="handleOutputStorageItem(item.name)"
-      ) {{ item.name }}
+      ) 
+        .storage__item-name(@click="handleOutputStorageItem(item.name)") {{ item.name }}
+        .storage__item-delete.material-icons-outlined(@click="handleDelete(item.name)") delete
   AModal(
     :is-open="!!selectedItem"
     @close="selectedItem = undefined"
   )
-    h4.storage__output-title Selected File Content
-    AMarkdown.storage__output-html(:content="selectedItem?.content")
+    template(v-if="selectedItem")
+      h4.storage__output-title {{ selectedItem.name }}
+      AMarkdown.storage__output-html(:content="selectedItem.content")
 </template>
 <script lang="ts" setup>
 import { getDownloadURL } from '@firebase/storage'
@@ -91,6 +96,10 @@ const handleRetrieveItemList = async () => {
     }))
   )
 }
+watch(itemList, handleRetrieveItemList, {
+  deep: true,
+})
+
 onMounted(async () => {
   await nextTick()
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -114,6 +123,13 @@ watch(
     deep: true,
   }
 )
+
+const handleDelete = async (name: string) => {
+  const itemIndex = itemList.value.findIndex(item => item.name === name)
+  if (itemIndex === -1) return
+  await posts.deleteItem(name)
+  itemList.value = itemList.value.filter((_item, index) => index !== itemIndex)
+}
 </script>
 <style lang="scss" scoped>
 @import '@/assets/css/main';
@@ -231,13 +247,23 @@ watch(
   }
 
   &__item {
-    cursor: pointer;
-    transition: text-decoration 0s;
-    &:hover {
-      text-decoration: underline;
+    @include flex($justify: space-between);
+    &-name {
+      cursor: pointer;
+      transition: text-decoration 0s;
+      &:hover {
+        text-decoration: underline;
+      }
+      &:not(:last-child) {
+        margin-bottom: 8px;
+      }
     }
-    &:not(:last-child) {
-      margin-bottom: 8px;
+    &-delete {
+      cursor: pointer;
+      transition: filter 0.25s;
+      &:hover {
+        filter: drop-shadow(0 0 2px $white);
+      }
     }
   }
 

@@ -16,8 +16,15 @@
   border-radius: $border-radius;
   font-size: $font-size;
   cursor: pointer;
-  transition: filter 0.25s;
+  transition: filter 0.25s, background-color 0.25s;
   &:hover {
     filter: drop-shadow(0 0 2px $bg-color);
+  }
+  &:disabled {
+    background-color: mix($bg-color, $black);
+    cursor: default;
+    &:hover {
+      filter: none;
+    }
   }
 }
