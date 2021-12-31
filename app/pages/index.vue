@@ -32,7 +32,6 @@ export default {
 
 .index {
   @include size(vw(100), vh(100));
-  background: $navy-dark;
 }
 
 .content {
