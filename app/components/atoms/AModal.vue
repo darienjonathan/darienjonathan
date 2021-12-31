@@ -11,6 +11,7 @@
       v-show="isOpen"
     )
       .wrapper(
+        :style="{ width }"
         :data-size="size"
         @click.stop
       )
@@ -20,13 +21,18 @@
 </template>
 <script lang="ts" setup>
 interface Props {
-  size: 'default' | 'full-size'
+  size: 'default' | 'full-size' | 'auto'
+  width: string
   isOpen: boolean
 }
 const props = defineProps({
   size: {
     type: String as () => Props['size'],
     default: 'default',
+  },
+  width: {
+    type: String as () => Props['width'],
+    default: '',
   },
   isOpen: {
     type: Boolean as () => Props['isOpen'],
@@ -69,11 +75,17 @@ watch(isOpen, boolean => {
 
 .wrapper {
   @include absolute-center;
-  padding: 32px;
   border-radius: $radius-sm;
   background-color: $black;
   color: $white;
   box-shadow: 0 0 12.5px $black;
+  max-height: vh(80);
+  @include pc {
+    padding: 32px;
+  }
+  @include sp {
+    padding: 24px;
+  }
   &[data-size='default'] {
     height: auto;
     overflow: auto;
@@ -83,12 +95,13 @@ watch(isOpen, boolean => {
     @include sp {
       width: calc(100% - 20px);
     }
-    @include pc {
-      width: 768px;
-    }
+  }
+  &[data-size='auto'] {
+    @include size('auto', 'auto');
   }
   &[data-size='full-size'] {
     @include size(100%, 100%);
+    max-height: initial;
   }
 }
 
