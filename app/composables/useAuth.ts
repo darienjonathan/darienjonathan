@@ -14,12 +14,13 @@ import {
   User,
   UserCredential,
 } from 'firebase/auth'
+import { SIGNIN_STATUS, SIGNIN_STATUS_TYPE } from '~/types/firebase'
 
 const useAuth = () => {
   const auth = getAuth(useNuxtApp().$firebase.app)
 
   const unsubscribe = ref<Unsubscribe>(undefined)
-  const user = ref<User | null>(auth.currentUser)
+  const user = ref<User | null | undefined>(undefined)
   onMounted(() => {
     unsubscribe.value = onAuthStateChanged(auth, authUser => {
       user.value = authUser
@@ -28,6 +29,14 @@ const useAuth = () => {
   onUnmounted(() => {
     unsubscribe.value()
   })
+
+  const signInStatus = computed<SIGNIN_STATUS_TYPE>(() =>
+    user.value === undefined
+      ? SIGNIN_STATUS.NOT_YET
+      : user.value === null
+      ? SIGNIN_STATUS.SIGNED_OUT
+      : SIGNIN_STATUS.SIGNED_IN
+  )
 
   const userUid = computed(() => user.value?.uid)
 
@@ -84,6 +93,7 @@ const useAuth = () => {
 
   return {
     userUid,
+    signInStatus,
     signUp,
     signIn,
     signOut,
