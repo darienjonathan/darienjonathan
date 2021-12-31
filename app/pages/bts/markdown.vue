@@ -102,7 +102,6 @@ watch(itemList, handleRetrieveItemList, {
 
 onMounted(async () => {
   await nextTick()
-  // eslint-disable-next-line @typescript-eslint/no-floating-promises
   handleRetrieveItemList()
 })
 

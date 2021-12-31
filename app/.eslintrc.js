@@ -30,6 +30,7 @@ module.exports = {
     'prefer-const': 'error',
     'vue/multi-word-component-names': 'error',
     '@typescript-eslint/no-unused-vars': ['error', { 'varsIgnorePattern': '^_', 'argsIgnorePattern': '^_' }],
+    '@typescript-eslint/no-floating-promises': ['off'],
   },
   overrides: [
     {
