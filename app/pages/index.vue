@@ -32,12 +32,11 @@ export default {
 
 .index {
   @include size(vw(100), vh(100));
-  background: $navy-dark;
 }
 
 .content {
   @include absolute-center;
-  @include non-sp {
+  @include pc {
     @include flex;
   }
   @include sp {
@@ -47,7 +46,7 @@ export default {
 
 .heading {
   @include font-family('roboto-slab');
-  @include non-sp {
+  @include pc {
     margin-right: 24px;
   }
   @include sp {
@@ -72,7 +71,7 @@ export default {
 
 .line {
   background-color: $white;
-  @include non-sp {
+  @include pc {
     @include size(1px, 100px);
   }
   @include sp {
@@ -82,7 +81,7 @@ export default {
 
 .sns {
   @include font-family('cabin');
-  @include non-sp {
+  @include pc {
     margin-left: 24px;
   }
   @include sp {

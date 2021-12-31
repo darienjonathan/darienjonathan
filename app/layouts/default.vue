@@ -12,7 +12,11 @@ if (process.env.NODE_ENV === 'development') {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/css/main';
 .wrapper {
   overflow-x: hidden;
+  background: $navy-dark;
+  min-width: vw(100);
+  min-height: vh(100);
 }
 </style>

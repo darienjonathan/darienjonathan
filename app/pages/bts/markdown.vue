@@ -102,7 +102,6 @@ watch(itemList, handleRetrieveItemList, {
 
 onMounted(async () => {
   await nextTick()
-  // eslint-disable-next-line @typescript-eslint/no-floating-promises
   handleRetrieveItemList()
 })
 
@@ -142,7 +141,6 @@ const handleDelete = async (name: string) => {
 .markdown {
   @include size(vw(100), vh(100));
   @include flex($direction: column);
-  background-color: $navy-dark;
 }
 
 .title {
@@ -157,7 +155,7 @@ const handleDelete = async (name: string) => {
     @include sp {
       @include flex($direction: column, $align-items: stretch);
     }
-    @include non-sp {
+    @include pc {
       @include flex($align-items: stretch);
     }
   }
@@ -175,7 +173,7 @@ const handleDelete = async (name: string) => {
       margin-top: 16px;
     }
   }
-  @include non-sp {
+  @include pc {
     &:first-child {
       margin-right: 16px;
     }
@@ -200,7 +198,7 @@ const handleDelete = async (name: string) => {
   @include sp {
     @include line(y, auto, 1px);
   }
-  @include non-sp {
+  @include pc {
     @include line(x, auto, 1px);
   }
 }
@@ -220,7 +218,7 @@ const handleDelete = async (name: string) => {
   margin: 20px auto;
 }
 .storage {
-  @include non-sp {
+  @include pc {
     width: 768px;
   }
   @include sp {

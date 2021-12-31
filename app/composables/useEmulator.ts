@@ -20,7 +20,6 @@ const useEmulator = () => {
     )
     connectStorageEmulator(storage, firebaseEmulator.host, Number(firebaseEmulator.storagePort))
 
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     signIn(firebaseEmulator.authEmail, firebaseEmulator.authPassword)
   })
 }
