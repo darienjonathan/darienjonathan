@@ -72,7 +72,7 @@ export default {
 
 .line {
   background-color: $white;
-  @include non-sp {
+  @include pc {
     @include size(1px, 100px);
   }
   @include sp {
@@ -82,7 +82,7 @@ export default {
 
 .sns {
   @include font-family('cabin');
-  @include non-sp {
+  @include pc {
     margin-left: 24px;
   }
   @include sp {
