@@ -37,7 +37,7 @@ export default {
 
 .content {
   @include absolute-center;
-  @include non-sp {
+  @include pc {
     @include flex;
   }
   @include sp {
@@ -47,7 +47,7 @@ export default {
 
 .heading {
   @include font-family('roboto-slab');
-  @include non-sp {
+  @include pc {
     margin-right: 24px;
   }
   @include sp {

@@ -75,11 +75,15 @@ watch(isOpen, boolean => {
   color: $white;
   box-shadow: 0 0 12.5px $black;
   &[data-size='default'] {
-    height: vh(80);
+    height: auto;
+    overflow: auto;
+    @include pc {
+      width: 768px;
+    }
     @include sp {
       width: calc(100% - 20px);
     }
-    @include non-sp {
+    @include pc {
       width: 768px;
     }
   }
@@ -89,7 +93,12 @@ watch(isOpen, boolean => {
 }
 
 .close-btn {
-  @include absolute(32px, 32px);
+  @include pc {
+    @include absolute(32px, 32px);
+  }
+  @include sp {
+    @include absolute(24px, 24px);
+  }
   @include flex;
 }
 
