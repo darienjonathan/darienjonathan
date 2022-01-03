@@ -1,28 +1,33 @@
 <template lang="pug">
 .markdown
   h1.title Markdown
-  .textarea-to-md
-    .textarea-to-md__content
-      .section
-        label.label textarea
-        textarea.content(
-          @input="handleTextareaInput"
-          :value="textareaVal"
-        )
-      .line
-      .section
-        label.label markdown output
-        AMarkdown.content(:content="textareaVal")
-    .textarea-to-md__form
-      .form__label filename
-      input.form__input(
-        @input="handleFilenameInput"
-        :value="filename"
-      )
-      button.form__save-btn(
-        @click="handleSaveFile"
-        :disabled="!textareaVal.length === true"
-      ) Save
+  template(v-if="!signInStatus.notYet")
+    template(v-if="signInStatus.signedIn")
+      .textarea-to-md
+        .textarea-to-md__content
+          .section
+            label.label textarea
+            textarea.content(
+              @input="handleTextareaInput"
+              :value="textareaVal"
+            )
+          .line
+          .section
+            label.label markdown output
+            AMarkdown.content(:content="textareaVal")
+        .textarea-to-md__form
+          .form__label filename
+          input.form__input(
+            @input="handleFilenameInput"
+            @keyup.enter="handleSaveFile"
+            :value="filename"
+          )
+          button.form__save-btn(
+            @click="handleSaveFile"
+            :disabled="!textareaVal.length === true"
+          ) Save
+    template(v-else)
+      button.signin-btn(@click="handleOpenSignInModal") Sign in to create markdowns
   .section-line
   .storage
     .storage__heading
@@ -42,17 +47,34 @@
     template(v-if="selectedItem")
       h4.storage__output-title {{ selectedItem.name }}
       AMarkdown.storage__output-html(:content="selectedItem.content")
+  MSignInModal(
+    :is-open="isSignInModalOpen"
+    @close="handleCloseSignInModal"
+  )
 </template>
 <script lang="ts" setup>
 import { getDownloadURL } from '@firebase/storage'
 import AMarkdown from '~/components/atoms/AMarkdown.vue'
 import AModal from '~/components/atoms/AModal.vue'
+import MSignInModal from '~/components/molecules/MSignInModal.vue'
 
 interface Item {
   name: string
   url: string
   content: string
 }
+
+const { signInStatus } = useAuth()
+const isSignInModalOpen = ref(false)
+const handleOpenSignInModal = () => {
+  isSignInModalOpen.value = true
+}
+const handleCloseSignInModal = () => {
+  isSignInModalOpen.value = false
+}
+watch(signInStatus, status => {
+  if (status.signedIn) isSignInModalOpen.value = false
+})
 
 const EXTENSION = '.md'
 const { userUid } = useAuth()
@@ -77,6 +99,7 @@ const handleSaveFile = async () => {
       : filename.value + EXTENSION,
     customMetadata: posts.authorUidMetadata(userUid.value),
   })
+  handleRetrieveItemList()
 }
 
 const itemList = ref<Item[]>()
@@ -205,6 +228,10 @@ const handleDelete = async (name: string) => {
     @include button($bg-color: rgba($navy-blue-light, 0.5), $font-size: $font-sm);
     margin-left: 16px;
   }
+}
+
+.signin-btn {
+  @include button($bg-color: rgba($navy-dark, 0.5));
 }
 
 .section-line {
