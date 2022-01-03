@@ -2,6 +2,7 @@
 AModal(
   :is-open="props.isOpen"
   :width="isSP ? '100%' : '400px'"
+  @close="$emit('close')"
 )
   h2.header SIGN IN
   .form
