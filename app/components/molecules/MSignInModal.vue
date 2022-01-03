@@ -9,13 +9,13 @@ AModal(
       .input__label email
       input.input__element(
         type="text"
-        @change="handleEmailChange"
+        @input="handleEmailChange"
       )
     .input
       .input__label password
       input.input__element(
         type="password"
-        @change="handlePasswordChange"
+        @input="handlePasswordChange"
       )
   button.submit-btn(
     @click="handleSignIn"
@@ -48,13 +48,15 @@ const handlePasswordChange = (e: Event) => {
 }
 const handleSignIn = () => signIn(email.value, password.value)
 
+const enterListener = (e: Event) => {
+  if ((e as KeyboardEvent).code !== 'Enter') return
+  if (!email.value.length || !password.value.length) return
+  handleSignIn()
+}
+
 watch(
   () => props.isOpen,
   isOpen => {
-    const enterListener = (e: Event) => {
-      if ((e as KeyboardEvent).code !== 'Enter') return
-      handleSignIn()
-    }
     if (isOpen) {
       document.addEventListener('keypress', enterListener)
     } else {
