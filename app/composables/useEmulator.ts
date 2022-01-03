@@ -7,7 +7,6 @@ const useEmulator = () => {
   const firestore = getFirestore(app)
   const auth = getAuth(app)
   const storage = getStorage(app)
-  const { signIn } = useAuth()
   const firebaseEmulator = useRuntimeConfig().firebaseEmulator as {
     [key: string]: string
   }
@@ -19,8 +18,6 @@ const useEmulator = () => {
       Number(firebaseEmulator.firestorePort)
     )
     connectStorageEmulator(storage, firebaseEmulator.host, Number(firebaseEmulator.storagePort))
-
-    signIn(firebaseEmulator.authEmail, firebaseEmulator.authPassword)
   })
 }
 
