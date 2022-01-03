@@ -1,7 +1,7 @@
-export const SIGNIN_STATUS = <const>{
-  NOT_YET: 'NOT_YET',
-  SIGNED_IN: 'SIGNED_IN',
-  SIGNED_OUT: 'SIGNED_OUT',
+export const signInStatus = <const>{
+  notYet: 'notYet',
+  signedIn: 'signedIn',
+  signedOut: 'signedOut',
 }
 
-export type SIGNIN_STATUS_TYPE = typeof SIGNIN_STATUS[keyof typeof SIGNIN_STATUS]
+export type SignInStatus = typeof signInStatus[keyof typeof signInStatus]

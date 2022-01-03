@@ -1,7 +1,7 @@
-import { Media, parseMedia } from '~/types/model/imageFile'
-import { parsePost, parsePostComment, Post, PostComment } from '~/types/model/post'
-import { parseRole, Role } from '~/types/model/role'
-import { parseTag, Tag } from '~/types/model/tag'
+import { Media, parseMedia } from '~/types/model/blog/imageFile'
+import { parsePost, parsePostComment, Post, PostComment } from '~/types/model/blog/post'
+import { parseRole, Role } from '~/types/model/blog/role'
+import { parseTag, Tag } from '~/types/model/blog/tag'
 import { parseUser, parseUserInfo, User, UserInfo } from '~/types/model/user'
 import useFirestore from '~/composables/firebase/firestore/useFirestore'
 

@@ -116,7 +116,7 @@ watch(isOpen, boolean => {
 }
 
 .material-icons-outlined {
-  @include font($size: 3rem);
+  @include font($size: 3rem, $line-height: 1);
   cursor: pointer;
   transition: filter 0.25s;
   &:hover {
