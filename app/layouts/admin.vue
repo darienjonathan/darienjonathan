@@ -1,6 +1,7 @@
 <template lang="pug">
 Default
-  slot
+  template(v-if="signInStatus.signedIn")
+    slot
   MSignInModal(:is-open="isSignInModalOpen")
 </template>
 
