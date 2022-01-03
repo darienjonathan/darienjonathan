@@ -6,7 +6,6 @@
       .section
         label.label textarea
         textarea.content(
-          ref="textareaRef"
           @input="handleTextareaInput"
           :value="textareaVal"
         )
@@ -79,11 +78,6 @@ const handleSaveFile = async () => {
     customMetadata: posts.authorUidMetadata(userUid.value),
   })
 }
-
-const textareaRef = ref<HTMLTextAreaElement>(null)
-onMounted(() => {
-  textareaRef.value.value = ''
-})
 
 const itemList = ref<Item[]>()
 const handleRetrieveItemList = async () => {
