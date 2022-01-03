@@ -21,7 +21,7 @@
     filter: drop-shadow(0 0 2px $bg-color);
   }
   &:disabled {
-    background-color: mix($bg-color, $black);
+    background-color: mix($black, $white);
     cursor: default;
     &:hover {
       filter: none;

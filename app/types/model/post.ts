@@ -18,11 +18,11 @@ export const parseLang = (data: any): Lang => ({
 export interface Post {
   authorUid: string
   slug: string
-  title: Lang
+  title: Partial<Lang>
   description: string
   createdAt: number
   tagUids: string[]
-  contentURL: Lang
+  contentURL: Partial<Lang>
 }
 
 export interface PostComment {
