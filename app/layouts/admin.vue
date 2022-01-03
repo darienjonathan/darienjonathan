@@ -5,7 +5,6 @@ Default
 </template>
 
 <script lang="ts" setup>
-import { SIGNIN_STATUS } from '~/types/firebase'
 import Default from '~/layouts/default.vue'
 import MSignInModal from '~/components/molecules/MSignInModal.vue'
 
@@ -15,7 +14,7 @@ const isSignInModalOpen = ref(false)
 watch(
   signInStatus,
   status => {
-    isSignInModalOpen.value = status === SIGNIN_STATUS.SIGNED_OUT
+    isSignInModalOpen.value = status.signedOut
   },
   {
     immediate: true,

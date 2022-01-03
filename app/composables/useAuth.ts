@@ -14,7 +14,7 @@ import {
   User,
   UserCredential,
 } from 'firebase/auth'
-import { SIGNIN_STATUS, SIGNIN_STATUS_TYPE } from '~/types/firebase'
+import { SignInStatus } from '~/types/firebase'
 
 const useAuth = () => {
   const auth = getAuth(useNuxtApp().$firebase.app)
@@ -30,13 +30,11 @@ const useAuth = () => {
     unsubscribe.value()
   })
 
-  const signInStatus = computed<SIGNIN_STATUS_TYPE>(() =>
-    user.value === undefined
-      ? SIGNIN_STATUS.NOT_YET
-      : user.value === null
-      ? SIGNIN_STATUS.SIGNED_OUT
-      : SIGNIN_STATUS.SIGNED_IN
-  )
+  const signInStatus = computed<{ [key in SignInStatus]: boolean }>(() => ({
+    signedIn: user.value !== undefined && user.value !== null,
+    signedOut: user.value === null,
+    notYet: user.value === undefined,
+  }))
 
   const userUid = computed(() => user.value?.uid)
 
