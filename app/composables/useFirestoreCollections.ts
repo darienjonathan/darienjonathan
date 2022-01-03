@@ -1,4 +1,4 @@
-import { Media, parseMedia } from '~/types/model/blog/imageFile'
+import { Media, parseMedia } from '~/types/model/blog/media'
 import { parsePost, parsePostComment, Post, PostComment } from '~/types/model/blog/post'
 import { parseRole, Role } from '~/types/model/blog/role'
 import { parseTag, Tag } from '~/types/model/blog/tag'
