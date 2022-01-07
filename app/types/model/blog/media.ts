@@ -7,6 +7,7 @@ export type MediaType = 'image' | 'video'
 
 export interface Media {
   url: string
+  bucketPath: string
   type: MediaType
   caption: string
   fileName: string
@@ -23,6 +24,7 @@ export const parseMediaType = (mediaType: any): MediaType => {
 
 export const parseMedia = (data: any): Media => ({
   url: parseString(data.url),
+  bucketPath: parseString(data.bucketPath),
   type: parseMediaType(data.type),
   caption: parseString(data.caption),
   fileName: parseString(data.fileName),
