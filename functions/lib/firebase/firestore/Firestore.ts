@@ -24,7 +24,7 @@ class FirestoreCollection<T> {
     return FirestoreCollection.firestore.batch()
   }
 
-  protected get trigger() {
+  public get trigger() {
     return this._trigger
   }
 

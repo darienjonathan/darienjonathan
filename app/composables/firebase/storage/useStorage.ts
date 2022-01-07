@@ -51,13 +51,12 @@ const useStorage = (path: string, allowedTypes?: string[]) => {
   const list = () => listAll(storageRef.value)
 
   const put = async ({ file, fileName, customMetadata }: PutArgs<File>) => {
-    const type = await getMime(file)
-    const isValidated = validate(type)
+    const isValidated = validate(file.type)
     if (!isValidated) {
       throw new Error('File validation failed')
     }
     try {
-      const metadata = createMetadata(customMetadata, type)
+      const metadata = createMetadata(customMetadata, file.type)
       const snapshot = await uploadBytes(getFileRef(fileName), file, metadata)
       return snapshot
     } catch (e) {

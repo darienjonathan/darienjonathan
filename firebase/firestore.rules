@@ -44,7 +44,7 @@ service cloud.firestore {
 
     function getUserRole(userUid) {
       let user = getUser(userUid);
-      let role = getRole(user.data.role);
+      let role = getRole(user.data.roleUid);
       return role
     }
 
