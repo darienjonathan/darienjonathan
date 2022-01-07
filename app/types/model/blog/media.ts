@@ -9,6 +9,7 @@ export interface Media {
   url: string
   type: MediaType
   caption: string
+  fileName: string
 }
 
 const isMediaType = (mediaType: any): mediaType is MediaType => {
@@ -24,4 +25,5 @@ export const parseMedia = (data: any): Media => ({
   url: parseString(data.url),
   type: parseMediaType(data.type),
   caption: parseString(data.caption),
+  fileName: parseString(data.fileName),
 })
