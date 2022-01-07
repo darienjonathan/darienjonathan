@@ -1,7 +1,7 @@
 import { roles, userInfo, users } from '~/lib/firebase/firestore/collections'
 import FirestoreQueryBuilder from '~/lib/firebase/firestore/FirestoreQueryBuilder'
 import getFunctions from '~/lib/firebase/getFunctions'
-import { Role } from '~/types/model/role'
+import { Role } from '~/types/model/blog/role'
 import { UserInfo } from '~/types/model/user'
 
 const getRoleUid = async (roleName: string) => {

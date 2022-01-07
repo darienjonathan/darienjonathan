@@ -1,8 +1,8 @@
 import FirestoreWrapper from '~/lib/firebase/firestore/Firestore'
-import { Media, parseMedia } from '~/types/model/media'
-import { parsePost, parsePostComment, Post, PostComment } from '~/types/model/post'
-import { parseRole, Role } from '~/types/model/role'
-import { parseTag, Tag } from '~/types/model/tag'
+import { Media, parseMedia } from '~/types/model/blog/media'
+import { parsePost, parsePostComment, Post, PostComment } from '~/types/model/blog/post'
+import { parseRole, Role } from '~/types/model/blog/role'
+import { parseTag, Tag } from '~/types/model/blog/tag'
 import { parseUser, parseUserInfo, User, UserInfo } from '~/types/model/user'
 
 const posts = () => new FirestoreWrapper<Post>('posts', 'posts/{postUid}', parsePost)
