@@ -22,10 +22,7 @@ const useFirestoreQueryBuilder = <T>(firestoreRef: CollectionReference<T>) => {
     limitArgs: 0,
   })
 
-  const currentQuery = ref<Query<T>>(undefined)
-  watch(queries, () => {
-    currentQuery.value = build()
-  })
+  const currentQuery = ref<Query<T>>(firestoreRef)
 
   const eq = <K extends keyof T>(prop: K, val: T[K]) => {
     queries.whereArgsArr.push([prop.toString(), '==', val])
@@ -79,6 +76,16 @@ const useFirestoreQueryBuilder = <T>(firestoreRef: CollectionReference<T>) => {
     const limitQuery = queries.limitArgs && limitFn(queries.limitArgs)
     return query(firestoreRef, ...[...whereQueryArr, orderByQuery, limitQuery].filter(q => q))
   }
+
+  watch(
+    queries,
+    () => {
+      currentQuery.value = build()
+    },
+    {
+      immediate: true,
+    }
+  )
 
   return {
     currentQuery,
