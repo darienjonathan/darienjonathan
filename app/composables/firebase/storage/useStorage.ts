@@ -1,7 +1,5 @@
 import {
   deleteObject,
-  getDownloadURL as getItemDownloadURL,
-  getStorage,
   listAll,
   ref as reference,
   StorageReference,
@@ -10,7 +8,7 @@ import {
   UploadMetadata,
   uploadString,
 } from 'firebase/storage'
-import getMime, { getBase64Mime } from '~/utils/getMime'
+import { getBase64Mime } from '~/utils/getMime'
 
 interface PutArgs<T extends File | string> {
   file: T
@@ -23,7 +21,8 @@ interface PutStringArgs extends PutArgs<string> {
 }
 
 const useStorage = (path: string, allowedTypes?: string[]) => {
-  const storage = getStorage(useNuxtApp().$firebase.app)
+  const { instance: storage, getDownloadURL: storageGetDownloadURL } =
+    useNuxtApp().$firebase.storage
 
   const storageRef = computed(() => reference(storage, path))
 
@@ -46,7 +45,7 @@ const useStorage = (path: string, allowedTypes?: string[]) => {
   }
 
   const getDownloadURL = (fileName: string): Promise<string> =>
-    getItemDownloadURL(getFileRef(fileName))
+    storageGetDownloadURL(getFileRef(fileName).fullPath)
 
   const list = () => listAll(storageRef.value)
 

@@ -1,12 +1,12 @@
-import { connectAuthEmulator, getAuth } from 'firebase/auth'
-import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
-import { connectStorageEmulator, getStorage } from 'firebase/storage'
+import { connectAuthEmulator } from 'firebase/auth'
+import { connectFirestoreEmulator } from 'firebase/firestore'
+import { connectStorageEmulator } from 'firebase/storage'
 
 const useEmulator = () => {
-  const app = useNuxtApp().$firebase.app
-  const firestore = getFirestore(app)
-  const auth = getAuth(app)
-  const storage = getStorage(app)
+  const $firebase = useNuxtApp().$firebase
+  const firestore = $firebase.firestore.instance
+  const auth = $firebase.auth.instance
+  const storage = $firebase.storage.instance
   const firebaseEmulator = useRuntimeConfig().firebaseEmulator as {
     [key: string]: string
   }
