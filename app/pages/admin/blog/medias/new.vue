@@ -80,8 +80,7 @@ const handleSubmit = async () => {
   const storage = fileType.value === 'image' ? imagesStorage : videosStorage
   const upload = await storage.put({ file: file.value, fileName: fileName.value })
   mediasFirestore.push({
-    url: await storage.getDownloadURL(upload.ref.name),
-    bucketPath: upload.ref.fullPath,
+    fileLocation: upload.ref.fullPath,
     type: fileType.value,
     caption: caption.value,
     fileName: fileName.value,

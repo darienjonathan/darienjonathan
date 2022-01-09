@@ -17,7 +17,7 @@ import {
 import { SignInStatus } from '~/types/firebase'
 
 const useAuth = () => {
-  const auth = getAuth(useNuxtApp().$firebase.app)
+  const auth = useNuxtApp().$firebase.auth.instance
 
   const unsubscribe = ref<Unsubscribe>(undefined)
   const user = ref<User | null | undefined>(undefined)
