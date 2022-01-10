@@ -2,8 +2,8 @@
 .a-modal(v-show="isModalOpen")
   transition(
     name="fade"
-    @before-enter="isModalOpen = true"
-    @after-leave="isModalOpen = false"
+    @before-enter="handleBeforeEnter"
+    @after-leave="handleAfterLeave"
     appear
   )
     .overlay(
@@ -53,6 +53,15 @@ watch(isOpen, boolean => {
     window.scrollTo(0, parseInt(document.body.style.top || '0') * -1)
   }
 })
+
+const handleBeforeEnter = () => {
+  if (!props.isOpen) return
+  isModalOpen.value = true
+}
+
+const handleAfterLeave = () => {
+  isModalOpen.value = false
+}
 </script>
 <style lang="scss" scoped>
 @import '@/assets/css/main';

@@ -1,5 +1,4 @@
 import { FirebaseApp, FirebaseOptions, initializeApp } from 'firebase/app'
-import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 import { getDownloadURL as storageGetDownloadURL, getStorage, ref } from 'firebase/storage'
 
@@ -12,7 +11,6 @@ export default defineNuxtPlugin(() => {
         app,
         storage: storagePlugins(app),
         firestore: firestorePlugins(app),
-        auth: authPlugins(app),
       },
     },
   }
@@ -31,12 +29,5 @@ const firestorePlugins = (app: FirebaseApp) => {
   const firestore = getFirestore(app)
   return {
     instance: firestore,
-  }
-}
-
-const authPlugins = (app: FirebaseApp) => {
-  const auth = getAuth(app)
-  return {
-    instance: auth,
   }
 }
