@@ -3,38 +3,36 @@
   .section
     h2.section__title IMAGES
     .media__list(v-if="images.length")
-      .media__item(v-for="image in images")
-        img.media__src(:src="image.url")
+      MMediaListItem.media__item(
+        v-for="image in images"
+        v-bind="image"
+      )
     div(v-else) There are no images
   hr.line
   .section
     h2.section__title VIDEOS
     .media__list(v-if="videos.length")
-      .media__item(v-for="video in videos")
-        video.media__src(:src="video.url")
+      MMediaListItem.media__item(
+        v-for="video in videos"
+        v-bind="video"
+      )
     div(v-else) There are no videos
 </template>
 <script lang="ts" setup>
-import type { Media } from '~/types/model/blog/media'
-type MediaWithURL = Media & {
-  url: string
-}
+import MMediaListItem from '~/components/molecules/admin/blog/media/MMediaListItem.vue'
 const { useMedias } = useFirestoreCollections()
-const storage = useNuxtApp().$firebase.storage
 const firestoreMedias = useMedias()
-const images = ref<MediaWithURL[]>([])
-const videos = ref<MediaWithURL[]>([])
+const images = ref<InstanceType<typeof MMediaListItem>['$props'][]>([])
+const videos = ref<InstanceType<typeof MMediaListItem>['$props'][]>([])
 onMounted(async () => {
   const mediaCollection = await firestoreMedias.loadCollection()
   if (!mediaCollection) return
-  for (const media of mediaCollection.values()) {
-    const url = await storage.getDownloadURL(media.fileLocation)
-    const mediaArr = media.type === 'image' ? images.value : videos.value
-    mediaArr.push({
+  Array.from(mediaCollection).forEach(([uid, media]) => {
+    ;(media.type === 'image' ? images.value : videos.value).push({
       ...media,
-      url,
+      uid,
     })
-  }
+  })
 })
 </script>
 <script lang="ts">
@@ -68,17 +66,6 @@ export default {
   }
   &__item {
     margin: 8px;
-  }
-  &__src {
-    object-fit: contain;
-    @include pc {
-      max-width: 300px;
-      max-height: 300px;
-    }
-    @include sp {
-      max-width: 150px;
-      max-height: 150px;
-    }
   }
 }
 </style>
