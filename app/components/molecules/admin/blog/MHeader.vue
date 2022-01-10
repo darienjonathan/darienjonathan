@@ -1,8 +1,8 @@
 <template lang="pug">
 .m-header
   .items
-    nuxt-link.item(to="/admin/posts") posts
-    nuxt-link.item(to="/admin/medias") medias
+    nuxt-link.item(to="/admin/blog/posts") posts
+    nuxt-link.item(to="/admin/blog/medias") medias
   .signout.material-icons-outlined(@click="signOut") logout
 </template>
 <script lang="ts" setup>
