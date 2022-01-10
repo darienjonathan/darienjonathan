@@ -1,8 +1,8 @@
 <template lang="pug">
-ONewOrEditMedia.media-new
+OMediaBuilder.media-new
 </template>
 <script lang="ts" setup>
-import ONewOrEditMedia from '~/components/organisms/admin/blog/media/ONewOrEditMedia.vue'
+import OMediaBuilder from '~/components/organisms/admin/blog/media/OMediaBuilder.vue'
 </script>
 <script lang="ts">
 export default {
