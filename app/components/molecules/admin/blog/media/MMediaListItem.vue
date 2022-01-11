@@ -1,50 +1,34 @@
 <template lang="pug">
 .m-media-item
   img.media__src(
-    v-if="type === 'image'"
+    v-if="media.type === 'image'"
     :src="url"
   )
   video.media__src(
-    v-else-if="type === 'video'"
+    v-else-if="media.type === 'video'"
     :src="url"
   )
   .media__properties
-    .media__property {{ fileName }}
-    .media__property.media__property--caption {{ caption || '-' }}
+    .media__property {{ media.fileName }}
+    .media__property.media__property--caption {{ media.caption || '-' }}
   .media__actions
-    nuxt-link.media__action.material-icons-outlined(:to="editURL") edit
-    .media__action.material-icons-outlined delete
+    .media__action.material-icons-outlined(@click="$emit('edit')") edit
+    .media__action.material-icons-outlined(@click="$emit('delete')") delete
 </template>
 <script lang="ts" setup>
 import type { Media } from '~/types/model/blog/media'
 
 const props = defineProps({
-  uid: {
-    type: String,
-    default: '',
-  },
-  fileName: {
-    type: String as () => Media['fileName'],
-    default: '',
-  },
-  fileLocation: {
-    type: String as () => Media['fileLocation'],
-    default: '',
-  },
-  caption: {
-    type: String as () => Media['caption'],
-    default: '',
-  },
-  type: {
-    type: String as () => Media['type'],
-    default: '',
+  media: {
+    type: Object as () => Media,
+    default: () => ({}),
   },
 })
 
 const storage = useNuxtApp().$firebase.storage
 const url = ref()
 watch(
-  () => props.fileLocation,
+  () => props.media.fileLocation,
   async location => {
     url.value = await storage.getDownloadURL(location)
   },
@@ -52,9 +36,6 @@ watch(
     immediate: true,
   }
 )
-
-const route = useRoute()
-const editURL = computed(() => `${route.path}${props.uid}/edit`)
 </script>
 <script lang="ts">
 export default {
@@ -118,7 +99,6 @@ export default {
   }
   &__action {
     cursor: pointer;
-    text-decoration: none;
     @include pc {
       @include font($size: $font-xxxl);
     }

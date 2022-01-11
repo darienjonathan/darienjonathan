@@ -2,38 +2,51 @@
 .medias
   .section
     h2.section__title IMAGES
-    .media__list(v-if="images.length")
+    .media__list(v-if="images.size")
       MMediaListItem.media__item(
-        v-for="image in images"
-        v-bind="image"
+        v-for="[uid, image] in images"
+        :media="image"
+        @edit="handleEdit(uid)"
+        @delete="handleDelete(uid)"
       )
     div(v-else) There are no images
   hr.line
   .section
     h2.section__title VIDEOS
-    .media__list(v-if="videos.length")
+    .media__list(v-if="videos.size")
       MMediaListItem.media__item(
-        v-for="video in videos"
-        v-bind="video"
+        v-for="[uid, video] in videos"
+        :media="video"
+        @edit="handleEdit(uid)"
+        @delete="handleDelete(uid)"
       )
     div(v-else) There are no videos
 </template>
 <script lang="ts" setup>
 import MMediaListItem from '~/components/molecules/admin/blog/media/MMediaListItem.vue'
+import type { Media } from '~/types/model/blog/media'
+
 const { useMedias } = useFirestoreCollections()
 const firestoreMedias = useMedias()
-const images = ref<InstanceType<typeof MMediaListItem>['$props'][]>([])
-const videos = ref<InstanceType<typeof MMediaListItem>['$props'][]>([])
+const images = ref<Map<string, Media>>(new Map())
+const videos = ref<Map<string, Media>>(new Map())
 onMounted(async () => {
   const mediaCollection = await firestoreMedias.loadCollection()
   if (!mediaCollection) return
   Array.from(mediaCollection).forEach(([uid, media]) => {
-    ;(media.type === 'image' ? images.value : videos.value).push({
-      ...media,
-      uid,
-    })
+    ;(media.type === 'image' ? images.value : videos.value).set(uid, media)
   })
 })
+
+const route = useRoute()
+const router = useRouter()
+const handleEdit = (uid: string) => {
+  router.push(`${route.path}/${uid}/edit`.replace(/\/+/g, '/'))
+}
+
+const handleDelete = (uid: string) => {
+  console.log('try delete')
+}
 </script>
 <script lang="ts">
 export default {
