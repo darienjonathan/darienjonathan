@@ -11,18 +11,20 @@
       v-show="isOpen"
     )
       .wrapper(
-        :style="{ width }"
+        :style="style"
         :data-size="size"
         @click.stop
       )
         slot
-        .close-btn(@click="$emit('close')")
-          .material-icons-outlined close
+        .close__btn(@click="$emit('close')")
+          .close__icon.material-icons-outlined close
 </template>
 <script lang="ts" setup>
 interface Props {
   size: 'default' | 'full-size' | 'auto'
-  width: string
+  style: {
+    [key: string]: string
+  }
   isOpen: boolean
 }
 const props = defineProps({
@@ -30,9 +32,9 @@ const props = defineProps({
     type: String as () => Props['size'],
     default: 'default',
   },
-  width: {
-    type: String as () => Props['width'],
-    default: '',
+  style: {
+    type: Object as () => Props['style'],
+    default: () => ({}),
   },
   isOpen: {
     type: Boolean as () => Props['isOpen'],
@@ -64,6 +66,7 @@ const handleAfterLeave = () => {
 }
 </script>
 <style lang="scss" scoped>
+@use 'sass:math';
 @import '@/assets/css/main';
 
 .a-modal {
@@ -114,22 +117,26 @@ const handleAfterLeave = () => {
   }
 }
 
-.close-btn {
-  @include pc {
-    @include absolute(32px, 32px);
+.close {
+  $icon-size: 3rem;
+  &__btn {
+    $btn-el-size: math.div(2, 3) * $icon-size;
+    @include size($btn-el-size, $btn-el-size);
+    @include pc {
+      @include absolute(32px, 32px);
+    }
+    @include sp {
+      @include absolute(24px, 24px);
+    }
+    @include flex;
   }
-  @include sp {
-    @include absolute(24px, 24px);
-  }
-  @include flex;
-}
-
-.material-icons-outlined {
-  @include font($size: 3rem, $line-height: 1);
-  cursor: pointer;
-  transition: filter 0.25s;
-  &:hover {
-    filter: drop-shadow(0 0 2px $white);
+  &__icon {
+    @include font($size: $icon-size, $line-height: 1);
+    cursor: pointer;
+    transition: filter 0.25s;
+    &:hover {
+      filter: drop-shadow(0 0 2px $white);
+    }
   }
 }
 </style>

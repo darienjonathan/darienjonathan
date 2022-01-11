@@ -11,8 +11,8 @@ firebase-debug.*.log*
 .firebase/
 
 # Firebase Emulators
-
 firebase/emulators
+firebase-export-*
 
 # Firebase config
 
