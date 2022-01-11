@@ -11,7 +11,7 @@
       v-show="isOpen"
     )
       .wrapper(
-        :style="{ width }"
+        :style="style"
         :data-size="size"
         @click.stop
       )
@@ -22,7 +22,9 @@
 <script lang="ts" setup>
 interface Props {
   size: 'default' | 'full-size' | 'auto'
-  width: string
+  style: {
+    [key: string]: string
+  }
   isOpen: boolean
 }
 const props = defineProps({
@@ -30,9 +32,9 @@ const props = defineProps({
     type: String as () => Props['size'],
     default: 'default',
   },
-  width: {
-    type: String as () => Props['width'],
-    default: '',
+  style: {
+    type: Object as () => Props['style'],
+    default: () => ({}),
   },
   isOpen: {
     type: Boolean as () => Props['isOpen'],
