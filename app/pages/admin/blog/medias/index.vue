@@ -21,21 +21,37 @@
         @delete="handleDelete(uid)"
       )
     div(v-else) There are no videos
+  AModal(:is-open="isDeleteModalOpen")
+    div Are you sure you want to delete this media?
+      .modal__buttons
+        button.modal__button(@click="handleConfirmDelete") Yes
+        button.modal__button Cancel
 </template>
 <script lang="ts" setup>
+import type { Unsubscribe } from 'firebase/firestore'
 import MMediaListItem from '~/components/molecules/admin/blog/media/MMediaListItem.vue'
 import type { Media } from '~/types/model/blog/media'
+import AModal from '~/components/atoms/AModal.vue'
 
 const { useMedias } = useFirestoreCollections()
 const firestoreMedias = useMedias()
 const images = ref<Map<string, Media>>(new Map())
 const videos = ref<Map<string, Media>>(new Map())
-onMounted(async () => {
-  const mediaCollection = await firestoreMedias.loadCollection()
-  if (!mediaCollection) return
-  Array.from(mediaCollection).forEach(([uid, media]) => {
-    ;(media.type === 'image' ? images.value : videos.value).set(uid, media)
+const unsubscribeMedia = ref<Unsubscribe>()
+onMounted(() => {
+  unsubscribeMedia.value = firestoreMedias.subscribeCollection(mediaMap => {
+    const currentImages = new Map<string, Media>()
+    const currentVideos = new Map<string, Media>()
+    Array.from(mediaMap || []).forEach(([uid, media]) => {
+      ;(media.type === 'image' ? currentImages : currentVideos).set(uid, media)
+    })
+    images.value = currentImages
+    videos.value = currentVideos
   })
+})
+
+onUnmounted(() => {
+  unsubscribeMedia.value()
 })
 
 const route = useRoute()
@@ -44,8 +60,16 @@ const handleEdit = (uid: string) => {
   router.push(`${route.path}/${uid}/edit`.replace(/\/+/g, '/'))
 }
 
+const isDeleteModalOpen = ref<boolean>(false)
+const uidToBeDeleted = ref<string>()
 const handleDelete = (uid: string) => {
-  console.log('try delete')
+  isDeleteModalOpen.value = true
+  uidToBeDeleted.value = uid
+}
+const handleConfirmDelete = async () => {
+  if (!uidToBeDeleted.value) return
+  await firestoreMedias.deleteRecord(uidToBeDeleted.value)
+  isDeleteModalOpen.value = false
 }
 </script>
 <script lang="ts">
@@ -75,10 +99,29 @@ export default {
   &__list {
     display: grid;
     grid-gap: 8px;
-    grid-template-columns: auto;
+    @include pc {
+      grid-template-columns: repeat(auto-fill, 300px);
+    }
+    @include sp {
+      grid-template-columns: repeat(auto-fill, 175px);
+    }
   }
   &__item {
     margin: 8px;
+  }
+}
+
+.modal {
+  &__buttons {
+    @include flex;
+    padding-top: 20px;
+  }
+  &__button {
+    @include button($bg-color: rgba($navy-blue-light, 0.5));
+    width: 150px;
+    &:not(:last-child) {
+      margin-right: 32px;
+    }
   }
 }
 </style>
