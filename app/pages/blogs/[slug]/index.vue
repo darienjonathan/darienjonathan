@@ -73,9 +73,12 @@ const handleClose = () => {
 }
 </script>
 <script lang="ts">
+definePageMeta({
+  layout: 'default',
+})
+
 export default {
   name: 'BlogPage',
-  layout: 'default',
 }
 </script>
 <style lang="scss" scoped>

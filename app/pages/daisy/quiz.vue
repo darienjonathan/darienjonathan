@@ -203,9 +203,12 @@ const handleProposalQuestionAnswerChange = (item: number) => {
 }
 </script>
 <script lang="ts">
+definePageMeta({
+  layout: 'base',
+})
+
 export default {
   name: 'ProposalPage',
-  layout: 'base',
 }
 </script>
 

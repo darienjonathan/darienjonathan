@@ -62,9 +62,12 @@ const handleConfirmDelete = async () => {
 }
 </script>
 <script lang="ts">
+definePageMeta({
+  layout: 'blog-admin',
+})
+
 export default {
   name: 'AdminBlogPostsIndexPage',
-  layout: 'blog-admin',
 }
 </script>
 <style lang="scss" scoped>

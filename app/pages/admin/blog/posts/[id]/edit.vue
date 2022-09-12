@@ -12,9 +12,12 @@ const route = useRoute()
 postUid.value = route.params.id
 </script>
 <script lang="ts">
+definePageMeta({
+  layout: 'blog-admin',
+})
+
 export default {
   name: 'AdminBlogPostsEditPage',
-  layout: 'blog-admin',
 }
 </script>
 <style lang="scss" scoped>
