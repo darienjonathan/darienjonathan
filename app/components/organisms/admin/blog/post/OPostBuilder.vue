@@ -68,7 +68,6 @@ const props = defineProps({
   },
 })
 
-const router = useRouter()
 const { useMedias, usePosts: usePostsFirestore } = useFirestoreCollections()
 const { useImages, useVideos, usePosts: usePostsStorage } = useStorageItems()
 const mediasFirestore = useMedias()
@@ -208,7 +207,7 @@ const handleCloseUploadSuccessModal = () => {
   isUploadSuccessModalOpen.value = false
   if (props.actionType !== 'new') return
   setTimeout(() => {
-    router.push(`/admin/blog/posts/${thisPostUid.value}/edit`)
+    navigateTo(`/admin/blog/posts/${thisPostUid.value}/edit`)
   }, 500)
 }
 

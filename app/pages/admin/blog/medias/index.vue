@@ -55,9 +55,8 @@ onUnmounted(() => {
 })
 
 const route = useRoute()
-const router = useRouter()
 const handleEdit = (uid: string) => {
-  router.push(`${route.path}/${uid}/edit`.replace(/\/+/g, '/'))
+  navigateTo(`${route.path}/${uid}/edit`.replace(/\/+/g, '/'))
 }
 
 const isDeleteModalOpen = ref<boolean>(false)
@@ -73,9 +72,12 @@ const handleConfirmDelete = async () => {
 }
 </script>
 <script lang="ts">
+definePageMeta({
+  layout: 'blog-admin',
+})
+
 export default {
   name: 'AdminBlogMediasIndexPage',
-  layout: 'blog-admin',
 }
 </script>
 <style lang="scss" scoped>

@@ -12,9 +12,12 @@ const route = useRoute()
 mediaUid.value = route.params.id
 </script>
 <script lang="ts">
+definePageMeta({
+  layout: 'blog-admin',
+})
+
 export default {
   name: 'AdminBlogMediasEditPage',
-  layout: 'blog-admin',
 }
 </script>
 <style lang="scss" scoped>

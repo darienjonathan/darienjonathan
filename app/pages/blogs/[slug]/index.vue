@@ -1,19 +1,32 @@
 <template lang="pug">
-.post 
-  template(v-if="!hasFinishedLoading") loading
-  template(v-else-if="!post") no content
-  template(v-else)
-    .post__heading
-      .post__info
-        MLangSwitcher.post__lang-switcher(
-          @langChange="handleLangChange"
-          :disabled-langs="unavailableLangList"
-        )
-        .post__created-at {{ formatWithDay(new Date(post.createdAt), currentLang) }}
-      .post__close-btn.material-icons-outlined(@click="handleClose") close
-    .post__item
-      .post__title {{ getContent(post.title, currentLang) }}
-      AMarkdown.storage__content(:content="getContent(content, currentLang)")
+.post
+  Transition(
+    name="fade"
+    mode="out-in"
+  )
+    template(v-if="!hasFinishedLoading")
+      .loading__wrapper
+        ALoading.loading__ui
+    template(v-else)
+      .post__wrapper
+        template(v-if="!post")
+          .no-post
+            .no-post__heading
+              | 404 - Are you lost?
+            .no-post__back-link(@click="handleClose")
+              | back to top page
+        template(v-else)
+          .post__heading
+            .post__info
+              MLangSwitcher.post__lang-switcher(
+                @langChange="handleLangChange"
+                :disabled-langs="unavailableLangList"
+              )
+              .post__created-at {{ formatWithDay(new Date(post.createdAt), currentLang) }}
+            .post__close-btn.material-icons-outlined(@click="handleClose") close
+          .post__item
+            .post__title {{ getContent(post.title, currentLang) }}
+            AMarkdown.storage__content(:content="getContent(content, currentLang)")
 </template>
 <script lang="ts" setup>
 import { langList, LangEnum } from '~/types/lang'
@@ -22,11 +35,10 @@ import type { Lang, LangEnumType } from '~/types/lang'
 import type { Post } from '~/types/model/blog/post'
 import { getContent } from '~/utils/blog/getContent'
 import MLangSwitcher from '~/components/molecules/blog/post/MLangSwitcher.vue'
-
+import ALoading from '~/components/atoms/ALoading.vue'
 import AMarkdown from '~/components/atoms/AMarkdown.vue'
 
 const route = useRoute()
-const router = useRouter()
 
 const currentLang = ref<LangEnumType>()
 const handleLangChange = (lang: LangEnumType) => {
@@ -69,17 +81,48 @@ onMounted(() => {
 })
 
 const handleClose = () => {
-  router.push('/blogs')
+  navigateTo('/blogs')
 }
 </script>
 <script lang="ts">
+definePageMeta({
+  layout: 'default',
+})
+
 export default {
   name: 'BlogPage',
-  layout: 'default',
 }
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';
+
+.loading {
+  &__wrapper {
+    width: 100vw;
+    height: 100vh;
+  }
+  &__ui {
+    @include absolute-center;
+  }
+}
+
+.no-post {
+  padding: 20px;
+  &__heading {
+    @include font-family('roboto-slab');
+    @include font($size: $font-xxhuge);
+    margin-bottom: 8px;
+  }
+  &__back-link {
+    @include font($color: $navy-blue-light);
+    cursor: pointer;
+    transition: 0.5s color;
+    &:hover {
+      color: white;
+      text-decoration: underline;
+    }
+  }
+}
 
 .post {
   &__heading,

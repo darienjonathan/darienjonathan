@@ -203,9 +203,12 @@ const handleProposalQuestionAnswerChange = (item: number) => {
 }
 </script>
 <script lang="ts">
+definePageMeta({
+  layout: 'base',
+})
+
 export default {
   name: 'ProposalPage',
-  layout: 'base',
 }
 </script>
 
@@ -411,21 +414,6 @@ $hr-padding: 32px;
         }
       }
     }
-  }
-
-  .fade-enter,
-  .fade-leave-to {
-    opacity: 0;
-  }
-
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: all 0.3s;
-  }
-
-  .fade-enter-to,
-  .fade-leave {
-    opacity: 1;
   }
 }
 </style>
