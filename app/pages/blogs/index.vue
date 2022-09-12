@@ -43,10 +43,8 @@ onUnmounted(() => {
 })
 
 const route = useRoute()
-const router = useRouter()
 const handleReadMore = (slug: string) => {
-  // eslint-disable-next-line no-console
-  router.push(`${route.path}/${slug}`.replace(/\/+/g, '/'))
+  navigateTo(`${route.path}/${slug}`.replace(/\/+/g, '/'))
 }
 </script>
 <script lang="ts">

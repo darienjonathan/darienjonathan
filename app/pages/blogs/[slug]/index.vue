@@ -26,7 +26,6 @@ import MLangSwitcher from '~/components/molecules/blog/post/MLangSwitcher.vue'
 import AMarkdown from '~/components/atoms/AMarkdown.vue'
 
 const route = useRoute()
-const router = useRouter()
 
 const currentLang = ref<LangEnumType>()
 const handleLangChange = (lang: LangEnumType) => {
@@ -69,7 +68,7 @@ onMounted(() => {
 })
 
 const handleClose = () => {
-  router.push('/blogs')
+  navigateTo('/blogs')
 }
 </script>
 <script lang="ts">
