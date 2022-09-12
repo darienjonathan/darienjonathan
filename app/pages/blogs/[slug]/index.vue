@@ -74,7 +74,7 @@ const handleClose = () => {
 </script>
 <script lang="ts">
 export default {
-  name: 'BlogItemPage',
+  name: 'BlogPage',
   layout: 'default',
 }
 </script>

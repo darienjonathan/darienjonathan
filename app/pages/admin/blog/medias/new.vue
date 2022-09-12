@@ -6,7 +6,7 @@ import OMediaBuilder from '~/components/organisms/admin/blog/media/OMediaBuilder
 </script>
 <script lang="ts">
 export default {
-  name: 'MediaNewPage',
+  name: 'AdminBlogMediasNewPage',
   layout: 'blog-admin',
 }
 </script>

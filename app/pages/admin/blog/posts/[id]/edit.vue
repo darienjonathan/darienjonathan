@@ -13,7 +13,7 @@ postUid.value = route.params.id
 </script>
 <script lang="ts">
 export default {
-  name: 'PostsEditPage',
+  name: 'AdminBlogPostsEditPage',
   layout: 'blog-admin',
 }
 </script>

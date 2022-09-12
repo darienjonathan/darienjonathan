@@ -74,7 +74,7 @@ const handleConfirmDelete = async () => {
 </script>
 <script lang="ts">
 export default {
-  name: 'MediasIndexPage',
+  name: 'AdminBlogMediasIndexPage',
   layout: 'blog-admin',
 }
 </script>

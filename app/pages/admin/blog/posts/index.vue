@@ -63,7 +63,7 @@ const handleConfirmDelete = async () => {
 </script>
 <script lang="ts">
 export default {
-  name: 'PostsIndexPage',
+  name: 'AdminBlogPostsIndexPage',
   layout: 'blog-admin',
 }
 </script>

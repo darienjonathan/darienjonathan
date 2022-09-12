@@ -6,7 +6,7 @@ import OPostBuilder from '~/components/organisms/admin/blog/post/OPostBuilder.vu
 </script>
 <script lang="ts">
 export default {
-  name: 'PostsNewPage',
+  name: 'AdminBlogPostsNewPage',
   layout: 'blog-admin',
 }
 </script>

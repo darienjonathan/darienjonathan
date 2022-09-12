@@ -13,7 +13,7 @@ mediaUid.value = route.params.id
 </script>
 <script lang="ts">
 export default {
-  name: 'MediaEditPage',
+  name: 'AdminBlogMediasEditPage',
   layout: 'blog-admin',
 }
 </script>
