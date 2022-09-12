@@ -3,7 +3,7 @@
   .content
     .heading
       .heading__main darienjonathan.com
-      .heading__sub is under construction
+      .heading__sub is live!
         img.heading__icon(src="@/assets/images/under-construction/dogebread.png")
     .line
     .sns
@@ -20,18 +20,26 @@
         img.sns__icon(src="@/assets/images/sns/icon-ig.png")
         | instagram
 </template>
+<script lang="ts" setup>
+// TODO: remove if page has more features
+const router = useRouter()
+onMounted(() => {
+  router.replace('/blogs')
+})
+</script>
 <script lang="ts">
 export default {
   name: 'IndexPage',
 }
 </script>
 
-<script lang="ts" setup></script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';
 
 .index {
   @include size(vw(100), vh(100));
+  // TODO: remove if page has more features
+  display: none;
 }
 
 .content {
@@ -60,7 +68,7 @@ export default {
     margin-bottom: 8px;
   }
   &__sub {
-    @include flex($justify: flex-start);
+    @include flex($justify: flex-end);
     @include font($size: 1.2rem);
   }
   &__icon {
