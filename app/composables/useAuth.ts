@@ -1,4 +1,5 @@
 import {
+  Auth,
   AuthError,
   createUserWithEmailAndPassword,
   deleteUser as deleteUserFn,
@@ -17,12 +18,13 @@ import {
 import { SignInStatus } from '~/types/firebase'
 
 const useAuth = () => {
-  const auth = getAuth(useNuxtApp().$firebase.app)
-
   const unsubscribe = ref<Unsubscribe>(undefined)
   const user = ref<User | null | undefined>(undefined)
-  onMounted(() => {
-    unsubscribe.value = onAuthStateChanged(auth, authUser => {
+  const auth = ref<Auth>()
+
+  onBeforeMount(() => {
+    auth.value = getAuth(useNuxtApp().$firebase.app)
+    unsubscribe.value = onAuthStateChanged(auth.value, authUser => {
       user.value = authUser
     })
   })
@@ -40,7 +42,7 @@ const useAuth = () => {
 
   const signUp = (email: string, password: string): Promise<UserCredential> => {
     try {
-      return createUserWithEmailAndPassword(auth, email, password)
+      return createUserWithEmailAndPassword(auth.value, email, password)
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error as AuthError)
@@ -49,7 +51,7 @@ const useAuth = () => {
 
   const signIn = (email: string, password: string): Promise<UserCredential> => {
     try {
-      return signInWithEmailAndPassword(auth, email, password)
+      return signInWithEmailAndPassword(auth.value, email, password)
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error as AuthError)
@@ -58,7 +60,7 @@ const useAuth = () => {
 
   const signOut = () => {
     try {
-      return signOutFn(auth)
+      return signOutFn(auth.value)
     } catch (error) {
       return error as AuthError
     }
@@ -81,7 +83,7 @@ const useAuth = () => {
 
   const sendPasswordResetEmail = (email: string) => {
     if (!user.value) return
-    return sendPasswordResetEmailFn(auth, email)
+    return sendPasswordResetEmailFn(auth.value, email)
   }
 
   const deleteUser = () => {

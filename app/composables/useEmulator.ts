@@ -8,14 +8,20 @@ const useEmulator = () => {
     [key: string]: string
   }
 
-  const auth = getAuth($firebase.app)
-  connectAuthEmulator(auth, `http://${firebaseEmulator.host}:${firebaseEmulator.authPort}`)
+  onBeforeMount(() => {
+    const auth = getAuth($firebase.app)
+    connectAuthEmulator(auth, `http://${firebaseEmulator.host}:${firebaseEmulator.authPort}`)
 
-  const firestore = $firebase.firestore.instance
-  connectFirestoreEmulator(firestore, firebaseEmulator.host, Number(firebaseEmulator.firestorePort))
+    const firestore = $firebase.firestore.instance
+    connectFirestoreEmulator(
+      firestore,
+      firebaseEmulator.host,
+      Number(firebaseEmulator.firestorePort)
+    )
 
-  const storage = $firebase.storage.instance
-  connectStorageEmulator(storage, firebaseEmulator.host, Number(firebaseEmulator.storagePort))
+    const storage = $firebase.storage.instance
+    connectStorageEmulator(storage, firebaseEmulator.host, Number(firebaseEmulator.storagePort))
+  })
 }
 
 export default useEmulator
