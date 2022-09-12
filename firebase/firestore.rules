@@ -1,0 +1,131 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    //-------------------------------------------------------------
+    // functions
+    //-------------------------------------------------------------
+    
+    // function isAuthenticated() {
+    //   return request.auth.uid != null;
+    // }
+
+    // function isSelf(uid) {
+    //   return request.auth.uid == uid;
+    // }
+
+    function getPost(postUid) {
+      return get(/databases/$(database)/documents/posts/$(postUid));
+    }
+
+    // function getPostContent(postUid, contentUid) {
+    //   return get(/databases/$(database)/documents/posts/$(postUid)/contents/$(contentUid));
+    // }
+
+    // function getPostComment(postUid, commentUid) {
+    //   return get(/databases/$(database)/documents/posts/$(postUid)/comments/$(commentUid));
+    // }
+
+    // function getMedia(imageFileUid) {
+    //   return get(/databases/$(database)/documents/medias/$(imageFileUid));
+    // }
+
+    // function getTag(tagUid) {
+    //   return get(/databases/$(database)/documents/tags/$(tagUid));
+    // }
+
+    function getUser(userUid) {
+      return get(/databases/$(database)/documents/users/$(userUid));
+    }
+
+    function getRole(roleUid) {
+      return get(/databases/$(database)/documents/roles/$(roleUid));
+    }
+
+    function getUserRole(userUid) {
+      let user = getUser(userUid);
+      let role = getRole(user.data.roleUid);
+      return role
+    }
+
+    function getSelfRole() {
+      return getUserRole(request.auth.uid);
+    }
+
+    function hasReadPermission(dataType) {
+      let role = getSelfRole();
+      return dataType in role.data.readPermission;
+    }
+
+    function hasWritePermission(dataType) {
+      let role = getSelfRole();
+      return dataType in role.data.writePermission;
+    }
+
+    function isSuperAdmin() {
+      return getSelfRole().data.name == 'superadmin';
+    }
+    
+    //-------------------------------------------------------------
+    // rules
+    //-------------------------------------------------------------
+
+    match /posts/{postUid} {
+      allow read: if true;
+      allow create: if hasWritePermission('posts');
+      allow update: if (hasWritePermission('posts') && resource.data.authorUid == request.auth.uid);
+      allow delete: if (hasWritePermission('posts') && resource.data.authorUid == request.auth.uid);
+
+      match /{subCollections=**} {
+        allow read: if true;
+        allow create: if hasWritePermission('posts');
+        allow update: if (hasWritePermission('posts') && getPost(postUid).data.authorUid == request.auth.uid);
+        allow delete: if (hasWritePermission('posts') && getPost(postUid).data.authorUid == request.auth.uid);
+      }
+    }
+
+    match /medias/{imageFileUid} {
+      allow read: if true;
+      allow create: if hasWritePermission('medias');
+      allow update: if hasWritePermission('medias');
+      allow delete: if hasWritePermission('medias');
+    }
+
+    match /tags/{tagId} {
+      allow read: if true;
+      allow create: if hasWritePermission('tags');
+      allow update: if hasWritePermission('tags');
+      allow delete: if hasWritePermission('tags');
+    }
+
+    match /users/{userUid} {
+      allow read: if true;
+      allow create: if hasWritePermission('users');
+      allow update: if hasWritePermission('users') && userUid == request.auth.uid;
+      allow delete: if hasWritePermission('users') && userUid == request.auth.uid;
+    }
+
+    match /userInfo/{userUid} {
+      allow read: if hasReadPermission('userInfo');
+      allow create: if hasWritePermission('userInfo') && userUid == request.auth.uid;
+      allow update: if hasWritePermission('userInfo') && userUid == request.auth.uid;
+      allow delete: if hasWritePermission('userInfo') && userUid == request.auth.uid;
+    }
+
+    match /roles/{roleUid} {
+      allow read: if true;
+      allow create: if hasWritePermission('tags');
+      allow update: if hasWritePermission('tags');
+      allow delete: if hasWritePermission('tags');
+    }
+
+    match /daisy-proposal/{any=**} {
+      allow read: if true;
+    }
+
+    match /{any=**} {
+      allow read: if isSuperAdmin();
+      allow write: if isSuperAdmin();
+    }
+  }
+}
