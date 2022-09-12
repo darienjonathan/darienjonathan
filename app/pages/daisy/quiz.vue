@@ -415,20 +415,5 @@ $hr-padding: 32px;
       }
     }
   }
-
-  .fade-enter,
-  .fade-leave-to {
-    opacity: 0;
-  }
-
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: all 0.3s;
-  }
-
-  .fade-enter-to,
-  .fade-leave {
-    opacity: 1;
-  }
 }
 </style>
