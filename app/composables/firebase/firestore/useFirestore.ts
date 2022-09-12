@@ -15,7 +15,7 @@ import {
   updateDoc,
   Unsubscribe,
 } from 'firebase/firestore'
-import { Ref } from 'nuxt3/dist/app/compat/capi'
+import { Ref } from 'nuxt/dist/app/compat/capi'
 import useFirestoreQueryBuilder from '~/composables/firebase/firestore/useFirestoreQueryBuilder'
 
 const useFirestore = <T>(path: string, parse: (data: DocumentData) => T) => {
