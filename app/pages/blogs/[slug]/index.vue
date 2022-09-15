@@ -38,6 +38,8 @@ import MLangSwitcher from '~/components/molecules/blog/post/MLangSwitcher.vue'
 import ALoading from '~/components/atoms/ALoading.vue'
 import AMarkdown from '~/components/atoms/AMarkdown.vue'
 
+// Page Logic
+
 const route = useRoute()
 
 const currentLang = ref<LangEnumType>()
@@ -84,6 +86,38 @@ onMounted(() => {
 const handleClose = () => {
   navigateTo('/blogs')
 }
+
+// Meta
+
+const metaTitle = computed(() => {
+  const content = post.value ? getContent(post.value.title, currentLang.value) : undefined
+  return `darienjonathan.com${content ? ` | ${content}` : ''}`
+})
+
+const meta = computed(() => {
+  const metaArr: Record<string, string>[] = []
+  const description = post.value ? getContent(post.value.description, currentLang.value) : undefined
+  if (description) {
+    metaArr.push(
+      ...['description', 'og:description', 'twitter:description'].map(name => ({
+        name,
+        content: description,
+      }))
+    )
+  }
+  metaArr.push(
+    ...['og:title', 'twitter:title'].map(name => ({
+      name,
+      content: metaTitle.value,
+    }))
+  )
+  return metaArr
+})
+
+useHead({
+  title: metaTitle,
+  meta,
+})
 </script>
 <script lang="ts">
 definePageMeta({
