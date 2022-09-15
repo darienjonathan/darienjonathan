@@ -46,7 +46,9 @@ const useFirestore = <T>(path: string, parse: (data: DocumentData) => T) => {
     return querySnapshotToMap(querySnapshot)
   }
 
-  const subscribeCollection = (fn: (map: Map<string, T>) => void | Promise<void>): Unsubscribe => {
+  const subscribeCollection = (
+    fn: (map: Map<string, T> | null) => void | Promise<void>
+  ): Unsubscribe => {
     return onSnapshot(queryBuilder.build(), (querySnapshot: QuerySnapshot) => {
       const data = querySnapshot.empty ? null : querySnapshotToMap(querySnapshot)
       fn(data)

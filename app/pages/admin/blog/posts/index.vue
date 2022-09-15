@@ -36,7 +36,7 @@ const posts = ref(new Map<string, Post>())
 const unsubscribePosts = ref<Unsubscribe>()
 onMounted(() => {
   unsubscribePosts.value = postsFirestore.subscribeCollection(response => {
-    posts.value = response
+    if (response) posts.value = response
   })
 })
 onUnmounted(() => {
