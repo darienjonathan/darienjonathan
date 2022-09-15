@@ -35,7 +35,10 @@
         :value="currentContent"
         rows="20"
       )
-    button.form__submit-btn(@click="handleSubmit") Submit
+    button.form__submit-btn(
+      @click="handleSubmit"
+      :disabled="!canSave"
+    ) Submit
   AModal(
     :is-open="isPreviewOpen"
     @close="isPreviewOpen = false"
@@ -176,6 +179,16 @@ const handleSaveFile = async (): Promise<Lang> => {
 }
 
 const isUploadSuccessModalOpen = ref(false)
+
+const canSave = computed(() => {
+  const inputCompleteness = langList.filter(lang => {
+    const hasTitle = title[lang]
+    const hasDescription = description[lang]
+    const hasContent = content[lang]
+    return hasTitle && hasDescription && hasContent
+  })
+  return inputCompleteness.some(bool => bool)
+})
 
 const handleSubmit = async () => {
   if (props.actionType === 'new') {
