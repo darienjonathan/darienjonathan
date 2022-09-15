@@ -38,6 +38,8 @@ import MLangSwitcher from '~/components/molecules/blog/post/MLangSwitcher.vue'
 import ALoading from '~/components/atoms/ALoading.vue'
 import AMarkdown from '~/components/atoms/AMarkdown.vue'
 
+// Page Logic
+
 const route = useRoute()
 
 const currentLang = ref<LangEnumType>()
@@ -69,8 +71,9 @@ const initializePost = async () => {
   if (response) {
     post.value = response.data
     for (const lang of langList) {
-      const contentResponse = await fetch(response.data.contentURL[lang])
-      content[lang] = await contentResponse.text()
+      content[lang] = response.data.contentURL[lang]
+        ? await (await fetch(response.data.contentURL[lang])).text()
+        : ''
     }
   }
   hasFinishedLoading.value = true
@@ -83,6 +86,38 @@ onMounted(() => {
 const handleClose = () => {
   navigateTo('/blogs')
 }
+
+// Meta
+
+const metaTitle = computed(() => {
+  const content = post.value ? getContent(post.value.title, currentLang.value) : undefined
+  return `darienjonathan.com${content ? ` | ${content}` : ''}`
+})
+
+const meta = computed(() => {
+  const metaArr: Record<string, string>[] = []
+  const description = post.value ? getContent(post.value.description, currentLang.value) : undefined
+  if (description) {
+    metaArr.push(
+      ...['description', 'og:description', 'twitter:description'].map(name => ({
+        name,
+        content: description,
+      }))
+    )
+  }
+  metaArr.push(
+    ...['og:title', 'twitter:title'].map(name => ({
+      name,
+      content: metaTitle.value,
+    }))
+  )
+  return metaArr
+})
+
+useHead({
+  title: metaTitle,
+  meta,
+})
 </script>
 <script lang="ts">
 definePageMeta({
