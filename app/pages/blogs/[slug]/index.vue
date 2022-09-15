@@ -69,8 +69,9 @@ const initializePost = async () => {
   if (response) {
     post.value = response.data
     for (const lang of langList) {
-      const contentResponse = await fetch(response.data.contentURL[lang])
-      content[lang] = await contentResponse.text()
+      content[lang] = response.data.contentURL[lang]
+        ? await (await fetch(response.data.contentURL[lang])).text()
+        : ''
     }
   }
   hasFinishedLoading.value = true

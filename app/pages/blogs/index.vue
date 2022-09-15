@@ -1,45 +1,76 @@
 <template lang="pug">
 .blogs
-  MTopKV
+  MTopKV.top-kv
   .content
-    MLangSwitcher.lang-switcher(@langChange="handleLangChange")
-  .post__wrapper
-    .post__item(v-for="[, post] in posts")
-      .post__properties
-        .post__heading
-          .post__title {{ getContent(post.title, currentLang) }}
-          .post__created-at {{ formatWithDay(new Date(post.createdAt), currentLang) }}
-        .post__content
-          .post__description {{ getContent(post.description, currentLang) }}
-          .post__read-more(@click="handleReadMore(post.slug)") {{ readMore[currentLang] }}
+    Transition(
+      name="fade"
+      mode="out-in"
+    )
+      template(v-if="!isFirstFetchDone")
+        ALoading.loading
+      template(v-else)
+        .posts
+          template(v-if="posts.size === 0")
+            .no-posts This space seems to be still vacant... Mind giving me some inspiration to write?
+          template(v-else)
+            MLangSwitcher.lang-switcher(
+              @langChange="handleLangChange"
+              :disabled-langs="unavailableLangList"
+            )
+            .post__wrapper
+              .post__item(v-for="[, post] in posts")
+                .post__properties
+                  .post__heading
+                    .post__title {{ getContent(post.title, currentLang) }}
+                    .post__created-at {{ formatWithDay(new Date(post.createdAt), currentLang) }}
+                  .post__content
+                    .post__description {{ getContent(post.description, currentLang) }}
+                    .post__read-more(@click="handleReadMore(post.slug)") {{ readMore[currentLang] }}
 </template>
 <script lang="ts" setup>
 import type { Unsubscribe } from '@firebase/firestore'
 import MTopKV from '~/components/molecules/MTopKV.vue'
+import { langList } from '~/types/lang'
 import type { LangEnumType } from '~/types/lang'
 import MLangSwitcher from '~/components/molecules/blog/post/MLangSwitcher.vue'
 import type { Post } from '~/types/model/blog/post'
 import { formatWithDay } from '~/utils/date'
 import { getContent } from '~/utils/blog/getContent'
 import { readMore } from '~/utils/translations/blog'
-
-const currentLang = ref<LangEnumType>()
-const handleLangChange = (lang: LangEnumType) => {
-  currentLang.value = lang
-}
+import ALoading from '~/components/atoms/ALoading.vue'
 
 const { usePosts } = useFirestoreCollections()
 const postsFirestore = usePosts()
 const posts = ref(new Map<string, Post>())
 
 const unsubscribePosts = ref<Unsubscribe>()
+
+const isFirstFetchDone = ref(false)
 onMounted(() => {
   unsubscribePosts.value = postsFirestore.subscribeCollection(response => {
     posts.value = response
+    isFirstFetchDone.value = true
   })
 })
 onUnmounted(() => {
   unsubscribePosts.value()
+})
+
+const currentLang = ref<LangEnumType>()
+const handleLangChange = (lang: LangEnumType) => {
+  currentLang.value = lang
+}
+const unavailableLangList = computed(() => {
+  const existingLangsArr = Array.from(posts.value.values()).reduce((arr, post) => {
+    const availableLangs = langList.filter(lang => {
+      const hasTitle = !!post.title[lang]
+      const hasDescription = !!post.description[lang]
+      return hasTitle || hasDescription
+    })
+    return [...arr, ...availableLangs]
+  }, [] as LangEnumType[])
+  const existingLangSet = Array.from(new Set(existingLangsArr))
+  return langList.filter(lang => !existingLangSet.includes(lang))
 })
 
 const route = useRoute()
@@ -55,8 +86,37 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';
+
+.blogs {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.top-kv {
+  flex: none;
+}
+
 .content {
-  padding: 20px;
+  flex: 1;
+  position: relative;
+}
+
+.loading {
+  @include absolute-center;
+}
+
+.posts {
+  @include pc {
+    padding: 20px 40px;
+  }
+  @include sp {
+    padding: 20px;
+  }
+}
+
+.no-posts {
+  @include font($size: $font-lg);
 }
 
 .lang-switcher {
@@ -73,11 +133,9 @@ export default {
     @include pc {
       grid-template-columns: repeat(3, 1fr);
       max-width: 1200px;
-      padding: 0 40px 40px;
     }
     @include sp {
       grid-template-columns: 100%;
-      padding: 0 20px 20px;
     }
   }
 
