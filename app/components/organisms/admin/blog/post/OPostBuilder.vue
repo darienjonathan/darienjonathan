@@ -84,7 +84,7 @@ const createdAt = ref<number>()
 
 const slug = ref<string>('')
 const handleSlugInput = (e: Event) => {
-  slug.value = (e.target as HTMLInputElement).value
+  slug.value = (e.target as HTMLInputElement).value.toLowerCase()
 }
 
 // 言語切り替え
@@ -218,7 +218,7 @@ const isPreviewOpen = ref(false)
 const initializePost = async () => {
   const post = await postsFirestore.loadDocument(props.postUid)
   createdAt.value = post.createdAt
-  slug.value = post.slug.toLowerCase()
+  slug.value = post.slug
   for (const lang of langList) {
     title[lang] = post.title[lang]
     description[lang] = post.description[lang]
