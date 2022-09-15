@@ -16,7 +16,17 @@ const description = 'Self-made public space for personal views'
 const image = url + '/ogp.png'
 
 const meta = computed(() => {
-  const metaArr: Record<string, string>[] = []
+  const metaArr: Record<string, string>[] = [
+    {
+      name: 'og:url',
+      content: url,
+    },
+    {
+      name: 'twitter:card',
+      content: 'summary_large_image',
+    },
+  ]
+
   metaArr.push(
     ...['description', 'og:description', 'twitter:description'].map(name => ({
       name,
@@ -35,10 +45,7 @@ const meta = computed(() => {
       content: image,
     }))
   )
-  metaArr.push({
-    name: 'og:url',
-    content: url,
-  })
+
   return metaArr
 })
 
