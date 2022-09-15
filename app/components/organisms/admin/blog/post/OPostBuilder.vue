@@ -222,8 +222,7 @@ const initializePost = async () => {
   for (const lang of langList) {
     title[lang] = post.title[lang]
     description[lang] = post.description[lang]
-    const contentResponse = await fetch(post.contentURL[lang])
-    content[lang] = await contentResponse.text()
+    content[lang] = post.contentURL[lang] ? await (await fetch(post.contentURL[lang])).text() : ''
   }
 }
 
