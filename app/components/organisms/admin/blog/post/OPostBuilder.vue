@@ -218,7 +218,7 @@ const isPreviewOpen = ref(false)
 const initializePost = async () => {
   const post = await postsFirestore.loadDocument(props.postUid)
   createdAt.value = post.createdAt
-  slug.value = post.slug
+  slug.value = post.slug.toLowerCase()
   for (const lang of langList) {
     title[lang] = post.title[lang]
     description[lang] = post.description[lang]
