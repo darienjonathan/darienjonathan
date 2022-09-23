@@ -12,7 +12,7 @@ div
 <script lang="ts" setup>
 const url = 'https://darienjonathan.com'
 const title = 'darienjonathan.com'
-const description = 'Self-made public space for personal views'
+const description = 'A public space for personal views'
 const image = url + '/ogp.png'
 
 const meta = computed(() => {
