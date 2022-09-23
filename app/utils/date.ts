@@ -1,8 +1,8 @@
-import { LangEnum } from '~/types/lang'
+import { DEFAULT_LANG, LangEnum } from '~/types/lang'
 import type { LangEnumType } from '~/types/lang'
 import { days, months } from '~/utils/translations/date'
 
-export const formatWithDay = (dateObject: Date, lang: LangEnumType) => {
+export const formatWithDay = (dateObject: Date, lang: LangEnumType = DEFAULT_LANG) => {
   const year = dateObject.getFullYear()
   const month = dateObject.getMonth()
   const date = dateObject.getDate()
