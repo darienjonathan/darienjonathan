@@ -1,8 +1,9 @@
 <template lang="pug">
 .m-top-kv
   .heading
-    .heading__main #thelazyblog
-    .heading__sub "insert description here"
+    .heading__top darienjonathan's
+    .heading__main #thelazyblog:
+    .heading__sub A public space for personal views of mine
   .line
   .sns
     a.sns__item(
@@ -51,21 +52,24 @@ export default {
   }
 
   &__main {
-    @include font($size: $font-xxxhuge) {
+    @include font($size: 5rem) {
       text-decoration: underline;
     }
-    margin-bottom: 12px;
+    margin-bottom: 16px;
+  }
+  &__top {
+    @include font($size: $font-xs);
+    margin-bottom: -6px;
   }
   &__sub {
-    @include font($size: $font-sm) {
-    }
+    @include font($size: $font-xs);
   }
 }
 
 .line {
   background-color: $white;
   @include pc {
-    @include size(1px, 100px);
+    @include size(1px, 120px);
   }
   @include sp {
     display: none;

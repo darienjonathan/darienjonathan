@@ -1,19 +1,18 @@
 <template lang="pug">
 .m-post-list-item
   .post__properties
-    .post__title {{ post.title[currentLang] || 'no-content' }}
-    .post__description {{ post.description[currentLang] || 'no-content' }}
+    .post__title {{ getContent(post.title) }}
+    .post__description {{ getContent(post.description) }}
   .post__actions
     .post__action.material-icons-outlined(@click="$emit('edit')") edit
     .post__action.material-icons-outlined(@click="$emit('delete')") delete
 </template>
 <script lang="ts" setup>
-import type { LangEnumType } from '~/types/lang'
 import type { Post } from '~/types/model/blog/post'
+import { getContent } from '~/utils/blog/getContent'
 
 type Props = {
   post: Post
-  currentLang: LangEnumType
 }
 
 defineProps<Props>()
