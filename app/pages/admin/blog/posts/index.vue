@@ -1,10 +1,8 @@
 <template lang="pug">
 .posts
-  MLangSwitcher.lang-switcher(@langChange="handleLangChange")
   .post__wrapper
     MPostListItem(
       :post="post"
-      :current-lang="currentLang"
       v-for="[uid, post] in posts"
       @edit="handleEdit(uid)"
       @delete="handleDelete(uid)"
@@ -18,16 +16,9 @@
 </template>
 <script lang="ts" setup>
 import type { Unsubscribe } from '@firebase/firestore'
-import type { LangEnumType } from '~/types/lang'
 import type { Post } from '~/types/model/blog/post'
-import MLangSwitcher from '~/components/molecules/blog/post/MLangSwitcher.vue'
 import AModal from '~/components/atoms/AModal.vue'
 import MPostListItem from '~/components/molecules/admin/blog/post/MPostListItem.vue'
-
-const currentLang = ref<LangEnumType>()
-const handleLangChange = (lang: LangEnumType) => {
-  currentLang.value = lang
-}
 
 const { usePosts } = useFirestoreCollections()
 const postsFirestore = usePosts()
