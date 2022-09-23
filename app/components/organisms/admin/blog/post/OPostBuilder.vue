@@ -1,6 +1,6 @@
 <template lang="pug">
 .o-post-builder
-  h3.title {{  actionType === "edit" ? 'Edit Media' : 'New Media'  }}
+  h3.title {{  actionType === "edit" ? 'Edit Post' : 'New Post'  }}
   .form
     .form__item
       .form__label Slug
