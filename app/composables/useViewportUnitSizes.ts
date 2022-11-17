@@ -30,6 +30,8 @@ const useViewportUnitSizes = () => {
   onUnmounted(() => {
     window.removeEventListener('resize', defineViewportVariables)
   })
+
+  return { defineViewportVariables }
 }
 
 export default useViewportUnitSizes

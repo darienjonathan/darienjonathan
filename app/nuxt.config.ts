@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     ],
   },
   publicRuntimeConfig: {
+    googleApiKey: 'AIzaSyBoY2xcmPIWERU5qZVxl8BeXriNL0D4nTQ',
     firebaseConfig: {
       apiKey: process.env.API_KEY,
       authDomain: process.env.AUTH_DOMAIN,

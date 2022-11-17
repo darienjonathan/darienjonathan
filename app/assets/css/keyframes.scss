@@ -25,3 +25,15 @@
 .fade-leave-to {
   opacity: 0;
 }
+
+.fade-top-enter-active,
+.fade-top-leave-active {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  transform: translateY(0);
+}
+
+.fade-top-enter-from,
+.fade-top-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
