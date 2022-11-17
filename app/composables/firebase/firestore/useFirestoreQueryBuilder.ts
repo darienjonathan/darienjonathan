@@ -11,7 +11,7 @@ import { Unpacked } from '~/types/common'
 
 export interface Queries {
   whereArgsArr: Parameters<typeof where>[]
-  orderByArgs: Parameters<typeof orderByFn>
+  orderByArgs: Parameters<typeof orderByFn> | null
   limitArgs: number
 }
 
@@ -70,9 +70,10 @@ const useFirestoreQueryBuilder = <T>(firestoreRef: CollectionReference<T>) => {
     const whereQueryArr = queries.whereArgsArr.map(([fieldPath, opStr, val]) =>
       where(fieldPath, opStr, val)
     )
-    const orderByQuery = queries.orderByArgs && orderByFn(...queries.orderByArgs)
-    const limitQuery = queries.limitArgs && limitFn(queries.limitArgs)
-    return query(firestoreRef, ...[...whereQueryArr, orderByQuery, limitQuery].filter(q => q))
+    const queryConstraints = [...whereQueryArr]
+    if (queries.orderByArgs) queryConstraints.push(orderByFn(...queries.orderByArgs))
+    if (queries.limitArgs) queryConstraints.push(limitFn(queries.limitArgs))
+    return query(firestoreRef, ...queryConstraints.filter(q => q))
   }
 
   return {

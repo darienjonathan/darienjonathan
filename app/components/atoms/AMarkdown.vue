@@ -16,6 +16,10 @@ const markdownHTML = computed(() => {
 <style lang="scss" scoped>
 @import '~/assets/css/main';
 
+.a-markdown {
+  line-height: 1.5;
+}
+
 :deep(h1),
 :deep(h2),
 :deep(h3),

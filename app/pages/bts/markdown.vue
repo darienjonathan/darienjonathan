@@ -92,6 +92,7 @@ const handleFilenameInput = (e: Event) => {
 }
 
 const handleSaveFile = async () => {
+  if (!userUid.value) return
   await posts.putString({
     file: textareaVal.value,
     fileName: filename.value.match(new RegExp(EXTENSION + '$'))
@@ -102,7 +103,7 @@ const handleSaveFile = async () => {
   handleRetrieveItemList()
 }
 
-const itemList = ref<Item[]>()
+const itemList = ref<Item[]>([])
 const handleRetrieveItemList = async () => {
   const itemListResult = await posts.list()
   itemList.value = await Promise.all(

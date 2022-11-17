@@ -57,10 +57,11 @@ const content = reactive<Lang<string>>({
   [LangEnum.ja]: '',
 })
 const unavailableLangList = computed(() => {
-  if (!post.value) return langList
+  const currentPost = post.value
+  if (!currentPost) return langList
   return langList.filter(lang => {
-    const hasNoTitle = !post.value.title[lang]
-    const hasNoDescription = !post.value.description[lang]
+    const hasNoTitle = !currentPost.title[lang]
+    const hasNoDescription = !currentPost.description[lang]
     const hasNoContent = !content[lang]
     return hasNoTitle && hasNoDescription && hasNoContent
   })
@@ -72,9 +73,8 @@ const initializePost = async () => {
   if (response) {
     post.value = response.data
     for (const lang of langList) {
-      content[lang] = response.data.contentURL[lang]
-        ? await (await fetch(response.data.contentURL[lang])).text()
-        : ''
+      const currentLangContent = response.data.contentURL[lang]
+      content[lang] = currentLangContent ? await (await fetch(currentLangContent)).text() : ''
     }
   }
   hasFinishedLoading.value = true
@@ -186,6 +186,10 @@ export default {
 
   &__item {
     word-break: break-word;
+    @include pc {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
   }
 
   &__title {
