@@ -1,6 +1,24 @@
 <template lang="pug">
-.loading
+.loading(:style="{ width, height }")
 </template>
+<script lang="ts" setup>
+interface Props {
+  size: 'default' | 'full-size' | 'auto'
+  width: string
+  height: string
+  isOpen: boolean
+}
+defineProps({
+  width: {
+    type: String as () => Props['width'],
+    default: '',
+  },
+  height: {
+    type: String as () => Props['height'],
+    default: '',
+  },
+})
+</script>
 <script lang="ts">
 export default {
   name: 'ALoading',
@@ -18,9 +36,8 @@ export default {
   &::after,
   &::before {
     content: '';
+    @include size(100%, 100%);
     box-sizing: border-box;
-    width: 48px;
-    height: 48px;
     border: 2px solid #fff;
     position: absolute;
     left: 0;
