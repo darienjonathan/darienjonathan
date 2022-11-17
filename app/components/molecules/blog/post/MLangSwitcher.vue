@@ -1,5 +1,5 @@
 <template lang="pug">
-.m-lang-switcher(v-if="!shouldHide")
+.m-lang-switcher(v-if="!shouldHide && currentLang")
   .lang-tab__label {{ languageSwitcher[currentLang] }}
   template(v-for="({ isActive, val }, key) in langItem")
     .lang-tab__item(
@@ -21,21 +21,25 @@ type LangItem = Lang<{
 
 const props = defineProps<{ disabledLangs?: LangEnumType[] }>()
 
-const emit = defineEmits<{ (e: 'langChange', lang: LangEnumType) }>()
+const emit = defineEmits<{ (e: 'langChange', lang: LangEnumType): void }>()
 
-const langItem: LangItem = reactive(
-  Object.keys(LangEnum).reduce(
-    (obj, key: keyof Lang) => ({
-      ...obj,
-      [key]: {
-        val: LangEnum[key],
-        isActive: false,
-        isDisabled: false,
-      },
-    }),
-    {} as LangItem
-  )
-)
+const langItem: LangItem = reactive({
+  id: {
+    val: 'id',
+    isActive: false,
+    isDisabled: false,
+  },
+  en: {
+    val: 'en',
+    isActive: false,
+    isDisabled: false,
+  },
+  ja: {
+    val: 'ja',
+    isActive: false,
+    isDisabled: false,
+  },
+})
 
 const shouldHide = computed(
   () => Object.values(langItem).filter(val => !val.isDisabled).length <= 1
@@ -44,7 +48,7 @@ const shouldHide = computed(
 onMounted(() => {
   let isActiveFound = false
   for (const lang of langList) {
-    langItem[lang].isDisabled = props.disabledLangs?.includes(lang)
+    langItem[lang].isDisabled = props.disabledLangs?.includes(lang) || false
     if (!isActiveFound && !props.disabledLangs?.includes(lang)) {
       langItem[lang].isActive = true
       isActiveFound = true
@@ -52,13 +56,17 @@ onMounted(() => {
   }
 })
 
-const currentLang = computed<LangEnumType>(() => langList.find(lang => langItem[lang].isActive))
+const currentLang = computed<LangEnumType | undefined>(() =>
+  langList.find(lang => langItem[lang].isActive)
+)
 watch(currentLang, lang => {
+  if (!lang) return
   emit('langChange', lang)
 })
 
-const changeActiveLang = (langKey: keyof Lang) => {
-  Object.keys(langItem).forEach((key: keyof Lang) => {
+const changeActiveLang = (langKey: LangEnumType) => {
+  const langs = Object.keys(langItem) as LangEnumType[]
+  langs.forEach((key: LangEnumType) => {
     langItem[key].isActive = key === langKey
   })
 }

@@ -4,7 +4,8 @@ import FirestoreTrigger from '~/lib/firebase/firestore/FirestoreTrigger'
 
 const BULK_MAX_SIZE = 500
 
-class FirestoreCollection<T> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+class FirestoreCollection<T extends Record<string, any>> {
   private static readonly firestore: FirebaseFirestore.Firestore = adminInstance.firestore()
   private path: string
   private _trigger: FirestoreTrigger<T>

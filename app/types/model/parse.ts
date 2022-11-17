@@ -20,5 +20,5 @@ export function parseBoolean(data: any) {
 }
 
 export function parseArray<T>(arr: any, parseFn: (item: any) => T): T[] {
-  return (Array.isArray(arr) ? arr.map((item: any) => parseFn(item)) : defaultValues.array) as T[]
+  return Array.isArray(arr) ? arr.map((item: any) => parseFn(item)) : defaultValues.array
 }

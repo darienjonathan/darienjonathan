@@ -1,6 +1,6 @@
 <template lang="pug">
 .o-media-builder
-  h3.title {{  actionType === "edit" ? 'Edit Media' : 'New Media'  }}
+  h3.title {{ actionType === 'edit' ? 'Edit Media' : 'New Media' }}
   .form
     .form__item
       .form__label Upload File
@@ -74,7 +74,9 @@ const fileType = ref<MediaType>()
 const filePreview = computed(() => file.value && URL.createObjectURL(file.value))
 
 const initializeMedia = async () => {
+  if (!props.mediaUid) return
   const media = await mediasFirestore.loadDocument(props.mediaUid)
+  if (!media) return
   caption.value = media.caption
   fileName.value = media.fileName
   fileType.value = media.type
@@ -92,7 +94,9 @@ onMounted(() => {
 })
 
 const handleSelectFile = (e: Event) => {
-  const uploadedFile = (e.target as HTMLInputElement).files[0]
+  const files = (e.target as HTMLInputElement).files
+  const uploadedFile = files && files[0]
+  if (!uploadedFile) return
   file.value = uploadedFile
   fileName.value = uploadedFile.name
   const type = uploadedFile.type.replace(/\/[^/]+$/, '')
@@ -109,11 +113,13 @@ watch(file, f => {
   fileType.value = undefined
 })
 
-const thisMediaUid = ref<string>(props.mediaUid)
+const thisMediaUid = ref<string>(props.mediaUid || '')
 
 const handleSubmit = async () => {
+  if (!file.value || !fileType.value) return
   const storage = fileType.value === 'image' ? imagesStorage : videosStorage
   const upload = await storage.put({ file: file.value, fileName: fileName.value })
+  if (!upload) return
   const media = {
     fileLocation: upload.ref.fullPath,
     type: fileType.value,

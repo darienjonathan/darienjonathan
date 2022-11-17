@@ -18,8 +18,8 @@ import {
 import { SignInStatus } from '~/types/firebase'
 
 const useAuth = () => {
-  const unsubscribe = ref<Unsubscribe>(undefined)
-  const user = ref<User | null | undefined>(undefined)
+  const unsubscribe = ref<Unsubscribe>()
+  const user = ref<User | null | undefined>()
   const auth = ref<Auth>()
 
   onBeforeMount(() => {
@@ -29,6 +29,7 @@ const useAuth = () => {
     })
   })
   onUnmounted(() => {
+    if (!unsubscribe.value) return
     unsubscribe.value()
   })
 
@@ -42,23 +43,26 @@ const useAuth = () => {
 
   const signUp = (email: string, password: string): Promise<UserCredential> => {
     try {
+      if (!auth.value) throw new Error('auth does not exist')
       return createUserWithEmailAndPassword(auth.value, email, password)
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error as AuthError)
+      // eslint-disable-next-line prefer-promise-reject-errors
+      return Promise.reject(error as AuthError)
     }
   }
 
   const signIn = (email: string, password: string): Promise<UserCredential> => {
     try {
+      if (!auth.value) throw new Error('auth does not exist')
       return signInWithEmailAndPassword(auth.value, email, password)
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error as AuthError)
+      // eslint-disable-next-line prefer-promise-reject-errors
+      return Promise.reject(error as AuthError)
     }
   }
 
   const signOut = () => {
+    if (!auth.value) return
     try {
       return signOutFn(auth.value)
     } catch (error) {
@@ -82,7 +86,7 @@ const useAuth = () => {
   }
 
   const sendPasswordResetEmail = (email: string) => {
-    if (!user.value) return
+    if (!user.value || !auth.value) return
     return sendPasswordResetEmailFn(auth.value, email)
   }
 
