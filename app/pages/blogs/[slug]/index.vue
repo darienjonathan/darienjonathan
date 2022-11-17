@@ -116,8 +116,8 @@ const meta = computed(() => {
 })
 
 useHead({
-  title: metaTitle,
-  meta,
+  title: metaTitle.value,
+  meta: meta.value,
 })
 </script>
 <script lang="ts">
