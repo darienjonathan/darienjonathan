@@ -57,7 +57,7 @@ const { isSP } = useMedia()
 
 type Props = {
   isOpen: boolean
-  invitee?: Invitee
+  invitee: Partial<Invitee>
 }
 
 const props = defineProps({
@@ -67,14 +67,14 @@ const props = defineProps({
   },
   invitee: {
     type: Object as () => Props['invitee'],
-    default: undefined,
+    required: true,
   },
 })
 
 const emit = defineEmits(['close'])
 
-const isReception = computed(() => props.invitee?.attendance.includes('reception'))
-const isMatrimony = computed(() => props.invitee?.attendance.includes('matrimony'))
+const isReception = computed(() => props.invitee.attendance?.includes('reception'))
+const isMatrimony = computed(() => props.invitee.attendance?.includes('matrimony'))
 
 const attendanceValueText = computed(() => {
   if (isReception.value && isMatrimony.value) return 'Holy Matrimony & Dinner Reception'

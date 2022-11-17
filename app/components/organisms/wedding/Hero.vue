@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template lang="pug">
 .hero
   .hero__filler(:data-is-blur="isBlur")
@@ -49,6 +50,7 @@ const isBlur = ref(false)
 const observerElementRef = ref<HTMLDivElement>()
 const observerInstance = ref<IntersectionObserver>()
 onMounted(() => {
+  if (!observerElementRef.value) return
   const observer = new IntersectionObserver(
     entries => {
       const entry = entries.find(e => e.target === observerElementRef.value)
@@ -65,6 +67,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  if (!observerInstance.value) return
   observerInstance.value.disconnect()
 })
 </script>

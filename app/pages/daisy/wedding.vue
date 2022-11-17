@@ -35,6 +35,7 @@ onMounted(() => {
 
 const eventsElementRef = ref<InstanceType<typeof Events> | null>()
 const handleNavClick = () => {
+  if (!eventsElementRef.value) return
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const element = eventsElementRef.value.$el as HTMLElement
   const eventsTop = element.getBoundingClientRect().top

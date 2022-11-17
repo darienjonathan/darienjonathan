@@ -7,7 +7,8 @@ export default () => {
 
   const loadReceptionMap = () => {
     if (!loader.value) return
-    if (!receptionMapElementRef.value) return
+    const mapElement = receptionMapElementRef.value
+    if (!mapElement) return
     loader.value.load().then(() => {
       const position = { lat: -6.2272498, lng: 106.8273196 }
 
@@ -22,7 +23,7 @@ export default () => {
 </div>
     `
 
-      const map = new google.maps.Map(receptionMapElementRef.value, {
+      const map = new google.maps.Map(mapElement, {
         center: position,
         zoom: 16,
         mapTypeControlOptions: {
@@ -49,6 +50,8 @@ export default () => {
 
   const loadHolyMatrimonyMap = () => {
     if (!loader.value) return
+    const mapElement = holyMatrimonyMapElementRef.value
+    if (!mapElement) return
     if (!holyMatrimonyMapElementRef.value) return
     loader.value.load().then(() => {
       const position = { lat: -6.145738447315122, lng: 106.81880992882708 }
@@ -64,7 +67,7 @@ export default () => {
 </div>
     `
 
-      const map = new google.maps.Map(holyMatrimonyMapElementRef.value, {
+      const map = new google.maps.Map(mapElement, {
         center: position,
         zoom: 16,
         mapTypeControlOptions: {

@@ -84,8 +84,8 @@ const rsvpText = computed(() => {
 const { receptionMapElementRef, holyMatrimonyMapElementRef } = useMap()
 
 const isConfirmRSVPModalOpen = ref(false)
-const inviteeToRSVP = ref<Invitee>()
-const handleSubmitRSVP = (invitee: Invitee) => {
+const inviteeToRSVP = ref<Partial<Invitee>>()
+const handleSubmitRSVP = (invitee: Partial<Invitee>) => {
   isConfirmRSVPModalOpen.value = true
   inviteeToRSVP.value = invitee
 }

@@ -1,6 +1,6 @@
 <template lang="pug">
 .rsvp-form
-  MInput.input(:label="'Name'") {{ invitee.name }}
+  MInput.input(:label="'Name'") {{ invitee?.name }}
   template(v-if="isReception")
     MInput.input(:label="'Events to attend'")
       select.input__item(
@@ -57,7 +57,7 @@
           @change="handleGuestNumberChange"
         )
           option(
-            v-for="number in invitee.maxGuestNumber"
+            v-for="number in invitee?.maxGuestNumber"
             :value.num="number"
           ) {{ number }}
       MInput.input(
@@ -96,11 +96,11 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits<{ (e: 'submit', invitee: Invitee) }>()
+const emit = defineEmits<{ (e: 'submit', invitee: Partial<Invitee>): void }>()
 
-const isReception = computed(() => getIsReception(props.invitee.invitationType))
-const isMatrimony = computed(() => getIsMatrimony(props.invitee.invitationType))
-const isNotInvited = computed(() => getIsNotInvited(props.invitee.invitationType))
+const isReception = computed(() => getIsReception(props.invitee?.invitationType))
+const isMatrimony = computed(() => getIsMatrimony(props.invitee?.invitationType))
+const isNotInvited = computed(() => getIsNotInvited(props.invitee?.invitationType))
 
 // --------------------------------------------------
 // Form
@@ -113,9 +113,13 @@ const isAttending = reactive<Partial<Record<InvitationType, boolean>>>({
   matrimony: false,
 })
 
+const attendanceEventList = computed<InvitationType[]>(
+  () => Object.keys(isAttending) as InvitationType[]
+)
+
 const handleChangeIsAttending = (attendance: string) => {
   const eventToAttend = attendance.split(',')
-  Object.keys(isAttending).forEach((key: InvitationType) => {
+  attendanceEventList.value.forEach((key: InvitationType) => {
     isAttending[key] = !!eventToAttend.includes(key)
   })
 }
@@ -131,7 +135,7 @@ watch(receptionAttendance, handleChangeIsAttending, {
   immediate: true,
 })
 
-const phoneCodeNumber = ref<number>(phoneCodeList.find(c => c.isDefault)?.number)
+const phoneCodeNumber = ref<number | undefined>(phoneCodeList.find(c => c.isDefault)?.number)
 const handlePhoneCodeChange = (e: Event) => {
   const target = e.target as HTMLSelectElement
   phoneCodeNumber.value = Number(target.value)
@@ -158,13 +162,11 @@ const handleChildrenNumberChange = (e: Event) => {
   childrenNumber.value = Number(target.value)
 }
 
-const inviteeToSubmit = computed(() => {
-  const attendanceToSubmit = Object.keys(isAttending).filter(
-    key => isAttending[key]
-  ) as InvitationType[]
+const inviteeToSubmit = computed<Partial<Invitee>>(() => {
+  const attendanceToSubmit = attendanceEventList.value.filter(key => isAttending[key])
   const phoneNumberToSubmit = isNotInvited.value
     ? undefined
-    : `+${phoneCodeNumber.value}${phoneNumber.value}`
+    : `+${phoneCodeNumber.value || ''}${phoneNumber.value || ''}`
   const guestNumberToSubmit = isNotInvited.value ? undefined : guestNumber.value
   const childrenNumberToSubmit = isReception.value ? childrenNumber.value : undefined
   return {
@@ -177,7 +179,7 @@ const inviteeToSubmit = computed(() => {
 })
 
 const canSubmit = computed(() => {
-  if (!inviteeToSubmit.value.attendance.length) return true
+  if (!inviteeToSubmit.value.attendance?.length) return true
   const minPhoneNumberLength = 9 // NOTE: 昔の電話番号は10桁で、0抜きで9桁になる
   return !!phoneNumber.value && String(phoneNumber.value).length >= minPhoneNumberLength
 })
