@@ -186,6 +186,10 @@ export default {
 
   &__item {
     word-break: break-word;
+    @include pc {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
   }
 
   &__title {
