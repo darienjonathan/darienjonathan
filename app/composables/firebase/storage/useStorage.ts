@@ -70,7 +70,7 @@ const useStorage = (path: string, allowedTypes?: string[]) => {
     stringFormat = StringFormat.RAW,
     customMetadata,
   }: PutStringArgs) => {
-    let metadata: UploadMetadata = customMetadata
+    let metadata: UploadMetadata | undefined = customMetadata
     if (stringFormat === StringFormat.BASE64) {
       const type = getBase64Mime(file)
       const isValidated = validate(type)

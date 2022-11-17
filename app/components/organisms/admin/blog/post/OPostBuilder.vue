@@ -1,6 +1,6 @@
 <template lang="pug">
 .o-post-builder
-  h3.title {{  actionType === "edit" ? 'Edit Post' : 'New Post'  }}
+  h3.title {{ actionType === 'edit' ? 'Edit Post' : 'New Post' }}
   .form
     .form__item
       .form__label Slug
@@ -52,7 +52,7 @@
   ) Upload Successful!
 </template>
 <script lang="ts" setup>
-import { LangEnum, langList } from '~/types/lang'
+import { DEFAULT_LANG, LangEnum, langList } from '~/types/lang'
 import type { Lang, LangEnumType } from '~/types/lang'
 import AModal from '~/components/atoms/AModal.vue'
 import AMarkdown from '~/components/atoms/AMarkdown.vue'
@@ -92,7 +92,7 @@ const handleSlugInput = (e: Event) => {
 
 // 言語切り替え
 
-const currentLang = ref<LangEnumType>()
+const currentLang = ref<LangEnumType>(DEFAULT_LANG)
 const handleLangChange = (lang: LangEnumType) => {
   currentLang.value = lang
 }
@@ -157,7 +157,7 @@ const handleContentInput = async (e: Event) => {
 // 投稿する
 
 const { userUid } = useAuth()
-const thisPostUid = ref<string>(props.postUid)
+const thisPostUid = ref<string>(props.postUid || '')
 
 const handleSaveFile = async (): Promise<Lang> => {
   const items: Lang = {
@@ -171,7 +171,7 @@ const handleSaveFile = async (): Promise<Lang> => {
     await postsStorage.putString({
       file: content[lang],
       fileName,
-      customMetadata: postsStorage.authorUidMetadata(userUid.value),
+      customMetadata: userUid.value ? postsStorage.authorUidMetadata(userUid.value) : undefined,
     })
     items[lang] = await postsStorage.getDownloadURL(fileName)
   }
@@ -191,6 +191,7 @@ const canSave = computed(() => {
 })
 
 const handleSubmit = async () => {
+  if (!userUid.value) return
   if (props.actionType === 'new') {
     thisPostUid.value = postsFirestore.getNewId()
   }
@@ -229,13 +230,16 @@ const isPreviewOpen = ref(false)
 // 初期化
 
 const initializePost = async () => {
+  if (!props.postUid) return
   const post = await postsFirestore.loadDocument(props.postUid)
+  if (!post) return
   createdAt.value = post.createdAt
   slug.value = post.slug
   for (const lang of langList) {
-    title[lang] = post.title[lang]
-    description[lang] = post.description[lang]
-    content[lang] = post.contentURL[lang] ? await (await fetch(post.contentURL[lang])).text() : ''
+    title[lang] = post.title[lang] || ''
+    description[lang] = post.description[lang] || ''
+    const currentLangContentURL = post.contentURL[lang]
+    content[lang] = currentLangContentURL ? await (await fetch(currentLangContentURL)).text() : ''
   }
 }
 

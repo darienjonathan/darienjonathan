@@ -51,6 +51,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  if (!unsubscribeMedia.value) return
   unsubscribeMedia.value()
 })
 

@@ -34,12 +34,13 @@ defineProps({
 })
 
 const emit = defineEmits<{
-  (e: 'change', item: number)
+  (e: 'change', item: number): void
 }>()
 
 const selectedItemIndex = ref<number>()
 
 watch(selectedItemIndex, () => {
+  if (selectedItemIndex.value === undefined) return
   emit('change', selectedItemIndex.value)
 })
 </script>

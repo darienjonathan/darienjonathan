@@ -12,6 +12,6 @@ export const LangEnum = <const>{
 
 export const DEFAULT_LANG = LangEnum.id
 
-export const langList = [LangEnum.id, LangEnum.en, LangEnum.ja]
-
 export type LangEnumType = typeof LangEnum[keyof typeof LangEnum]
+
+export const langList: LangEnumType[] = [LangEnum.id, LangEnum.en, LangEnum.ja]
