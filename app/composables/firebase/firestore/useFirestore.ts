@@ -18,7 +18,11 @@ import {
 import { Ref } from 'nuxt/dist/app/compat/capi'
 import useFirestoreQueryBuilder from '~/composables/firebase/firestore/useFirestoreQueryBuilder'
 
-const useFirestore = <T>(path: string, parse: (data: DocumentData) => T) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const useFirestore = <T extends Record<string, any>>(
+  path: string,
+  parse: (data: DocumentData) => T
+) => {
   const firestore = useNuxtApp().$firebase.firestore.instance
 
   const collectionReference: Ref<CollectionReference> = computed(() => collection(firestore, path))
@@ -41,23 +45,23 @@ const useFirestore = <T>(path: string, parse: (data: DocumentData) => T) => {
     return docRef.id
   }
 
-  const loadCollection = async (): Promise<Map<string, T>> => {
+  const loadCollection = async (): Promise<Map<string, T> | undefined> => {
     const querySnapshot = await getDocs(queryBuilder.build())
     return querySnapshotToMap(querySnapshot)
   }
 
   const subscribeCollection = (
-    fn: (map: Map<string, T> | null) => void | Promise<void>
+    fn: (map: Map<string, T> | undefined) => void | Promise<void>
   ): Unsubscribe => {
     return onSnapshot(queryBuilder.build(), (querySnapshot: QuerySnapshot) => {
-      const data = querySnapshot.empty ? null : querySnapshotToMap(querySnapshot)
+      const data = querySnapshot.empty ? undefined : querySnapshotToMap(querySnapshot)
       fn(data)
     })
   }
 
   const loadDocument = async (id: string): Promise<T | null> => {
     const snapshot = await getDoc(getDocumentReference(id))
-    return snapshot.exists ? parse(snapshot.data()) : null
+    return snapshot.exists() ? parse(snapshot.data()) : null
   }
 
   const loadDocumentByQuery = async (): Promise<
@@ -70,6 +74,7 @@ const useFirestore = <T>(path: string, parse: (data: DocumentData) => T) => {
     const querySnapshot = await getDocs(queryBuilder.build())
     if (querySnapshot.empty) return
     const map = querySnapshotToMap(querySnapshot)
+    if (!map) return
     const item = [...map][0]
     return {
       id: [...item][0] as string,
@@ -79,7 +84,7 @@ const useFirestore = <T>(path: string, parse: (data: DocumentData) => T) => {
 
   const subscribeDocument = (id: string, fn: (data: T | null) => void): Unsubscribe => {
     return onSnapshot(getDocumentReference(id), querySnapshot => {
-      const data = querySnapshot.exists ? parse(querySnapshot.data()) : null
+      const data = querySnapshot.exists() ? parse(querySnapshot.data()) : null
       fn(data)
     })
   }

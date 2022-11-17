@@ -31,6 +31,7 @@ onMounted(() => {
   })
 })
 onUnmounted(() => {
+  if (!unsubscribePosts.value) return
   unsubscribePosts.value()
 })
 

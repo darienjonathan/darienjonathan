@@ -54,17 +54,18 @@
                 button.button(@click="handleShowRewards") Show Rewards
           .card__reward
             .reward
-              ASelect.question__item(
-                :data-style="isProposalQuestionAnswerCorrect ? 'correct' : 'default'"
-                :label="proposalQuestion.label"
-                :items="proposalQuestion.items"
-                :is-disabled="isProposalQuestionAnswerCorrect"
-                @change="handleProposalQuestionAnswerChange"
-              )
-              img.reward__ring-image(
-                :data-shown="isProposalQuestionAnswerCorrect"
-                src="@/assets/images/proposal/ring-sketch.jpeg"
-              )
+              template(v-if="proposalQuestion")
+                ASelect.question__item(
+                  :data-style="isProposalQuestionAnswerCorrect ? 'correct' : 'default'"
+                  :label="proposalQuestion.label"
+                  :items="proposalQuestion.items"
+                  :is-disabled="isProposalQuestionAnswerCorrect"
+                  @change="handleProposalQuestionAnswerChange"
+                )
+                img.reward__ring-image(
+                  :data-shown="isProposalQuestionAnswerCorrect"
+                  src="@/assets/images/proposal/ring-sketch.jpeg"
+                )
 </template>
 
 <script lang="ts" setup>
@@ -105,11 +106,11 @@ const { useProposalQuestions } = useFirestoreCollections()
 const proposalQuestionsFirestore = useProposalQuestions()
 
 const questions = ref<Question[]>([])
-const answers = ref<number[]>([])
-const submittedAnswers = ref<number[]>([])
+const answers = ref<Array<number | undefined>>([])
+const submittedAnswers = ref<Array<number | undefined>>([])
 
 const unwatchQuestionWatcher = watch(questions, q => {
-  const initializeEmptyAnswers = () => new Array<number>(q.length).fill(undefined)
+  const initializeEmptyAnswers = () => new Array<number | undefined>(q.length).fill(undefined)
   answers.value = initializeEmptyAnswers()
   submittedAnswers.value = initializeEmptyAnswers()
   unwatchQuestionWatcher()
@@ -118,10 +119,11 @@ const unwatchQuestionWatcher = watch(questions, q => {
 const proposalQuestion = ref<Question>()
 const proposalQuestionAnswer = ref()
 const isProposalQuestionAnswerCorrect = computed(
-  () => proposalQuestionAnswer.value === proposalQuestion.value.correctAnswerIndex
+  () => proposalQuestionAnswer.value === proposalQuestion.value?.correctAnswerIndex
 )
 
 proposalQuestionsFirestore.loadCollection().then(q => {
+  if (!q) return
   const questionItems = Array.from(q.values())
   questions.value = questionItems.filter(q => q.stage === 1).sort((a, b) => a.order - b.order)
   proposalQuestion.value = questionItems.find(q => q.stage === 2)
@@ -134,7 +136,7 @@ const handleAnswerChange = (item: number, index: number) => {
 const correctAnswerCount = ref(0)
 const setCorrectAnswerCount = () => {
   correctAnswerCount.value = answers.value.reduce(
-    (count: number, answer: number, index: number) =>
+    (count: number, answer: number | undefined, index: number) =>
       (count += answer === questions.value[index].correctAnswerIndex ? 1 : 0),
     0
   )
@@ -163,18 +165,20 @@ watch(
 const progressRef = ref<HTMLDivElement>()
 
 const handleAnswerSubmission = () => {
+  const progressElement: HTMLDivElement | undefined = progressRef.value
+  if (!progressElement) return
   submissionCount.value += 1
   submittedAnswers.value = JSON.parse(JSON.stringify(answers.value)) as number[]
   setCorrectAnswerCount()
   if (willPass.value) {
     isPassed.value = true
-    progressRef.value.dataset.status = 'passed'
+    progressElement.dataset.status = 'passed'
   } else {
     canSubmit.value = false
-    progressRef.value.dataset.status = 'failed'
+    progressElement.dataset.status = 'failed'
   }
   setTimeout(() => {
-    delete progressRef.value.dataset.status
+    delete progressElement.dataset.status
   }, 1000)
 }
 
@@ -190,6 +194,7 @@ const frontCardRef = ref<HTMLDivElement>()
 
 const isFlipped = ref(false)
 const handleShowRewards = async () => {
+  if (!frontCardRef.value) return
   window.scrollTo(0, 0)
   await wait(1000)
   isFlipped.value = true
