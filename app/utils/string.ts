@@ -9,5 +9,5 @@ export const asyncReplace = async (
     return str
   })
   const replacements = await Promise.all(replacementPromises)
-  return text.replace(regex, replacements.shift())
+  return text.replace(regex, replacements.shift() as string)
 }

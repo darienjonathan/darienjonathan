@@ -15,7 +15,7 @@ const useMedia = () => {
   })
 
   onMounted(() => {
-    if (!mql) return
+    if (!mql.value) return
     checkBreakpoint(mql.value)
     if (mql.value.addEventListener) {
       mql.value.addEventListener('change', checkBreakpoint)
@@ -25,7 +25,7 @@ const useMedia = () => {
   })
 
   onUnmounted(() => {
-    if (!mql) return
+    if (!mql.value) return
     if (mql.value.removeEventListener) {
       mql.value.removeEventListener('change', checkBreakpoint)
     } else {
