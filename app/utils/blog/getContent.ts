@@ -4,8 +4,8 @@ import type { LangEnumType } from '~/types/lang'
 export const getContent = (content: Partial<Lang>, currentLang: LangEnumType = DEFAULT_LANG) => {
   if (content[currentLang]) return content[currentLang]
   return langList.reduce((currentContent, lang) => {
-    if (currentContent) return currentContent
-    if (content[lang]) return content[lang]
-    return currentContent
+    const contentForThisLang = content[lang]
+    if (currentContent || !contentForThisLang) return currentContent
+    return contentForThisLang
   }, '')
 }
