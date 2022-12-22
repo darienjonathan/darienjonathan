@@ -7,23 +7,15 @@
   position: absolute;
   @if $top != null {
     top: $top;
-  } @else {
-    top: 0;
   }
   @if $right != null {
     right: $right;
-  } @else {
-    right: 0;
   }
   @if $bottom != null {
     bottom: $bottom;
-  } @else {
-    bottom: 0;
   }
   @if $left != null {
     left: $left;
-  } @else {
-    left: 0;
   }
 }
 
