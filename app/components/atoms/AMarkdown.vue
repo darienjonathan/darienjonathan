@@ -40,4 +40,12 @@ const markdownHTML = computed(() => {
     margin: 4px 0;
   }
 }
+
+:deep(a) {
+  color: $navy-blue-light;
+
+  &:visited {
+    color: $navy-blue-light;
+  }
+}
 </style>
