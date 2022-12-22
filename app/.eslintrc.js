@@ -25,7 +25,7 @@ module.exports = {
     'prettier'
   ],
   rules: {
-    'quotes': ['error', 'single'],
+    'quotes': ['error', 'single', { avoidEscape: true }],
     'prettier/prettier': 'error',
     'prefer-const': 'error',
     'vue/multi-word-component-names': 'error',
