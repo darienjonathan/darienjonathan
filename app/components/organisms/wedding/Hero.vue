@@ -75,6 +75,10 @@ onUnmounted(() => {
 definePageMeta({
   layout: 'base',
 })
+
+export default {
+  name: 'Hero',
+}
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';

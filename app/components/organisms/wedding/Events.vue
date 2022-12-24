@@ -98,6 +98,7 @@ const handleCancelRSVPSubmission = () => {
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Events',
+  components: { RSVPForm, ConfirmRSVPModal },
 }
 </script>
 <style lang="scss" scoped>

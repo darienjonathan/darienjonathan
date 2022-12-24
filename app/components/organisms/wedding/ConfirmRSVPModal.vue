@@ -117,6 +117,12 @@ const handleConfirmRSVP = () => {
     })
 }
 </script>
+<script lang="ts">
+export default {
+  name: 'ConfirmRSVPModal',
+  components: { AModal, ALoading },
+}
+</script>
 
 <style lang="scss" scoped>
 @import '@/assets/css/main';

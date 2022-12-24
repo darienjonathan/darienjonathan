@@ -192,6 +192,7 @@ const handleSubmit = () => {
 <script lang="ts">
 export default {
   name: 'RSVPForm',
+  components: { MInput },
 }
 </script>
 <style lang="scss" scoped>

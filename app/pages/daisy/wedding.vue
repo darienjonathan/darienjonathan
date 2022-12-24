@@ -102,7 +102,7 @@ definePageMeta({
 })
 export default {
   name: 'WeddingPage',
-  components: { MPageLoading, Events, AboutUs },
+  components: { MPageLoading, Hero, Events, AboutUs },
 }
 </script>
 <style lang="scss" scoped>
