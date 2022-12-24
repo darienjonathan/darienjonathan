@@ -18,6 +18,7 @@ definePageMeta({
 
 export default {
   name: 'AdminBlogMediasEditPage',
+  components: { OMediaBuilder },
 }
 </script>
 <style lang="scss" scoped>

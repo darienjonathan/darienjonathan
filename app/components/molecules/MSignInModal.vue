@@ -78,6 +78,12 @@ watch(
   }
 )
 </script>
+<script lang="ts">
+export default {
+  name: 'MSignInModal',
+  components: { AModal },
+}
+</script>
 
 <style lang="scss" scoped>
 @import '@/assets/css/main';

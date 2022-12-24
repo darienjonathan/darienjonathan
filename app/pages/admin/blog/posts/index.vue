@@ -59,6 +59,7 @@ definePageMeta({
 
 export default {
   name: 'AdminBlogPostsIndexPage',
+  components: { MPostListItem, AModal },
 }
 </script>
 <style lang="scss" scoped>

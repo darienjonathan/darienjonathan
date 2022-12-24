@@ -251,6 +251,7 @@ onMounted(() => {
 <script lang="ts">
 export default {
   name: 'OPostBuilder',
+  components: { MLangSwitcher, AModal, AMarkdown },
 }
 </script>
 <style lang="scss" scoped>

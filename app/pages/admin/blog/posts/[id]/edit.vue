@@ -18,6 +18,7 @@ definePageMeta({
 
 export default {
   name: 'AdminBlogPostsEditPage',
+  components: { OPostBuilder },
 }
 </script>
 <style lang="scss" scoped>
