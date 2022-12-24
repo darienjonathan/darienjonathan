@@ -57,6 +57,7 @@ const handleReadMore = (slug: string) => {
 <script lang="ts">
 export default {
   name: 'BlogsIndexPage',
+  components: { MTopKV, ALoading },
   layout: 'default',
 }
 </script>

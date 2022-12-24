@@ -148,6 +148,12 @@ const handleDelete = async (name: string) => {
   itemList.value = itemList.value.filter((_item, index) => index !== itemIndex)
 }
 </script>
+<script lang="ts">
+export default {
+  name: 'MarkdownPage',
+  components: { AMarkdown, AModal, MSignInModal },
+}
+</script>
 <style lang="scss" scoped>
 @import '@/assets/css/main';
 
