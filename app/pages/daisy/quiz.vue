@@ -214,6 +214,7 @@ definePageMeta({
 
 export default {
   name: 'ProposalPage',
+  components: { ASelect },
 }
 </script>
 

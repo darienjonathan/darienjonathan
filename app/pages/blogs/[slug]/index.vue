@@ -120,7 +120,7 @@ definePageMeta({
 
 export default {
   name: 'BlogPage',
-  components: { MPageLoading },
+  components: { MPageLoading, MLangSwitcher, AMarkdown },
 }
 </script>
 <style lang="scss" scoped>
