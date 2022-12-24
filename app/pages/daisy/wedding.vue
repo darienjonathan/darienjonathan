@@ -1,34 +1,26 @@
 <template lang="pug">
 .wedding
-  Transition(
-    name="fade"
-    mode="out-in"
-    @afterEnter="defineViewportVariables"
-  )
-    template(v-if="!isLoadingDone")
-      ALoading.loading
-    template(v-else)
-      .wrapper
-        Hero.hero(
-          :invitation-type="invitee.invitationType"
-          @nav-click="handleNavClick"
+  MPageLoading(:is-loading="!isLoadingDone")
+    .wrapper
+      Hero.hero(
+        :invitation-type="invitee.invitationType"
+        @nav-click="handleNavClick"
+      )
+      .content
+        Events.events(
+          :invitee="invitee"
+          ref="eventsElementRef"
         )
-        .content
-          Events.events(
-            :invitee="invitee"
-            ref="eventsElementRef"
-          )
-          AboutUs.about-us
+        AboutUs.about-us
 </template>
 <script lang="ts" setup>
-import ALoading from '~/components/atoms/ALoading.vue'
 import Hero from '~/components/organisms/wedding/Hero.vue'
 import Events from '~/components/organisms/wedding/Events.vue'
 import type { Invitee } from '~/types/model/wedding/invitee'
 import AboutUs from '~/components/organisms/wedding/AboutUs.vue'
+import MPageLoading from '~~/components/molecules/MPageLoading.vue'
 
 const isLoadingDone = ref(false)
-const { defineViewportVariables } = useViewportUnitSizes()
 onMounted(() => {
   isLoadingDone.value = true
 })
@@ -110,6 +102,7 @@ definePageMeta({
 })
 export default {
   name: 'WeddingPage',
+  components: { MPageLoading, Events, AboutUs },
 }
 </script>
 <style lang="scss" scoped>
