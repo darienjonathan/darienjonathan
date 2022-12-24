@@ -96,10 +96,10 @@ export default {
 }
 
 .post {
-  $item-padding: 20px;
+  $item-padding: 16px;
   &__wrapper {
     display: grid;
-    gap: 16px;
+    gap: 32px;
     @include pc {
       grid-template-columns: repeat(3, 1fr);
       max-width: 1200px;
@@ -124,7 +124,7 @@ export default {
 
   &__title {
     @include font($size: $font-lg);
-    margin-bottom: 4px;
+    margin-bottom: 8px;
   }
 
   &__created-at {
@@ -132,9 +132,9 @@ export default {
     text-align: right;
   }
 
-  &__descripton {
-    @include font($size: $font-sm);
-    margin-bottom: 4px;
+  &__description {
+    @include font($size: $font-sm, $line-height: 1.5);
+    margin-bottom: 8px;
   }
 
   &__read-more {
