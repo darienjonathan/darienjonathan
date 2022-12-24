@@ -7,7 +7,12 @@ Base
 <script lang="ts" setup>
 import Base from '~/layouts/base.vue'
 </script>
-
+<script lang="ts">
+export default {
+  name: 'DefaultLayout',
+  components: { Base },
+}
+</script>
 <style lang="scss" scoped>
 @import '@/assets/css/main';
 .wrapper {

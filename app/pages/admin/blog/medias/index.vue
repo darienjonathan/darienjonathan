@@ -79,6 +79,7 @@ definePageMeta({
 
 export default {
   name: 'AdminBlogMediasIndexPage',
+  components: { MMediaListItem, AModal },
 }
 </script>
 <style lang="scss" scoped>

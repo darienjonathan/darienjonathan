@@ -11,6 +11,7 @@ definePageMeta({
 
 export default {
   name: 'AdminBlogPostsNewPage',
+  components: { OPostBuilder },
 }
 </script>
 <style lang="scss" scoped>
