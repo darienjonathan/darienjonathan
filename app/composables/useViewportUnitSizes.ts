@@ -22,14 +22,18 @@ const defineViewportVariables = () => {
   defineDevicePixelRatio()
 }
 
-const useViewportUnitSizes = () => {
+const useViewportUnitSizes = (createListener = false) => {
   onMounted(() => {
+    if (!createListener) return
     defineViewportVariables()
     window.addEventListener('resize', defineViewportVariables, { passive: true })
   })
   onUnmounted(() => {
+    if (!createListener) return
     window.removeEventListener('resize', defineViewportVariables)
   })
+
+  return { defineViewportVariables }
 }
 
 export default useViewportUnitSizes

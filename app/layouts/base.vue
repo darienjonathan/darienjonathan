@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts" setup>
-useViewportUnitSizes()
+useViewportUnitSizes(true)
 
 if (process.env.NODE_ENV === 'development') {
   useEmulator()
