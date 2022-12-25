@@ -40,7 +40,13 @@ const unsubscribePosts = ref<Unsubscribe>()
 const isFirstFetchDone = ref(false)
 onMounted(() => {
   unsubscribePosts.value = postsFirestore.subscribeCollection(response => {
-    if (response) posts.value = response
+    if (response) {
+      response.forEach((post, key) => {
+        if (!post.isDraft) return
+        response.delete(key)
+      })
+      posts.value = response
+    }
     isFirstFetchDone.value = true
   })
 })

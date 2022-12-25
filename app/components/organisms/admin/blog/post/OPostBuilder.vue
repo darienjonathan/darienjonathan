@@ -12,6 +12,14 @@
   MLangSwitcher.lang-switcher(@langChange="handleLangChange")
   .form
     .form__item
+      .form__label Draft
+      input.form__input(
+        :data-type="'select'"
+        type="checkbox"
+        @change="handleDraftInput"
+        :value="isDraft"
+      )
+    .form__item
       .form__label Title
       input.form__input(
         @input="handleTitleInput"
@@ -38,7 +46,7 @@
     button.form__submit-btn(
       @click="handleSubmit"
       :disabled="!canSave"
-    ) Submit
+    ) {{ isDraft && actionType === 'new' ? 'Save Draft' : 'Submit' }}
   AModal(
     :is-open="isPreviewOpen"
     @close="isPreviewOpen = false"
@@ -59,6 +67,7 @@ import AMarkdown from '~/components/atoms/AMarkdown.vue'
 import MLangSwitcher from '~/components/molecules/blog/post/MLangSwitcher.vue'
 import { asyncReplace } from '~/utils/string'
 import type { Post } from '~/types/model/blog/post'
+import ASelect from '~~/components/atoms/ASelect.vue'
 
 const props = defineProps({
   postUid: {
@@ -95,6 +104,13 @@ const handleSlugInput = (e: Event) => {
 const currentLang = ref<LangEnumType>(DEFAULT_LANG)
 const handleLangChange = (lang: LangEnumType) => {
   currentLang.value = lang
+}
+
+// Draft
+
+const isDraft = ref(false)
+const handleDraftInput = (e: Event) => {
+  isDraft.value = (e.target as HTMLInputElement).checked
 }
 
 // タイトル
@@ -206,7 +222,9 @@ const handleSubmit = async () => {
     // TODO: タグ機能実装
     tagUids: [],
     contentURL: storageItems,
+    isDraft: isDraft.value,
   }
+  console.log(post)
   if (props.actionType === 'new') {
     const response = await postsFirestore.push(post)
     thisPostUid.value = response.id
@@ -233,6 +251,7 @@ const initializePost = async () => {
   if (!props.postUid) return
   const post = await postsFirestore.loadDocument(props.postUid)
   if (!post) return
+  isDraft.value = post.isDraft
   createdAt.value = post.createdAt
   slug.value = post.slug
   for (const lang of langList) {
@@ -251,7 +270,7 @@ onMounted(() => {
 <script lang="ts">
 export default {
   name: 'OPostBuilder',
-  components: { MLangSwitcher, AModal, AMarkdown },
+  components: { MLangSwitcher, AModal, AMarkdown, ASelect },
 }
 </script>
 <style lang="scss" scoped>
@@ -280,6 +299,9 @@ export default {
 
   &__input {
     width: 200px;
+    &[data-type='select'] {
+      width: auto;
+    }
   }
 
   &__submit-btn {

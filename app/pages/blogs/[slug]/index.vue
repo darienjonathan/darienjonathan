@@ -62,6 +62,7 @@ const unavailableLangList = computed(() => {
 const initializePost = async () => {
   const slug = (route.params.slug as string).toLowerCase()
   postsFirestore.queryBuilder.eq('slug', slug)
+  postsFirestore.queryBuilder.eq('isDraft', false)
   const response = await postsFirestore.loadDocumentByQuery()
   if (response) {
     post.value = response.data
