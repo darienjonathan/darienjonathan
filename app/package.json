@@ -5,7 +5,7 @@
     "dev": "nuxi dev",
     "build": "nuxi build && yarn copy-types",
     "build:firebase": "NITRO_PRESET=firebase yarn build",
-    "deploy:firebase": "yarn build:firebase && firebase deploy --only hosting,functions:server",
+    "deploy:firebase": "yarn build:firebase && firebase deploy --only hosting,functions",
     "start": "node .output/server/index.mjs"
   },
   "devDependencies": {

@@ -1,5 +1,10 @@
 {
-  "functions": { "source": ".output/server" },
+  "functions": {
+    "source": ".output/server",
+    "runtime": "nodejs16",
+    "codebase": "nuxt",
+    "predeploy": ["cd .output/server && yarn"]
+  },
   "hosting": [
     {
       "site": "darienjonathan-site",
