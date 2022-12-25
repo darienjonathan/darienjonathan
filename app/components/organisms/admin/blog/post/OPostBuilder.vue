@@ -17,7 +17,7 @@
         :data-type="'select'"
         type="checkbox"
         @change="handleDraftInput"
-        :value="isDraft"
+        :checked="isDraft"
       )
     .form__item
       .form__label Title
@@ -224,7 +224,6 @@ const handleSubmit = async () => {
     contentURL: storageItems,
     isDraft: isDraft.value,
   }
-  console.log(post)
   if (props.actionType === 'new') {
     const response = await postsFirestore.push(post)
     thisPostUid.value = response.id
