@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Lang } from '~/types/lang'
-import { parseArray, parseNumber, parseString } from '~/types/model/parse'
+import { parseArray, parseNumber, parseString, parseBoolean } from '~/types/model/parse'
 
 export const parseLang = (data: any): Lang => ({
   en: parseString(data.en),
@@ -19,6 +19,7 @@ export interface Post {
   updatedAt: number
   tagUids: string[]
   contentURL: Partial<Lang>
+  isDraft: boolean
 }
 
 export interface PostComment {
@@ -35,6 +36,7 @@ export const parsePost = (data: any): Post => ({
   updatedAt: parseNumber(data.updatedAt),
   tagUids: parseArray(data.tagUids, parseString),
   contentURL: parseLang(data.contentURL),
+  isDraft: parseBoolean(data.isDraft),
 })
 
 export const parsePostComment = (data: any): PostComment => ({

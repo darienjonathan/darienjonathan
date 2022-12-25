@@ -3,9 +3,11 @@
   .post__properties
     .post__title {{ getContent(post.title) }}
     .post__description {{ getContent(post.description) }}
-  .post__actions
-    .post__action.material-icons-outlined(@click="$emit('edit')") edit
-    .post__action.material-icons-outlined(@click="$emit('delete')") delete
+  .post__bottom
+    .post__draft {{ 'Post Status: ' + (post.isDraft ? 'Draft' : 'Live') }}
+    .post__actions
+      .post__action.material-icons-outlined(@click="$emit('edit')") edit
+      .post__action.material-icons-outlined(@click="$emit('delete')") delete
 </template>
 <script lang="ts" setup>
 import type { Post } from '~/types/model/blog/post'
@@ -32,7 +34,7 @@ $content-padding: 12px;
 }
 .post {
   &__properties,
-  &__actions {
+  &__bottom {
     padding: $content-padding;
   }
 
@@ -50,12 +52,16 @@ $content-padding: 12px;
     @include font($size: $font-sm);
   }
 
+  &__bottom {
+    @include flex($justify: space-between);
+  }
+
+  &__draft {
+    @include font($size: $font-xs);
+  }
+
   &__actions {
-    @include flex($justify: flex-end);
-    grid-area: actions;
-    @include pc {
-      justify-self: end;
-    }
+    @include flex;
   }
   &__action {
     cursor: pointer;
