@@ -6,18 +6,18 @@
   .hero__content(:data-is-blur="isBlur")
     .kv
       .kv__invitation-type {{ invitationText }}
-      .kv__subheading {{ 'The Journey of Grace:' }}
+      .kv__subheading {{ 'The Playlist of Grace:' }}
       .kv__heading {{ 'DARIEN & DAISY' }}
       .kv__line
       .kv__date {{ 'Saturday, 6 January 2024' }}
-      template(v-if="isReception || isMatrimony")
+      template(v-if="isReceptionInvitation || isMatrimonyInvitation")
         .kv__rsvp-btn
           .rsvp-btn__icon.material-icons-outlined expand_more
           .rsvp-btn__text(@click="emit('navClick')") {{ 'Events and RSVP' }}
 </template>
 <script lang="ts" setup>
 import type { InvitationType } from '~/types/model/wedding/invitee'
-import { getIsReception, getIsMatrimony } from '~/utils/wedding'
+import { getIsReceptionInvitation, getIsMatrimonyInvitation } from '~/utils/wedding'
 
 type Props = {
   invitationType: InvitationType
@@ -30,12 +30,12 @@ const props = defineProps({
   },
 })
 
-const isReception = computed(() => getIsReception(props.invitationType))
-const isMatrimony = computed(() => getIsMatrimony(props.invitationType))
+const isReceptionInvitation = computed(() => getIsReceptionInvitation(props.invitationType))
+const isMatrimonyInvitation = computed(() => getIsMatrimonyInvitation(props.invitationType))
 
 const invitationText = computed(() => {
-  if (isReception.value) return 'Holy Matrimony & Wedding Reception Invitation'
-  if (isMatrimony.value) return 'Holy Matrimony Invitation'
+  if (isReceptionInvitation.value) return 'Holy Matrimony & Wedding Reception Invitation'
+  if (isMatrimonyInvitation.value) return 'Holy Matrimony Invitation'
   return ''
 })
 
@@ -77,6 +77,7 @@ definePageMeta({
 })
 
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: 'Hero',
 }
 </script>

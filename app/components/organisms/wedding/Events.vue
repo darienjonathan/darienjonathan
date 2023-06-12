@@ -3,7 +3,7 @@
   .heading__wrapper
     .heading {{ 'EVENTS' }}
     .heading__sub {{ subHeadingText }}
-  template(v-if="isReception || isMatrimony")
+  template(v-if="isReceptionInvitation || isMatrimonyInvitation")
     .content
       .content__heading {{ 'HOLY MATRIMONY' }}
       .content__item
@@ -12,7 +12,7 @@
           .location__date {{ 'Saturday, 6 January 2024,\n10:00 - 11:30 WIB (UTC+7)' }}
           // TODO: Live Streaming Link
         .location__map(ref="holyMatrimonyMapElementRef")
-  template(v-if="isReception") 
+  template(v-if="isReceptionInvitation") 
     .content(data-order="reverse")
       .content__heading {{ 'RECEPTION DINNER' }}
       .content__item
@@ -21,14 +21,14 @@
           .location__date {{ 'Saturday, 6 January 2024, 18:00 WIB' }}
         .location__map(ref="receptionMapElementRef")
   .content
-    .content__heading {{ 'RSVP' }}
+    .content__heading {{ 'RECEPTION DINNER RSVP' }}
     .content__item
       .rsvp__info
         .rsvp__description
           span.rsvp__description-text {{ rsvpText }}
           span.rsvp__description-text.rsvp__description-text--focus {{ 'November 30, 2023.' }}
         .rsvp__note 
-          .rsvp__note-text.rsvp__note-text--focus {{ '(For Dinner Reception) Unconfirmed attendance is considered as not attending.' }}
+          .rsvp__note-text.rsvp__note-text--focus {{ 'Unconfirmed attendance is considered as not attending.' }}
           .rsvp__note-text {{ ' We thank you for your kind understanding.' }}
       RSVPForm.rsvp__form(
         :invitee="invitee"
@@ -45,7 +45,11 @@
 import useMap from '~/composables/wedding/useMap'
 import RSVPForm from '~/components/organisms/wedding/RSVPForm.vue'
 import type { Invitee } from '~/types/model/wedding/invitee'
-import { getIsMatrimony, getIsReception, getIsNotInvited } from '~/utils/wedding'
+import {
+  getIsMatrimonyInvitation,
+  getIsReceptionInvitation,
+  getIsNotInvited,
+} from '~/utils/wedding'
 import ConfirmRSVPModal from '~/components/organisms/wedding/ConfirmRSVPModal.vue'
 
 type Props = {
@@ -59,14 +63,18 @@ const props = defineProps({
   },
 })
 
-const isReception = computed(() => getIsReception(props.invitee?.invitationType))
-const isMatrimony = computed(() => getIsMatrimony(props.invitee?.invitationType))
+const isReceptionInvitation = computed(() =>
+  getIsReceptionInvitation(props.invitee?.invitationType)
+)
+const isMatrimonyInvitation = computed(() =>
+  getIsMatrimonyInvitation(props.invitee?.invitationType)
+)
 const isNotInvited = computed(() => getIsNotInvited(props.invitee?.invitationType))
 
 const eventText = computed(() =>
-  isReception.value
+  isReceptionInvitation.value
     ? 'holy matrimony and dinner reception'
-    : isMatrimony.value
+    : isMatrimonyInvitation.value
     ? 'holy matrimony'
     : ''
 )

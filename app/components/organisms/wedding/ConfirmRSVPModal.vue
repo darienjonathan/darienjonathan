@@ -13,15 +13,14 @@ AModal.confirm-rsvp-modal(
         .content__label Name
         .content__value {{ invitee.name }}
       .content__item
-        .content__label Events to attend
+        .content__label Dinner Reception Attendance
         .content__value {{ attendanceValueText }}
-      template(v-if="isReception || isMatrimony")
+      template(v-if="isReceptionInvitation")
         .content__item
           .content__label Phone number
           .content__value {{ invitee.phoneNumber }}
-      template(v-if="isReception")
         .content__item
-          .content__label {{ guestNumberLabelText }}
+          .content__label Number of guests (adult)
           .content__value {{ invitee.guestNumber }}
         .content__item
           .content__label Number of guests (children)
@@ -73,20 +72,11 @@ const props = defineProps({
 
 const emit = defineEmits(['close'])
 
-const isReception = computed(() => props.invitee.attendance?.includes('reception'))
-const isMatrimony = computed(() => props.invitee.attendance?.includes('matrimony'))
+const isAttendingReception = computed(() => props.invitee.attendance?.includes('reception'))
 
-const attendanceValueText = computed(() => {
-  if (isReception.value && isMatrimony.value) return 'Holy Matrimony & Dinner Reception'
-  if (isReception.value) return 'Dinner Reception'
-  if (isMatrimony.value) return 'Holy Matrimony & Dinner Reception'
-  return 'None'
-})
-
-const guestNumberLabelText = computed(() => {
-  if (isReception.value) return 'Number of guests (adult)'
-  return 'Number of guests'
-})
+const attendanceValueText = computed(() =>
+  isAttendingReception.value ? 'Attending' : 'Not Attending'
+)
 
 const isRequesting = ref(false)
 const isRequestCompleted = ref(false)

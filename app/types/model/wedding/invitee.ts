@@ -3,12 +3,11 @@
 
 import { parseString, parseNumber, parseArray } from '~/types/model/parse'
 
-export type InvitationType = 'reception' | 'matrimony' | 'none'
+export type InvitationType = 'reception' | 'matrimony'
 export const parseInvitationType = (invitationType: any): InvitationType => {
   const stringifiedType = parseString(invitationType)
   if (stringifiedType === 'reception') return 'reception'
-  if (stringifiedType === 'matrimony') return 'matrimony'
-  return 'none'
+  return 'matrimony'
 }
 
 export interface Invitee {
