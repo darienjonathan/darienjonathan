@@ -40,7 +40,13 @@ const unsubscribePosts = ref<Unsubscribe>()
 const isFirstFetchDone = ref(false)
 onMounted(() => {
   unsubscribePosts.value = postsFirestore.subscribeCollection(response => {
-    if (response) posts.value = response
+    if (response) {
+      response.forEach((post, key) => {
+        if (!post.isDraft) return
+        response.delete(key)
+      })
+      posts.value = response
+    }
     isFirstFetchDone.value = true
   })
 })
@@ -57,6 +63,7 @@ const handleReadMore = (slug: string) => {
 <script lang="ts">
 export default {
   name: 'BlogsIndexPage',
+  components: { MTopKV, ALoading },
   layout: 'default',
 }
 </script>
@@ -96,10 +103,10 @@ export default {
 }
 
 .post {
-  $item-padding: 20px;
+  $item-padding: 16px;
   &__wrapper {
     display: grid;
-    gap: 16px;
+    gap: 32px;
     @include pc {
       grid-template-columns: repeat(3, 1fr);
       max-width: 1200px;
@@ -124,7 +131,7 @@ export default {
 
   &__title {
     @include font($size: $font-lg);
-    margin-bottom: 4px;
+    margin-bottom: 8px;
   }
 
   &__created-at {
@@ -132,9 +139,9 @@ export default {
     text-align: right;
   }
 
-  &__descripton {
-    @include font($size: $font-sm);
-    margin-bottom: 4px;
+  &__description {
+    @include font($size: $font-sm, $line-height: 1.5);
+    margin-bottom: 8px;
   }
 
   &__read-more {

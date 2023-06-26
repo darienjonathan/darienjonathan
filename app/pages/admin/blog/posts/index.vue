@@ -59,6 +59,7 @@ definePageMeta({
 
 export default {
   name: 'AdminBlogPostsIndexPage',
+  components: { MPostListItem, AModal },
 }
 </script>
 <style lang="scss" scoped>
@@ -74,15 +75,10 @@ export default {
 
 .post {
   &__wrapper {
-    $gap: 20px;
     display: grid;
-    align-items: center;
-    gap: $gap;
+    gap: 20px;
     @include pc() {
       grid-template-columns: repeat(auto-fill, minmax(300px, auto));
-    }
-    @include sp() {
-      grid-template-columns: repeat(auto-fill, minmax(calc(50% - $gap), auto));
     }
   }
 }

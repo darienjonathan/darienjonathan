@@ -26,3 +26,9 @@ watch(
   }
 )
 </script>
+<script lang="ts">
+export default {
+  name: 'AdminLayout',
+  components: { Default, MSignInModal },
+}
+</script>

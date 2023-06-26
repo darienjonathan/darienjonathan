@@ -149,6 +149,7 @@ const isUploadSuccessModalOpen = ref(false)
 <script lang="ts">
 export default {
   name: 'OMediaBuilder',
+  components: { AModal },
 }
 </script>
 <style lang="scss" scoped>

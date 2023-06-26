@@ -2,7 +2,7 @@
 .m-header
   .items
     template(v-for="entity in entities")
-      nuxt-link.item(
+      NuxtLink.item(
         :to="`/admin/blog/${entity}`"
         :data-active="currentEntity === entity"
       ) {{ entity }}

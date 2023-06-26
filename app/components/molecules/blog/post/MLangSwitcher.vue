@@ -9,7 +9,7 @@
     ) {{ val.toUpperCase() }}
 </template>
 <script lang="ts" setup>
-import { langList, LangEnum } from '~/types/lang'
+import { langList } from '~/types/lang'
 import type { Lang, LangEnumType } from '~/types/lang'
 import { languageSwitcher } from '~/utils/translations/blog'
 

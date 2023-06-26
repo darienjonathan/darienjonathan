@@ -10,7 +10,6 @@ export default defineNuxtConfig({
       ],
     },
   },
-
   runtimeConfig: {
     public: {
       firebaseConfig: {
@@ -32,6 +31,7 @@ export default defineNuxtConfig({
         authPassword: process.env.EMULATOR_AUTH_PASSWORD,
       },
       proposalPagePassword: process.env.DAISY_PAGE_PASSWORD,
+      googleApiKey: 'AIzaSyBoY2xcmPIWERU5qZVxl8BeXriNL0D4nTQ',
     },
   },
   css: ['@/assets/css/global.scss'],

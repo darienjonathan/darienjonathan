@@ -5,12 +5,13 @@
     "dev": "nuxi dev",
     "build": "nuxi build && yarn copy-types",
     "build:firebase": "NITRO_PRESET=firebase yarn build",
-    "deploy:firebase": "yarn build:firebase && firebase deploy --only hosting,functions:server",
+    "deploy:firebase": "yarn build:firebase && firebase deploy --only hosting,functions",
     "start": "node .output/server/index.mjs"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "^7.0.2",
     "@prettier/plugin-pug": "^1.17.3",
+    "@types/google.maps": "^3.50.4",
     "@types/highlightjs": "^9.12.2",
     "@types/markdown-it": "^12.2.3",
     "@types/node": "^18.7.8",
@@ -37,6 +38,7 @@
     "vue-tsc": "^0.40.13"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.14.3",
     "firebase": "^9.5.0",
     "firebaseui": "^6.0.0",
     "highlight.js": "^11.3.1",
