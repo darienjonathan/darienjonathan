@@ -30,6 +30,7 @@
         .phone-number__code {{ `+${phoneCodeNumber}` }}
         input.phone-number__input(
           type="text"
+          :value="phoneNumber"
           @input="handlePhoneNumberChange"
         )
     MInput.input(
@@ -42,7 +43,7 @@
         @change="handleGuestNumberChange"
       )
         option(
-          v-for="number in invitee?.maxGuestNumber"
+          v-for="number in invitee?.invitedGuestNumber"
           :value.num="number"
         ) {{ number }}
     MInput.input(
@@ -67,21 +68,26 @@
 <script lang="ts" setup>
 import { phoneCodeList } from '~/utils/phone'
 import MInput from '~/components/molecules/wedding/MInput.vue'
-import type { Invitee, InvitationType } from '~/types/model/wedding/invitee'
+import type { Invitee, InvitationType, InviteeRSVP } from '~/types/model/wedding/invitee'
 import { getIsReceptionInvitation } from '~/utils/wedding'
 
 type Props = {
   invitee: Invitee
+  inviteeRSVP: InviteeRSVP
 }
 
 const props = defineProps({
   invitee: {
     type: Object as () => Props['invitee'],
+    required: true,
+  },
+  inviteeRSVP: {
+    type: Object as () => Props['inviteeRSVP'],
     default: undefined,
   },
 })
 
-const emit = defineEmits<{ (e: 'submit', invitee: Partial<Invitee>): void }>()
+const emit = defineEmits<{ (e: 'submit', inviteeRSVP: InviteeRSVP): void }>()
 
 const isReceptionInvitation = computed(() =>
   getIsReceptionInvitation(props.invitee?.invitationType)
@@ -94,14 +100,14 @@ const isReceptionInvitation = computed(() =>
 const maxChildrenNumber = 1
 
 // We don't require RSVP for Holy Matrimony Attendance
-const isAttendingReception = ref<boolean | undefined>(undefined)
+const isAttendingReception = ref<boolean | undefined>()
 
 const handleChangeReceptionAttendance = (e: Event) => {
   const target = e.target as HTMLSelectElement
   isAttendingReception.value = target.value === 'true'
 }
 
-const phoneCodeNumber = ref<number | undefined>(phoneCodeList.find(c => c.isDefault)?.number)
+const phoneCodeNumber = ref<number>()
 const handlePhoneCodeChange = (e: Event) => {
   const target = e.target as HTMLSelectElement
   phoneCodeNumber.value = Number(target.value)
@@ -116,28 +122,50 @@ const handlePhoneNumberChange = (e: Event) => {
   isPhoneNumberError.value = isNaN(inputtedPhoneNumber)
 }
 
-const guestNumber = ref(1)
+const guestNumber = ref<number>()
 const handleGuestNumberChange = (e: Event) => {
   const target = e.target as HTMLInputElement
   guestNumber.value = Number(target.value)
 }
 
-const childrenNumber = ref(0)
+const childrenNumber = ref<number>()
 const handleChildrenNumberChange = (e: Event) => {
   const target = e.target as HTMLInputElement
   childrenNumber.value = Number(target.value)
 }
 
-const inviteeToSubmit = computed<Partial<Invitee>>(() => {
+// Form Initialization
+
+const initializeFormValues = () => {
+  isAttendingReception.value = !!props.inviteeRSVP?.attendance.length
+
+  const basePhoneNumber = props.inviteeRSVP?.phoneNumber || props.invitee?.databasePhoneNumber
+  const existingCode = phoneCodeList.find(c => basePhoneNumber?.includes(String(c.number)))
+  const defaultCode = phoneCodeList.find(c => c.isDefault)
+  phoneCodeNumber.value = existingCode?.number || defaultCode?.number
+
+  phoneNumber.value =
+    basePhoneNumber && existingCode
+      ? Number(basePhoneNumber.replace(`+${String(existingCode.number)}`, ''))
+      : undefined
+
+  guestNumber.value = props.inviteeRSVP?.guestNumber || props.invitee.invitedGuestNumber || 0
+
+  childrenNumber.value = props.inviteeRSVP?.childrenNumber || 0
+}
+onMounted(initializeFormValues)
+
+const inviteeRSVPToSubmit = computed<InviteeRSVP>(() => {
   const attendanceToSubmit: InvitationType[] = isAttendingReception.value ? ['reception'] : []
   const phoneNumberToSubmit = isAttendingReception.value
     ? `+${phoneCodeNumber.value || ''}${phoneNumber.value || ''}`
-    : undefined
-  const guestNumberToSubmit = isAttendingReception.value ? guestNumber.value : undefined
-  const childrenNumberToSubmit = isAttendingReception.value ? childrenNumber.value : undefined
+    : ''
+  const guestNumberToSubmit =
+    (isAttendingReception.value && guestNumber.value) || props.invitee?.invitedGuestNumber
+  const childrenNumberToSubmit =
+    (isAttendingReception.value && childrenNumber.value) || maxChildrenNumber
 
   return {
-    ...props.invitee,
     attendance: attendanceToSubmit,
     phoneNumber: phoneNumberToSubmit,
     guestNumber: guestNumberToSubmit,
@@ -147,13 +175,13 @@ const inviteeToSubmit = computed<Partial<Invitee>>(() => {
 
 const canSubmit = computed(() => {
   if (isAttendingReception.value === undefined) return false
-  if (!inviteeToSubmit.value.attendance?.length) return true
+  if (!inviteeRSVPToSubmit.value.attendance?.length) return true
   const minPhoneNumberLength = 9 // NOTE: 昔の電話番号は10桁で、0抜きで9桁になる
   return !!phoneNumber.value && String(phoneNumber.value).length >= minPhoneNumberLength
 })
 
 const handleSubmit = () => {
-  emit('submit', inviteeToSubmit.value)
+  emit('submit', inviteeRSVPToSubmit.value)
   // TODO: submit
 }
 </script>

@@ -45,8 +45,9 @@ const handleNavClick = () => {
 const invitee: Invitee = {
   name: 'Darien Jonathan',
   invitationType: 'reception',
-  maxGuestNumber: 2,
-} as Invitee
+  invitedGuestNumber: 2,
+  databasePhoneNumber: '+62812345678',
+}
 
 // --------------------------------------------------
 // Meta Tags

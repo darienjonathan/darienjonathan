@@ -3,7 +3,9 @@
 
 import { parseString, parseNumber, parseArray } from '~/types/model/parse'
 
+// Invitees that is invited to reception is considered to be invited to matrimony as well
 export type InvitationType = 'reception' | 'matrimony'
+
 export const parseInvitationType = (invitationType: any): InvitationType => {
   const stringifiedType = parseString(invitationType)
   if (stringifiedType === 'reception') return 'reception'
@@ -13,19 +15,27 @@ export const parseInvitationType = (invitationType: any): InvitationType => {
 export interface Invitee {
   name: string
   invitationType: InvitationType
-  attendance: InvitationType[]
-  phoneNumber: string
-  maxGuestNumber: number
-  guestNumber: number
-  childrenNumber: number
+  databasePhoneNumber: string
+  invitedGuestNumber: number
 }
 
 export const parseInvitee = (data: any): Invitee => ({
   name: parseString(data.name),
   invitationType: parseInvitationType(data.invitationType),
+  databasePhoneNumber: parseString(data.databasePhoneNumber),
+  invitedGuestNumber: parseNumber(data.invitedGuestNumber),
+})
+
+export interface InviteeRSVP {
+  attendance: InvitationType[]
+  phoneNumber: string
+  guestNumber: number
+  childrenNumber: number
+}
+
+export const parseInviteeRSVP = (data: any): InviteeRSVP => ({
   attendance: parseArray(data.attendance, parseInvitationType),
   phoneNumber: parseString(data.phoneNumber),
-  maxGuestNumber: parseNumber(data.maxGuestNumber),
   guestNumber: parseNumber(data.guestNumber),
   childrenNumber: parseNumber(data.childrenNumber),
 })
