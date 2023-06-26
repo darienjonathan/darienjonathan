@@ -13,6 +13,7 @@
         )
         AboutUs.about-us
         OurStory.our-story
+        Wishes.wishes
 </template>
 <script lang="ts" setup>
 import Hero from '~/components/organisms/wedding/Hero.vue'
@@ -21,6 +22,7 @@ import type { Invitee } from '~/types/model/wedding/invitee'
 import AboutUs from '~/components/organisms/wedding/AboutUs.vue'
 import MPageLoading from '~~/components/molecules/MPageLoading.vue'
 import OurStory from '~~/components/organisms/wedding/OurStory.vue'
+import Wishes from '~~/components/organisms/wedding/Wishes.vue'
 
 const isLoadingDone = ref(false)
 onMounted(() => {
@@ -104,7 +106,7 @@ definePageMeta({
 })
 export default {
   name: 'WeddingPage',
-  components: { MPageLoading, Hero, Events, AboutUs, OurStory },
+  components: { MPageLoading, Hero, Events, AboutUs, OurStory, Wishes },
 }
 </script>
 <style lang="scss" scoped>
