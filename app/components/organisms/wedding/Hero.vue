@@ -6,7 +6,8 @@
   .hero__content(:data-is-blur="isBlur")
     .kv
       .kv__invitation-type {{ invitationText }}
-      .kv__subheading {{ 'The Playlist of Grace:' }}
+      .kv__subheading.kv__subheading--jp {{ '恵みを語るメロディー' }}
+      .kv__subheading.kv__subheading--en {{ 'The Melody of Grace' }}
       .kv__heading {{ 'DARIEN & DAISY' }}
       .kv__line
       .kv__date {{ 'Saturday, 6 January 2024' }}
@@ -160,11 +161,19 @@ export default {
   }
 
   &__subheading {
-    @include font-family('rochester');
-    @include font($size: $font-xxxl, $letter-spacing: 1.5px);
-    white-space: pre;
-    text-align: center;
-    margin-bottom: 16px;
+    &--jp {
+      @include font-family('biz-ud-mincho');
+      @include font($size: $font-sm);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    &--en {
+      @include font-family('rochester');
+      @include font($size: $font-xxxl, $letter-spacing: 1.5px);
+      white-space: pre;
+      text-align: center;
+      margin-bottom: 32px;
+    }
   }
 
   &__heading {
