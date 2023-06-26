@@ -1,0 +1,70 @@
+<template lang="pug">
+AModal.story-modal(
+  :is-open="props.isOpen"
+  :width="isSP ? 'calc(100% - 50px)' : '75%'"
+  @close="$emit('close')"
+)
+  .inner
+    .heading
+      h2.heading__main {{ story.title }}
+    .content
+      img.content__thumbnail(:src="story.thumbnail")
+      .content__full-text
+        template(v-for="content in story.contents")
+          .content__paragraph {{ content }}
+</template>
+
+<script lang="ts" setup>
+import AModal from '~/components/atoms/AModal.vue'
+import ALoading from '~/components/atoms/ALoading.vue'
+import type { Story } from '~/types/model/wedding/story'
+
+type Props = {
+  isOpen: boolean
+  story: Story
+}
+
+const props = defineProps({
+  isOpen: {
+    type: Boolean as () => Props['isOpen'],
+    default: false,
+  },
+  story: {
+    type: Object as () => Props['story'],
+    required: true,
+  },
+})
+
+const { isSP } = useMedia()
+
+defineEmits(['close'])
+</script>
+<script lang="ts">
+export default {
+  name: 'StoryModal',
+  components: { AModal, ALoading },
+}
+</script>
+
+<style lang="scss" scoped>
+@import '@/assets/css/main';
+
+.heading {
+  & {
+    margin-bottom: 32px;
+  }
+}
+
+.content {
+  &__thumbnail {
+    max-width: 100%;
+    margin-bottom: 32px;
+  }
+
+  &__paragraph {
+    &:not(:last-child) {
+      margin-bottom: 8px;
+    }
+  }
+}
+</style>

@@ -3,7 +3,7 @@
   .heading__wrapper
     .heading {{ 'BRIDE & GROOM' }}
   .kv
-    .kv__main {{ 'So let’s briefly introduce the “why” of marriage to set you up to make a wise choice about the “who.” A home established on Matthew 6:33—“Seek first the kingdom of God and His righteousness, and all these things shall be added to you” (NKJV)—is a glorious thing.' }}
+    .kv__main {{ 'So let’s briefly introduce the “why” of marriage to set you up to make a wise choice about the “who.”\nA home established on Matthew 6:33—“Seek first the kingdom of God and His righteousness, and all these things shall be added to you” (NKJV)—\nis a glorious thing.' }}
     .kv__sub {{ 'Gary Thomas on "The Sacred Search"' }}
   .biodata
     .biodata__item
@@ -16,24 +16,6 @@
       .biodata__info
         .biodata__name {{ 'DAISY\nCHRISTINA' }}
         .biodata__parents {{ 'Second daughter of\nSie Manule &\nWilyanti Tjahjana' }}
-  .content
-    .content__heading {{ 'we both do same things in different ways:' }}
-    .content__item
-      .content__value {{ 'Idk what I\'m playing' }}
-      .content__label {{ 'Play Piano' }}
-      .content__value {{ 'Classical' }}
-    .content__item
-      .content__value {{ 'Natural Science,\nJapanese Language' }}
-      .content__label {{ 'Teach' }}
-      .content__value {{ 'Classical Piano,\nBasic Coding for Children' }}
-    .content__item
-      .content__value {{ 'Japan\n(2016 - 2021)' }}
-      .content__label {{ 'Lived Abroad\n(Long Live LDR!)' }}
-      .content__value {{ 'UK\n(2022 - 2023)' }}
-    .content__item
-      .content__value {{ 'Anime' }}
-      .content__label {{ 'Watch' }}
-      .content__value {{ 'K-Drama' }}
 </template>
 <script lang="ts" setup></script>
 <script lang="ts">
@@ -78,6 +60,7 @@ export default {
   }
 
   &__main {
+    white-space: pre-line;
     @include pc {
       margin-bottom: 8px;
     }
@@ -153,66 +136,6 @@ export default {
     }
     @include sp {
       @include font($size: $font-sm, $line-height: $line-height);
-    }
-  }
-}
-
-.content {
-  & {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  &__heading {
-    @include font-family('marcellus');
-    text-align: center;
-    margin-bottom: 20px;
-    @include sp {
-      @include font($size: $font-sm);
-    }
-  }
-
-  &__item {
-    display: grid;
-    padding: 10px 0;
-    align-items: center;
-    text-align: center;
-    @include pc {
-      grid-template-columns: 1fr 175px 1fr;
-    }
-    @include sp {
-      grid-template-columns: 1fr 120px 1fr;
-    }
-    &:nth-child(odd) {
-      background-color: rgba($white, 0.15);
-      box-shadow: 0 0 5px rgba($white, 0.15);
-    }
-  }
-
-  &__label {
-    white-space: pre-line;
-    @include pc {
-      padding: 0 12px;
-    }
-    @include sp {
-      padding: 0 10px;
-    }
-  }
-
-  &__value {
-    @include font($size: $font-sm);
-    @include pc {
-      padding: 0 12px;
-    }
-    @include sp {
-      padding: 0 10px;
-      white-space: pre-line;
-    }
-    &:first-child {
-      text-align: right;
-    }
-    &:last-child {
-      text-align: left;
     }
   }
 }

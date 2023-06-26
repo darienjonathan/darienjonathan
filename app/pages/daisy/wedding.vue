@@ -12,6 +12,7 @@
           ref="eventsElementRef"
         )
         AboutUs.about-us
+        OurStory.our-story
 </template>
 <script lang="ts" setup>
 import Hero from '~/components/organisms/wedding/Hero.vue'
@@ -19,6 +20,7 @@ import Events from '~/components/organisms/wedding/Events.vue'
 import type { Invitee } from '~/types/model/wedding/invitee'
 import AboutUs from '~/components/organisms/wedding/AboutUs.vue'
 import MPageLoading from '~~/components/molecules/MPageLoading.vue'
+import OurStory from '~~/components/organisms/wedding/OurStory.vue'
 
 const isLoadingDone = ref(false)
 onMounted(() => {
@@ -102,7 +104,7 @@ definePageMeta({
 })
 export default {
   name: 'WeddingPage',
-  components: { MPageLoading, Hero, Events, AboutUs },
+  components: { MPageLoading, Hero, Events, AboutUs, OurStory },
 }
 </script>
 <style lang="scss" scoped>
@@ -122,6 +124,15 @@ export default {
     position: relative;
   }
 
+  .events,
+  .about-us {
+    padding: 60px 20px;
+  }
+
+  .our-story {
+    padding: 60px 40px;
+  }
+
   .events {
     background-image: linear-gradient(
       to bottom,
@@ -130,11 +141,6 @@ export default {
       rgba($wedding_brown, 1) calc(100% - 20px),
       transparent
     );
-    padding: 60px 20px;
-  }
-
-  .about-us {
-    padding: 60px 0;
   }
 }
 </style>
