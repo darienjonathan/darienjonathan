@@ -18,13 +18,13 @@ AModal.confirm-rsvp-modal(
       template(v-if="isReceptionInvitation")
         .content__item
           .content__label Phone number
-          .content__value {{ invitee.phoneNumber }}
+          .content__value {{ inviteeRSVP.phoneNumber }}
         .content__item
           .content__label Number of guests (adult)
-          .content__value {{ invitee.guestNumber }}
+          .content__value {{ inviteeRSVP.guestNumber }}
         .content__item
           .content__label Number of guests (children)
-          .content__value {{ invitee.childrenNumber }}
+          .content__value {{ inviteeRSVP.childrenNumber }}
     button.submit-btn(
       @click="handleConfirmRSVP"
       :disabled="isRequesting"
@@ -49,14 +49,15 @@ AModal.confirm-rsvp-modal(
 <script lang="ts" setup>
 import AModal from '~/components/atoms/AModal.vue'
 import useMedia from '~/composables/useMedia'
-import type { Invitee } from '~/types/model/wedding/invitee'
+import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
 import ALoading from '~/components/atoms/ALoading.vue'
 
 const { isSP } = useMedia()
 
 type Props = {
   isOpen: boolean
-  invitee: Partial<Invitee>
+  invitee: Invitee
+  inviteeRSVP: InviteeRSVP
 }
 
 const props = defineProps({
@@ -68,11 +69,15 @@ const props = defineProps({
     type: Object as () => Props['invitee'],
     required: true,
   },
+  inviteeRSVP: {
+    type: Object as () => Props['inviteeRSVP'],
+    required: true,
+  },
 })
 
 const emit = defineEmits(['close'])
 
-const isAttendingReception = computed(() => props.invitee.attendance?.includes('reception'))
+const isAttendingReception = computed(() => props.inviteeRSVP.attendance.includes('reception'))
 
 const attendanceValueText = computed(() =>
   isAttendingReception.value ? 'Attending' : 'Not Attending'

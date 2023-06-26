@@ -30,21 +30,23 @@
         .rsvp__note 
           .rsvp__note-text.rsvp__note-text--focus {{ 'Unconfirmed attendance is considered as not attending.' }}
           .rsvp__note-text {{ ' We thank you for your kind understanding.' }}
-      RSVPForm.rsvp__form(
-        :invitee="invitee"
-        @submit="handleSubmitRSVP"
-      )
-  ConfirmRSVPModal(
-    v-if="!!inviteeToRSVP"
-    :is-open="isConfirmRSVPModalOpen"
-    :invitee="inviteeToRSVP"
-    @close="handleCancelRSVPSubmission"
-  )
+      template(v-if="invitee")
+        RSVPForm.rsvp__form(
+          :invitee="invitee"
+          @submit="handleSubmitRSVP"
+        )
+  template(v-if="invitee && inviteeRSVP")
+    ConfirmRSVPModal(
+      :is-open="isConfirmRSVPModalOpen"
+      :invitee="invitee"
+      :inviteeRSVP="inviteeRSVP"
+      @close="handleCancelRSVPSubmission"
+    )
 </template>
 <script lang="ts" setup>
 import useMap from '~/composables/wedding/useMap'
 import RSVPForm from '~/components/organisms/wedding/RSVPForm.vue'
-import type { Invitee } from '~/types/model/wedding/invitee'
+import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
 import {
   getIsMatrimonyInvitation,
   getIsReceptionInvitation,
@@ -92,14 +94,14 @@ const rsvpText = computed(() => {
 const { receptionMapElementRef, holyMatrimonyMapElementRef } = useMap()
 
 const isConfirmRSVPModalOpen = ref(false)
-const inviteeToRSVP = ref<Partial<Invitee>>()
-const handleSubmitRSVP = (invitee: Partial<Invitee>) => {
+const inviteeRSVP = ref<InviteeRSVP>()
+const handleSubmitRSVP = (invitee: InviteeRSVP) => {
   isConfirmRSVPModalOpen.value = true
-  inviteeToRSVP.value = invitee
+  inviteeRSVP.value = invitee
 }
 const handleCancelRSVPSubmission = () => {
   isConfirmRSVPModalOpen.value = false
-  inviteeToRSVP.value = undefined
+  inviteeRSVP.value = undefined
 }
 </script>
 <script lang="ts">

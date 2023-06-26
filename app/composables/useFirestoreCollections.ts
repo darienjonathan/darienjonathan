@@ -8,6 +8,12 @@ import {
   parseQuestion as parseDaisyProposalQuestion,
   Question as DaisyProposalQuestion,
 } from '~/types/model/others/daisy/proposal'
+import {
+  Invitee,
+  parseInvitee,
+  InviteeRSVP,
+  parseInviteeRSVP,
+} from '~~/types/model/wedding/invitee'
 
 const useFirestoreCollections = () => {
   const usePosts = () => useFirestore<Post>('posts', parsePost)
@@ -19,8 +25,18 @@ const useFirestoreCollections = () => {
   const useUserInfo = () => useFirestore<UserInfo>('userInfo', parseUserInfo)
   const useRoles = () => useFirestore<Role>('roles', parseRole)
 
+  // Proposal
   const useProposalQuestions = () =>
     useFirestore<DaisyProposalQuestion>('daisy-proposal', parseDaisyProposalQuestion)
+
+  // Wedding
+  const useInvitees = () => {
+    useFirestore<Invitee>('invitees', parseInvitee)
+  }
+  const useInviteeRSVP = () => {
+    useFirestore<InviteeRSVP>('invitee-rsvp', parseInviteeRSVP)
+  }
+
   return {
     usePosts,
     usePostComments,
@@ -30,6 +46,8 @@ const useFirestoreCollections = () => {
     useUserInfo,
     useRoles,
     useProposalQuestions,
+    useInvitees,
+    useInviteeRSVP,
   }
 }
 
