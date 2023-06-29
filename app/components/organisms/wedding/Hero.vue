@@ -21,13 +21,13 @@ import type { InvitationType } from '~/types/model/wedding/invitee'
 import { getIsReceptionInvitation, getIsMatrimonyInvitation } from '~/utils/wedding'
 
 type Props = {
-  invitationType: InvitationType
+  invitationType?: InvitationType
 }
 
 const props = defineProps({
   invitationType: {
     type: String as () => Props['invitationType'],
-    default: 'reception',
+    default: undefined,
   },
 })
 
