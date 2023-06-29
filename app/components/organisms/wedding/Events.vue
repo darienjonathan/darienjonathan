@@ -55,13 +55,13 @@ import {
 import ConfirmRSVPModal from '~/components/organisms/wedding/ConfirmRSVPModal.vue'
 
 type Props = {
-  invitee?: Invitee
+  invitee: Invitee | null
 }
 
 const props = defineProps({
   invitee: {
     type: Object as () => Props['invitee'],
-    default: undefined,
+    default: null,
   },
 })
 
