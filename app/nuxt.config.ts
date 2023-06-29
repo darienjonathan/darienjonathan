@@ -31,7 +31,7 @@ export default defineNuxtConfig({
         authPassword: process.env.EMULATOR_AUTH_PASSWORD,
       },
       proposalPagePassword: process.env.DAISY_PAGE_PASSWORD,
-      googleApiKey: 'AIzaSyBoY2xcmPIWERU5qZVxl8BeXriNL0D4nTQ',
+      googleApiKey: process.env.GOOGLE_MAPS_API_KEY,
     },
   },
   css: ['@/assets/css/global.scss'],
