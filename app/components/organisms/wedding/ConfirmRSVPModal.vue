@@ -51,6 +51,9 @@ import AModal from '~/components/atoms/AModal.vue'
 import useMedia from '~/composables/useMedia'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
 import ALoading from '~/components/atoms/ALoading.vue'
+import useUid from '~/composables/wedding/useUid'
+
+const { uid } = useUid()
 
 const { isSP } = useMedia()
 
@@ -83,16 +86,14 @@ const attendanceValueText = computed(() =>
   isAttendingReception.value ? 'Attending' : 'Not Attending'
 )
 
+const { useInviteeRSVP } = useFirestoreCollections()
+const inviteeRSVPFirestore = useInviteeRSVP()
+
 const isRequesting = ref(false)
 const isRequestCompleted = ref(false)
 const hasError = ref(false)
 
 const shouldCloseModal = computed(() => isRequestCompleted.value && !hasError.value)
-
-const request = (isError: boolean, time: number) =>
-  new Promise((resolve, reject) => {
-    setTimeout(isError ? reject : resolve, time)
-  })
 
 const handleConfirmRSVP = () => {
   if (shouldCloseModal.value) {
@@ -100,9 +101,15 @@ const handleConfirmRSVP = () => {
     return
   }
 
+  if (!uid.value) {
+    hasError.value = true
+    return
+  }
+
   isRequesting.value = true
-  // TODO: confirm RSVP
-  request(true, 3000)
+
+  inviteeRSVPFirestore
+    .set(uid.value, props.inviteeRSVP)
     .catch(() => {
       hasError.value = true
     })
