@@ -3,7 +3,7 @@
   MPageLoading(:is-loading="!isLoadingDone")
     .wrapper
       Hero.hero(
-        :invitation-type="invitee.invitationType"
+        :invitation-type="invitee?.invitationType"
         @nav-click="handleNavClick"
       )
       .content
@@ -23,6 +23,7 @@ import AboutUs from '~/components/organisms/wedding/AboutUs.vue'
 import MPageLoading from '~~/components/molecules/MPageLoading.vue'
 import OurStory from '~~/components/organisms/wedding/OurStory.vue'
 import Wishes from '~~/components/organisms/wedding/Wishes.vue'
+import useUid from '~~/composables/wedding/useUid'
 
 const isLoadingDone = ref(false)
 onMounted(() => {
@@ -42,12 +43,33 @@ const handleNavClick = () => {
 // User Data
 // --------------------------------------------------
 
-const invitee: Invitee = {
+const { uid } = useUid()
+const { useInvitees } = useFirestoreCollections()
+const inviteesFirestore = useInvitees()
+
+// TODO: remove dummy invitee
+const dummyInvitee: Invitee = {
   name: 'Darien Jonathan',
   invitationType: 'reception',
-  invitedGuestNumber: 2,
+  adultGuestNumber: 2,
+  childrenGuestNumber: 0,
   databasePhoneNumber: '+62812345678',
 }
+
+const invitee = ref<Invitee | null>(dummyInvitee)
+
+watch(
+  uid,
+  async () => {
+    if (!uid.value) return
+
+    const fetchedInvitee = await inviteesFirestore.loadDocument(uid.value)
+    invitee.value = fetchedInvitee
+  },
+  {
+    immediate: true,
+  }
+)
 
 // --------------------------------------------------
 // Meta Tags

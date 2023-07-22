@@ -30,12 +30,8 @@ const useFirestoreCollections = () => {
     useFirestore<DaisyProposalQuestion>('daisy-proposal', parseDaisyProposalQuestion)
 
   // Wedding
-  const useInvitees = () => {
-    useFirestore<Invitee>('invitees', parseInvitee)
-  }
-  const useInviteeRSVP = () => {
-    useFirestore<InviteeRSVP>('invitee-rsvp', parseInviteeRSVP)
-  }
+  const useInvitees = () => useFirestore<Invitee>('invitees', parseInvitee)
+  const useInviteeRSVP = () => useFirestore<InviteeRSVP>('inviteeRSVP', parseInviteeRSVP)
 
   return {
     usePosts,

@@ -34,31 +34,32 @@
           @input="handlePhoneNumberChange"
         )
     MInput.input(
-      :label="'Number of Guests'"
+      :label="'Number of Guests (Adult)'"
       :note-text="'※ over 12 years old, including yourself'"
     )
       select.input__item.input__item--phone(
-        name="guestNumber"
-        :value="guestNumber"
-        @change="handleGuestNumberChange"
+        name="adultGuestNumber"
+        :value="adultGuestNumber"
+        @change="handleAdultGuestNumberChange"
       )
         option(
-          v-for="number in invitee?.invitedGuestNumber"
+          v-for="number in invitee?.adultGuestNumber"
           :value.num="number"
         ) {{ number }}
-    MInput.input(
-      :label="'Number of Children'"
-      :note-text="'※ max. 12 years old'"
-    )
-      select.input__item.input__item--phone(
-        name="guestNumber"
-        :value="childrenNumber"
-        @change="handleChildrenNumberChange"
+    template(v-if="invitee?.childrenGuestNumber")
+      MInput.input(
+        :label="'Number of Guests (Children)'"
+        :note-text="'※ max. 12 years old'"
       )
-        option(
-          v-for="number in maxChildrenNumber + 1"
-          :value.num="number - 1"
-        ) {{ number - 1 }}
+        select.input__item.input__item--phone(
+          name="childrenGuestNumber"
+          :value="childrenGuestNumber"
+          @change="handleChildrenGuestNumberChange"
+        )
+          option(
+            v-for="number in invitee?.childrenGuestNumber"
+            :value.num="number"
+          ) {{ number }}
   .note {{ '※ Your data will only be used for RSVP purposes. The data will be deleted after the events conclude.' }}
   button.button(
     @click="handleSubmit"
@@ -97,8 +98,6 @@ const isReceptionInvitation = computed(() =>
 // Form
 // --------------------------------------------------
 
-const maxChildrenNumber = 1
-
 // We don't require RSVP for Holy Matrimony Attendance
 const isAttendingReception = ref<boolean | undefined>()
 
@@ -122,16 +121,16 @@ const handlePhoneNumberChange = (e: Event) => {
   isPhoneNumberError.value = isNaN(inputtedPhoneNumber)
 }
 
-const guestNumber = ref<number>()
-const handleGuestNumberChange = (e: Event) => {
+const adultGuestNumber = ref<number>()
+const handleAdultGuestNumberChange = (e: Event) => {
   const target = e.target as HTMLInputElement
-  guestNumber.value = Number(target.value)
+  adultGuestNumber.value = Number(target.value)
 }
 
-const childrenNumber = ref<number>()
-const handleChildrenNumberChange = (e: Event) => {
+const childrenGuestNumber = ref<number>()
+const handleChildrenGuestNumberChange = (e: Event) => {
   const target = e.target as HTMLInputElement
-  childrenNumber.value = Number(target.value)
+  childrenGuestNumber.value = Number(target.value)
 }
 
 // Form Initialization
@@ -149,9 +148,11 @@ const initializeFormValues = () => {
       ? Number(basePhoneNumber.replace(`+${String(existingCode.number)}`, ''))
       : undefined
 
-  guestNumber.value = props.inviteeRSVP?.guestNumber || props.invitee.invitedGuestNumber || 0
+  adultGuestNumber.value =
+    props.inviteeRSVP?.adultGuestNumber || props.invitee.adultGuestNumber || 0
 
-  childrenNumber.value = props.inviteeRSVP?.childrenNumber || 0
+  childrenGuestNumber.value =
+    props.inviteeRSVP?.childrenGuestNumber || props.invitee.childrenGuestNumber || 0
 }
 onMounted(initializeFormValues)
 
@@ -160,16 +161,14 @@ const inviteeRSVPToSubmit = computed<InviteeRSVP>(() => {
   const phoneNumberToSubmit = isAttendingReception.value
     ? `+${phoneCodeNumber.value || ''}${phoneNumber.value || ''}`
     : ''
-  const guestNumberToSubmit =
-    (isAttendingReception.value && guestNumber.value) || props.invitee?.invitedGuestNumber
-  const childrenNumberToSubmit =
-    (isAttendingReception.value && childrenNumber.value) || maxChildrenNumber
+  const adultGuestNumberToSubmit = (isAttendingReception.value && adultGuestNumber.value) || 0
+  const childrenGuestNumberToSubmit = (isAttendingReception.value && childrenGuestNumber.value) || 0
 
   return {
     attendance: attendanceToSubmit,
     phoneNumber: phoneNumberToSubmit,
-    guestNumber: guestNumberToSubmit,
-    childrenNumber: childrenNumberToSubmit,
+    adultGuestNumber: adultGuestNumberToSubmit,
+    childrenGuestNumber: childrenGuestNumberToSubmit,
   }
 })
 
