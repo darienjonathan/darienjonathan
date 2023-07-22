@@ -20,21 +20,21 @@
           .location__name {{ 'Sailendra Restaurant -\nJW Marriott Hotel Jakarta' }}
           .location__date {{ 'Saturday, 6 January 2024, 18:00 WIB' }}
         .location__map(ref="receptionMapElementRef")
-  .content
-    .content__heading {{ 'RECEPTION DINNER RSVP' }}
-    .content__item
-      .rsvp__info
-        .rsvp__description
-          span.rsvp__description-text {{ rsvpText }}
-          span.rsvp__description-text.rsvp__description-text--focus {{ 'November 30, 2023.' }}
-        .rsvp__note 
-          .rsvp__note-text.rsvp__note-text--focus {{ 'Unconfirmed attendance is considered as not attending.' }}
-          .rsvp__note-text {{ ' We thank you for your kind understanding.' }}
-      template(v-if="invitee")
-        RSVPForm.rsvp__form(
-          :invitee="invitee"
-          @submit="handleSubmitRSVP"
-        )
+    .content
+      .content__heading {{ 'RECEPTION DINNER RSVP' }}
+      .content__item
+        .rsvp__info
+          .rsvp__description
+            span.rsvp__description-text {{ rsvpText }}
+            span.rsvp__description-text.rsvp__description-text--focus {{ 'November 30, 2023.' }}
+          .rsvp__note 
+            .rsvp__note-text.rsvp__note-text--focus {{ 'Unconfirmed attendance is considered as not attending.' }}
+            .rsvp__note-text {{ ' We thank you for your kind understanding.' }}
+        template(v-if="invitee")
+          RSVPForm.rsvp__form(
+            :invitee="invitee"
+            @submit="handleSubmitRSVP"
+          )
   template(v-if="invitee && inviteeRSVP")
     ConfirmRSVPModal(
       :is-open="isConfirmRSVPModalOpen"
