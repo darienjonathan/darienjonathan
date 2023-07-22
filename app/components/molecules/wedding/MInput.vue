@@ -46,7 +46,7 @@ export default {
   display: grid;
   grid-template-areas:
     'label item'
-    '. notes';
+    'label notes';
   gap: 4px 0;
   @include pc {
     grid-template-columns: 140px 1fr;
