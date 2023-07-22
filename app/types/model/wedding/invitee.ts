@@ -16,26 +16,28 @@ export interface Invitee {
   name: string
   invitationType: InvitationType
   databasePhoneNumber: string
-  invitedGuestNumber: number
+  adultGuestNumber: number
+  childrenGuestNumber: number
 }
 
 export const parseInvitee = (data: any): Invitee => ({
   name: parseString(data.name),
   invitationType: parseInvitationType(data.invitationType),
   databasePhoneNumber: parseString(data.databasePhoneNumber),
-  invitedGuestNumber: parseNumber(data.invitedGuestNumber),
+  adultGuestNumber: parseNumber(data.adultGuestNumber),
+  childrenGuestNumber: parseNumber(data.childrenGuestNumber),
 })
 
 export interface InviteeRSVP {
   attendance: InvitationType[]
   phoneNumber: string
-  guestNumber: number
-  childrenNumber: number
+  adultGuestNumber: number
+  childrenGuestNumber: number
 }
 
 export const parseInviteeRSVP = (data: any): InviteeRSVP => ({
   attendance: parseArray(data.attendance, parseInvitationType),
   phoneNumber: parseString(data.phoneNumber),
-  guestNumber: parseNumber(data.guestNumber),
-  childrenNumber: parseNumber(data.childrenNumber),
+  adultGuestNumber: parseNumber(data.adultGuestNumber),
+  childrenGuestNumber: parseNumber(data.childrenGuestNumber),
 })

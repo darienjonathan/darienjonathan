@@ -51,7 +51,8 @@ const inviteesFirestore = useInvitees()
 const dummyInvitee: Invitee = {
   name: 'Darien Jonathan',
   invitationType: 'reception',
-  invitedGuestNumber: 2,
+  adultGuestNumber: 2,
+  childrenGuestNumber: 0,
   databasePhoneNumber: '+62812345678',
 }
 

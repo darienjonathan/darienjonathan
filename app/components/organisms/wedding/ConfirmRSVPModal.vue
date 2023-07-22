@@ -21,10 +21,10 @@ AModal.confirm-rsvp-modal(
           .content__value {{ inviteeRSVP.phoneNumber }}
         .content__item
           .content__label Number of guests (adult)
-          .content__value {{ inviteeRSVP.guestNumber }}
+          .content__value {{ inviteeRSVP.adultGuestNumber }}
         .content__item
           .content__label Number of guests (children)
-          .content__value {{ inviteeRSVP.childrenNumber }}
+          .content__value {{ inviteeRSVP.childrenGuestNumber }}
     button.submit-btn(
       @click="handleConfirmRSVP"
       :disabled="isRequesting"
