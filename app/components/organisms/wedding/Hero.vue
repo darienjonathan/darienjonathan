@@ -11,10 +11,10 @@
       .kv__heading {{ 'DARIEN & DAISY' }}
       .kv__line
       .kv__date {{ 'Saturday, 6 January 2024' }}
-      template(v-if="isReceptionInvitation || isMatrimonyInvitation")
+      template(v-if="navText")
         .kv__rsvp-btn
           .rsvp-btn__icon.material-icons-outlined expand_more
-          .rsvp-btn__text(@click="emit('navClick')") {{ 'Events and RSVP' }}
+          .rsvp-btn__text(@click="emit('navClick')") {{ navText }}
 </template>
 <script lang="ts" setup>
 import type { InvitationType } from '~/types/model/wedding/invitee'
@@ -70,6 +70,12 @@ onMounted(() => {
 onUnmounted(() => {
   if (!observerInstance.value) return
   observerInstance.value.disconnect()
+})
+
+const navText = computed(() => {
+  if (isReceptionInvitation.value) return 'Events and RSVP'
+  if (isMatrimonyInvitation.value) return 'Events'
+  return ''
 })
 </script>
 <script lang="ts">
