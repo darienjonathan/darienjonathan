@@ -31,7 +31,7 @@ const useFirestoreCollections = () => {
 
   // Wedding
   const useInvitees = () => useFirestore<Invitee>('invitees', parseInvitee)
-  const useInviteeRSVP = () => useFirestore<InviteeRSVP>('invitee-rsvp', parseInviteeRSVP)
+  const useInviteeRSVP = () => useFirestore<InviteeRSVP>('inviteeRSVP', parseInviteeRSVP)
 
   return {
     usePosts,
