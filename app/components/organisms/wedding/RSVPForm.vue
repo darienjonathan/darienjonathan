@@ -56,6 +56,7 @@
           :value="childrenGuestNumber"
           @change="handleChildrenGuestNumberChange"
         )
+          option(:value.num="0") {{ 0 }}
           option(
             v-for="number in invitee?.childrenGuestNumber"
             :value.num="number"
@@ -151,10 +152,10 @@ const initializeFormValues = () => {
       : undefined
 
   adultGuestNumber.value =
-    props.inviteeRSVP?.adultGuestNumber || props.invitee.adultGuestNumber || 0
+    props.inviteeRSVP?.adultGuestNumber ?? props.invitee.adultGuestNumber ?? 0
 
   childrenGuestNumber.value =
-    props.inviteeRSVP?.childrenGuestNumber || props.invitee.childrenGuestNumber || 0
+    props.inviteeRSVP?.childrenGuestNumber ?? props.invitee.childrenGuestNumber ?? 0
 }
 onMounted(initializeFormValues)
 
@@ -173,7 +174,17 @@ const inviteeRSVPToSubmit = computed<InviteeRSVP>(() => {
   }
 })
 
+const hasChange = computed(() => {
+  return !(
+    inviteeRSVPToSubmit.value.isAttendingReception === props.inviteeRSVP?.isAttendingReception &&
+    inviteeRSVPToSubmit.value.childrenGuestNumber === props.inviteeRSVP?.childrenGuestNumber &&
+    inviteeRSVPToSubmit.value.adultGuestNumber === props.inviteeRSVP?.adultGuestNumber &&
+    inviteeRSVPToSubmit.value.phoneNumber === props.inviteeRSVP?.phoneNumber
+  )
+})
+
 const canSubmit = computed(() => {
+  if (!hasChange.value) return false
   if (isAttendingReception.value === undefined) return false
   if (isAttendingReception.value === false) return true
   const minPhoneNumberLength = 9 // NOTE: 昔の電話番号は10桁で、0抜きで9桁になる

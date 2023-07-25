@@ -155,7 +155,7 @@ export default {
     margin-bottom: 8px;
     @include pc {
       display: grid;
-      grid-template-columns: 140px 1fr;
+      grid-template-columns: 250px 1fr;
     }
   }
   &__label {

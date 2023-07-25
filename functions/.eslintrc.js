@@ -29,6 +29,7 @@ module.exports = {
     'import/no-unresolved': 0,
     'object-curly-spacing': 0,
     '@typescript-eslint/explicit-module-boundary-types': 0
+    '@typescript-eslint/no-unused-vars': ['error', { "varsIgnorePattern": "^_.+" }]
   },
   ignorePatterns: ['/dist/**/*', '.eslintrc.js']
 };
