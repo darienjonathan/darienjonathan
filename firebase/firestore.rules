@@ -135,7 +135,7 @@ service cloud.firestore {
 
     match /inviteeRSVP/{inviteeRSVPUid} {
       allow read: if true;
-      allow update: if exists(/databases/$(database)/documents/invitee/$(inviteeRSVPUid));
+      allow write: if exists(/databases/$(database)/documents/invitees/$(inviteeRSVPUid));
     }
 
     // Super Admin
