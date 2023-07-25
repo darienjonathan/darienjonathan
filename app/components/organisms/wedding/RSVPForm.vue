@@ -56,6 +56,7 @@
           :value="childrenGuestNumber"
           @change="handleChildrenGuestNumberChange"
         )
+          option(:value.num="0") {{ 0 }}
           option(
             v-for="number in invitee?.childrenGuestNumber"
             :value.num="number"
