@@ -4,6 +4,7 @@ import { parsePost, parsePostComment, Post, PostComment } from '~/types/model/bl
 import { parseRole, Role } from '~/types/model/blog/role'
 import { parseTag, Tag } from '~/types/model/blog/tag'
 import { parseUser, parseUserInfo, User, UserInfo } from '~/types/model/user'
+import { Invitee, parseInvitee, InviteeRSVP, parseInviteeRSVP } from '~/types/model/wedding/invitee'
 
 const posts = () => new FirestoreWrapper<Post>('posts', 'posts/{postUid}', parsePost)
 const postComments = (postId: string) =>
@@ -19,4 +20,10 @@ const userInfo = () =>
   new FirestoreWrapper<UserInfo>('userInfo', 'userInfo/{userUid}', parseUserInfo)
 const roles = () => new FirestoreWrapper<Role>('roles', 'roles/{roleUid}', parseRole)
 
-export { posts, postComments, medias, tags, users, userInfo, roles }
+// Wedding
+const invitees = () =>
+  new FirestoreWrapper<Invitee>('invitees', 'invitees/{inviteesUid}', parseInvitee)
+const inviteeRSVP = () =>
+  new FirestoreWrapper<InviteeRSVP>('inviteeRSVP', 'inviteeRSVP/{inviteeRSVPUid}', parseInviteeRSVP)
+
+export { posts, postComments, medias, tags, users, userInfo, roles, invitees, inviteeRSVP }

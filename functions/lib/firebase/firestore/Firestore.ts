@@ -152,7 +152,13 @@ class FirestoreCollection<T extends Record<string, any>> {
     return this.ref.doc(id).update({ [key]: val })
   }
 
-  public bulkDelete(ids: string[]) {
+  public bulkDelete(ids: string[]): Promise<FirebaseFirestore.WriteResult[]> {
+    if (ids.length > BULK_MAX_SIZE) {
+      const head = ids.slice(0, BULK_MAX_SIZE)
+      const tail = ids.slice(BULK_MAX_SIZE)
+      return this.bulkDelete(head).then(() => this.bulkDelete(tail))
+    }
+
     const batch = FirestoreCollection.batch()
     ids.forEach(id => {
       const ref = this.ref.doc(id)
@@ -169,7 +175,12 @@ class FirestoreCollection<T extends Record<string, any>> {
     })
   }
 
-  public bulkInsert(data: T[]) {
+  public bulkInsert(data: T[]): Promise<FirebaseFirestore.WriteResult[]> {
+    if (data.length > BULK_MAX_SIZE) {
+      const head = data.slice(0, BULK_MAX_SIZE)
+      const tail = data.slice(BULK_MAX_SIZE)
+      return this.bulkInsert(head).then(() => this.bulkInsert(tail))
+    }
     const batch = FirestoreCollection.batch()
     data.forEach(row => {
       const ref = this.ref.doc()
