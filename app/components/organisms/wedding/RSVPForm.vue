@@ -152,10 +152,10 @@ const initializeFormValues = () => {
       : undefined
 
   adultGuestNumber.value =
-    props.inviteeRSVP?.adultGuestNumber || props.invitee.adultGuestNumber || 0
+    props.inviteeRSVP?.adultGuestNumber ?? props.invitee.adultGuestNumber ?? 0
 
   childrenGuestNumber.value =
-    props.inviteeRSVP?.childrenGuestNumber || props.invitee.childrenGuestNumber || 0
+    props.inviteeRSVP?.childrenGuestNumber ?? props.invitee.childrenGuestNumber ?? 0
 }
 onMounted(initializeFormValues)
 
