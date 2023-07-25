@@ -33,13 +33,14 @@
         template(v-if="invitee")
           RSVPForm.rsvp__form(
             :invitee="invitee"
+            :inviteeRSVP="databaseInviteeRSVP"
             @submit="handleSubmitRSVP"
           )
-  template(v-if="invitee && inviteeRSVP")
+  template(v-if="invitee && inviteeRSVPToSubmit")
     ConfirmRSVPModal(
       :is-open="isConfirmRSVPModalOpen"
       :invitee="invitee"
-      :inviteeRSVP="inviteeRSVP"
+      :inviteeRSVP="inviteeRSVPToSubmit"
       @close="handleCancelRSVPSubmission"
     )
 </template>
@@ -56,11 +57,16 @@ import ConfirmRSVPModal from '~/components/organisms/wedding/ConfirmRSVPModal.vu
 
 type Props = {
   invitee: Invitee | null
+  databaseInviteeRSVP: InviteeRSVP | null
 }
 
 const props = defineProps({
   invitee: {
     type: Object as () => Props['invitee'],
+    default: null,
+  },
+  databaseInviteeRSVP: {
+    type: Object as () => Props['databaseInviteeRSVP'],
     default: null,
   },
 })
@@ -94,14 +100,14 @@ const rsvpText = computed(() => {
 const { receptionMapElementRef, holyMatrimonyMapElementRef } = useMap()
 
 const isConfirmRSVPModalOpen = ref(false)
-const inviteeRSVP = ref<InviteeRSVP>()
-const handleSubmitRSVP = (invitee: InviteeRSVP) => {
+const inviteeRSVPToSubmit = ref<InviteeRSVP>()
+const handleSubmitRSVP = (inviteeRSVP: InviteeRSVP) => {
   isConfirmRSVPModalOpen.value = true
-  inviteeRSVP.value = invitee
+  inviteeRSVPToSubmit.value = inviteeRSVP
 }
 const handleCancelRSVPSubmission = () => {
   isConfirmRSVPModalOpen.value = false
-  inviteeRSVP.value = undefined
+  inviteeRSVPToSubmit.value = undefined
 }
 </script>
 <script lang="ts">

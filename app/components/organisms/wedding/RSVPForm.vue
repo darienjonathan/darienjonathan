@@ -69,12 +69,12 @@
 <script lang="ts" setup>
 import { phoneCodeList } from '~/utils/phone'
 import MInput from '~/components/molecules/wedding/MInput.vue'
-import type { Invitee, InvitationType, InviteeRSVP } from '~/types/model/wedding/invitee'
+import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
 import { getIsReceptionInvitation } from '~/utils/wedding'
 
 type Props = {
   invitee: Invitee
-  inviteeRSVP: InviteeRSVP
+  inviteeRSVP: InviteeRSVP | null
 }
 
 const props = defineProps({
@@ -84,7 +84,7 @@ const props = defineProps({
   },
   inviteeRSVP: {
     type: Object as () => Props['inviteeRSVP'],
-    default: undefined,
+    default: null,
   },
 })
 
@@ -136,7 +136,9 @@ const handleChildrenGuestNumberChange = (e: Event) => {
 // Form Initialization
 
 const initializeFormValues = () => {
-  isAttendingReception.value = !!props.inviteeRSVP?.attendance.length
+  isAttendingReception.value = props.inviteeRSVP
+    ? props.inviteeRSVP.isAttendingReception
+    : undefined
 
   const basePhoneNumber = props.inviteeRSVP?.phoneNumber || props.invitee?.databasePhoneNumber
   const existingCode = phoneCodeList.find(c => basePhoneNumber?.includes(String(c.number)))
@@ -157,15 +159,14 @@ const initializeFormValues = () => {
 onMounted(initializeFormValues)
 
 const inviteeRSVPToSubmit = computed<InviteeRSVP>(() => {
-  const attendanceToSubmit: InvitationType[] = isAttendingReception.value ? ['reception'] : []
   const phoneNumberToSubmit = isAttendingReception.value
     ? `+${phoneCodeNumber.value || ''}${phoneNumber.value || ''}`
-    : ''
+    : props.invitee?.databasePhoneNumber || ''
   const adultGuestNumberToSubmit = (isAttendingReception.value && adultGuestNumber.value) || 0
   const childrenGuestNumberToSubmit = (isAttendingReception.value && childrenGuestNumber.value) || 0
 
   return {
-    attendance: attendanceToSubmit,
+    isAttendingReception: isAttendingReception.value ?? false,
     phoneNumber: phoneNumberToSubmit,
     adultGuestNumber: adultGuestNumberToSubmit,
     childrenGuestNumber: childrenGuestNumberToSubmit,
@@ -174,7 +175,7 @@ const inviteeRSVPToSubmit = computed<InviteeRSVP>(() => {
 
 const canSubmit = computed(() => {
   if (isAttendingReception.value === undefined) return false
-  if (!inviteeRSVPToSubmit.value.attendance?.length) return true
+  if (isAttendingReception.value === false) return true
   const minPhoneNumberLength = 9 // NOTE: 昔の電話番号は10桁で、0抜きで9桁になる
   return !!phoneNumber.value && String(phoneNumber.value).length >= minPhoneNumberLength
 })

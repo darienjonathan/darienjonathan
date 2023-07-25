@@ -15,7 +15,7 @@ AModal.confirm-rsvp-modal(
       .content__item
         .content__label Dinner Reception Attendance
         .content__value {{ attendanceValueText }}
-      template(v-if="isReceptionInvitation")
+      template(v-if="isAttendingReception")
         .content__item
           .content__label Phone number
           .content__value {{ inviteeRSVP.phoneNumber }}
@@ -80,10 +80,8 @@ const props = defineProps({
 
 const emit = defineEmits(['close'])
 
-const isAttendingReception = computed(() => props.inviteeRSVP.attendance.includes('reception'))
-
 const attendanceValueText = computed(() =>
-  isAttendingReception.value ? 'Attending' : 'Not Attending'
+  props.inviteeRSVP.isAttendingReception ? 'Attending' : 'Not Attending'
 )
 
 const { useInviteeRSVP } = useFirestoreCollections()

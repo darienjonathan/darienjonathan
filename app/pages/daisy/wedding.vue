@@ -9,6 +9,7 @@
       .content
         Events.events(
           :invitee="invitee"
+          :databaseInviteeRSVP="inviteeRSVP"
           ref="eventsElementRef"
         )
         AboutUs.about-us
@@ -18,7 +19,7 @@
 <script lang="ts" setup>
 import Hero from '~/components/organisms/wedding/Hero.vue'
 import Events from '~/components/organisms/wedding/Events.vue'
-import type { Invitee } from '~/types/model/wedding/invitee'
+import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
 import AboutUs from '~/components/organisms/wedding/AboutUs.vue'
 import MPageLoading from '~~/components/molecules/MPageLoading.vue'
 import OurStory from '~~/components/organisms/wedding/OurStory.vue'
@@ -44,19 +45,12 @@ const handleNavClick = () => {
 // --------------------------------------------------
 
 const { uid } = useUid()
-const { useInvitees } = useFirestoreCollections()
+const { useInvitees, useInviteeRSVP } = useFirestoreCollections()
 const inviteesFirestore = useInvitees()
+const inviteeRSVPFirestore = useInviteeRSVP()
 
-// TODO: remove dummy invitee
-const dummyInvitee: Invitee = {
-  name: 'Darien Jonathan',
-  invitationType: 'reception',
-  adultGuestNumber: 2,
-  childrenGuestNumber: 0,
-  databasePhoneNumber: '+62812345678',
-}
-
-const invitee = ref<Invitee | null>(dummyInvitee)
+const invitee = ref<Invitee | null>()
+const inviteeRSVP = ref<InviteeRSVP | null>()
 
 watch(
   uid,
@@ -64,7 +58,10 @@ watch(
     if (!uid.value) return
 
     const fetchedInvitee = await inviteesFirestore.loadDocument(uid.value)
+    const fetchedInviteeRSVP = await inviteeRSVPFirestore.loadDocument(uid.value)
+
     invitee.value = fetchedInvitee
+    inviteeRSVP.value = fetchedInviteeRSVP
   },
   {
     immediate: true,
