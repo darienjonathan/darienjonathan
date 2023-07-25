@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { parseString, parseNumber, parseArray } from '~/types/model/parse'
+import { parseString, parseNumber, parseBoolean } from '~/types/model/parse'
 
 // Invitees that is invited to reception is considered to be invited to matrimony as well
 export type InvitationType = 'reception' | 'matrimony'
@@ -29,14 +29,14 @@ export const parseInvitee = (data: any): Invitee => ({
 })
 
 export interface InviteeRSVP {
-  attendance: InvitationType[]
+  isAttendingReception: boolean
   phoneNumber: string
   adultGuestNumber: number
   childrenGuestNumber: number
 }
 
 export const parseInviteeRSVP = (data: any): InviteeRSVP => ({
-  attendance: parseArray(data.attendance, parseInvitationType),
+  isAttendingReception: parseBoolean(data.isAttendingReception),
   phoneNumber: parseString(data.phoneNumber),
   adultGuestNumber: parseNumber(data.adultGuestNumber),
   childrenGuestNumber: parseNumber(data.childrenGuestNumber),
