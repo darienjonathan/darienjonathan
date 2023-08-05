@@ -3,7 +3,7 @@ import { getFirestore } from 'firebase/firestore'
 import { getDownloadURL as storageGetDownloadURL, getStorage, ref } from 'firebase/storage'
 
 export default defineNuxtPlugin(() => {
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig().public
   const app = initializeApp(config.firebaseConfig as FirebaseOptions)
   return {
     provide: {
