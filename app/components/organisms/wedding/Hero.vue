@@ -50,7 +50,7 @@ const inviteeNameText = computed(() => {
   const baseText = `For ${props.invitee?.name || ''}`
   if (props.invitee?.inviteeSuffix === 'family') return `${baseText} & Family`
   if (props.invitee?.inviteeSuffix === 'partner') return `${baseText} & Partner`
-  return baseText
+  return ''
 })
 
 const emit = defineEmits(['navClick'])
