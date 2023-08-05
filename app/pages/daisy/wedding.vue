@@ -3,7 +3,7 @@
   MPageLoading(:is-loading="!isLoadingDone")
     .wrapper
       Hero.hero(
-        :invitation-type="invitee?.invitationType"
+        :invitee="invitee"
         @nav-click="handleNavClick"
       )
       .content
@@ -51,6 +51,26 @@ const inviteeRSVPFirestore = useInviteeRSVP()
 
 const invitee = ref<Invitee | null>()
 const inviteeRSVP = ref<InviteeRSVP | null>()
+
+// dummy
+watch(
+  uid,
+  () => {
+    if (uid.value === 'DUMMY') {
+      invitee.value = {
+        name: 'Kevin Jonathan',
+        invitationType: 'reception',
+        inviteeSuffix: 'family',
+        databasePhoneNumber: '+6281234567890',
+        adultGuestNumber: 1,
+        childrenGuestNumber: 1,
+      }
+    }
+  },
+  {
+    immediate: true,
+  }
+)
 
 watch(
   uid,

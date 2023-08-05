@@ -4,8 +4,10 @@
   .hero__filler(:data-is-blur="isBlur")
     .hero__intersection-observer(ref="observerElementRef")
   .hero__content(:data-is-blur="isBlur")
-    .kv
-      .kv__invitation-type {{ invitationText }}
+    .hero__invitation-text.invitation-text
+      .invitation-text__type {{ invitationTypeText }}
+      .invitation-text__name {{ inviteeNameText }}
+    .hero__kv.kv
       .kv__subheading.kv__subheading--jp {{ '恵みを語るメロディー' }}
       .kv__subheading.kv__subheading--en {{ 'The Melody of Grace' }}
       .kv__heading {{ 'DARIEN & DAISY' }}
@@ -17,27 +19,38 @@
           .rsvp-btn__text(@click="emit('navClick')") {{ navText }}
 </template>
 <script lang="ts" setup>
-import type { InvitationType } from '~/types/model/wedding/invitee'
+import type { Invitee } from '~/types/model/wedding/invitee'
 import { getIsReceptionInvitation, getIsMatrimonyInvitation } from '~/utils/wedding'
 
 type Props = {
-  invitationType?: InvitationType
+  invitee: Invitee | null
 }
 
 const props = defineProps({
-  invitationType: {
-    type: String as () => Props['invitationType'],
-    default: undefined,
+  invitee: {
+    type: Object as () => Props['invitee'],
+    default: null,
   },
 })
 
-const isReceptionInvitation = computed(() => getIsReceptionInvitation(props.invitationType))
-const isMatrimonyInvitation = computed(() => getIsMatrimonyInvitation(props.invitationType))
+const isReceptionInvitation = computed(() =>
+  getIsReceptionInvitation(props.invitee?.invitationType)
+)
+const isMatrimonyInvitation = computed(() =>
+  getIsMatrimonyInvitation(props.invitee?.invitationType)
+)
 
-const invitationText = computed(() => {
+const invitationTypeText = computed(() => {
   if (isReceptionInvitation.value) return 'Holy Matrimony & Wedding Reception Invitation'
   if (isMatrimonyInvitation.value) return 'Holy Matrimony Invitation'
   return ''
+})
+
+const inviteeNameText = computed(() => {
+  const baseText = `For ${props.invitee?.name || ''}`
+  if (props.invitee?.inviteeSuffix === 'family') return `${baseText} & Family`
+  if (props.invitee?.inviteeSuffix === 'partner') return `${baseText} & Partner`
+  return baseText
 })
 
 const emit = defineEmits(['navClick'])
@@ -129,6 +142,28 @@ export default {
       background-color: rgba($black, 0.25);
     }
   }
+
+  &__invitation-text {
+    @include font-family('marcellus');
+    @include font($size: $font-sm);
+    position: relative;
+    text-align: center;
+    text-shadow: 2px 2px 2px rgba($black, 0.25);
+    z-index: 1;
+
+    @include pc {
+      margin-top: 300px;
+    }
+    @include sp {
+      margin-top: 150px;
+    }
+  }
+}
+
+.invitation-text {
+  &__type {
+    margin-bottom: 4px;
+  }
 }
 
 .kv {
@@ -157,13 +192,6 @@ export default {
     padding: 20px;
     // 親の疑似要素より前に出るように
     z-index: 1;
-  }
-
-  &__invitation-type {
-    @include font-family('marcellus');
-    @include font($size: $font-sm);
-    text-align: center;
-    margin-bottom: 48px;
   }
 
   &__subheading {
