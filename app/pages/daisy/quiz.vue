@@ -80,7 +80,7 @@ const SUBMISSION_COUNT_FOR_HINT = 3
 
 // Unlock Logic
 
-const config = useRuntimeConfig()
+const config = useRuntimeConfig().public
 
 const isUnlocked = ref(false)
 const initialPassword = ref('')
