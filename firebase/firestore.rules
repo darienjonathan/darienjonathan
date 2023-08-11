@@ -138,6 +138,12 @@ service cloud.firestore {
       allow write: if exists(/databases/$(database)/documents/invitees/$(inviteeRSVPUid));
     }
 
+    match /wishes/{wishUid} {
+      allow read: if true;
+      allow create: if true;
+      allow update: if exists(/databases/$(database)/documents/wishes/$(wishUid));
+    }
+
     // Super Admin
 
     match /{any=**} {
