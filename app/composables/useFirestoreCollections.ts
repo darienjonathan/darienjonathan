@@ -1,3 +1,4 @@
+import { Wish, parseWish } from '~/types/model/wedding/wish'
 import { Media, parseMedia } from '~/types/model/blog/media'
 import { parsePost, parsePostComment, Post, PostComment } from '~/types/model/blog/post'
 import { parseRole, Role } from '~/types/model/blog/role'
@@ -32,6 +33,7 @@ const useFirestoreCollections = () => {
   // Wedding
   const useInvitees = () => useFirestore<Invitee>('invitees', parseInvitee)
   const useInviteeRSVP = () => useFirestore<InviteeRSVP>('inviteeRSVP', parseInviteeRSVP)
+  const useWishes = () => useFirestore<Wish>('wishes', parseWish)
 
   return {
     usePosts,
@@ -44,6 +46,7 @@ const useFirestoreCollections = () => {
     useProposalQuestions,
     useInvitees,
     useInviteeRSVP,
+    useWishes,
   }
 }
 
