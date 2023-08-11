@@ -152,7 +152,7 @@ export default {
 
 .form {
   & {
-    @include flex($direction: column, $justify: start, $align-items: flex-start);
+    @include flex($direction: column, $justify: flex-start, $align-items: flex-start);
     @include sp {
       height: 300px;
     }
