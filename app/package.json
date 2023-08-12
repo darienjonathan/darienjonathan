@@ -9,6 +9,7 @@
     "start": "node .output/server/index.mjs"
   },
   "devDependencies": {
+    "@nuxt/image": "^1.0.0-rc.1",
     "@nuxtjs/eslint-config-typescript": "^7.0.2",
     "@prettier/plugin-pug": "^1.17.3",
     "@types/google.maps": "^3.50.4",
