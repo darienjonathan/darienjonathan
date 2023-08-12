@@ -17,6 +17,7 @@
         OurStory.our-story
         .wishes__wrapper
           Wishes.wishes
+        Gallery.gallery
 </template>
 <script lang="ts" setup>
 import Hero from '~/components/organisms/wedding/Hero.vue'
@@ -27,6 +28,7 @@ import MPageLoading from '~~/components/molecules/MPageLoading.vue'
 import OurStory from '~~/components/organisms/wedding/OurStory.vue'
 import Wishes from '~~/components/organisms/wedding/Wishes.vue'
 import useUid from '~~/composables/wedding/useUid'
+import Gallery from '~~/components/organisms/wedding/Gallery.vue'
 
 const isMounted = ref(false)
 const isHeroImageLoaded = ref(false)
@@ -155,7 +157,7 @@ definePageMeta({
 })
 export default {
   name: 'WeddingPage',
-  components: { MPageLoading, Hero, Events, AboutUs, OurStory, Wishes },
+  components: { MPageLoading, Hero, Events, AboutUs, OurStory, Wishes, Gallery },
 }
 </script>
 <style lang="scss" scoped>
@@ -177,7 +179,8 @@ export default {
 
   .events,
   .about-us,
-  .wishes {
+  .wishes,
+  .gallery {
     padding: 60px 20px;
   }
 

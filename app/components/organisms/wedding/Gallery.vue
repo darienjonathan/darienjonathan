@@ -1,0 +1,267 @@
+<template lang="pug">
+.gallery
+  .heading__wrapper
+    .heading {{ 'GALLERY' }}
+    .content
+      .loading-wrapper(:data-loaded="isAllImageLoaded")
+        ALoading
+      .grid(:data-loaded="isAllImageLoaded")
+        template(v-for="{ src, order } in imageStates")
+          .image(:class="`image--${order}`")
+            NuxtImg(
+              :src="src"
+              loading="lazy"
+              @load="handleImageLoaded(order)"
+            )
+</template>
+<script lang="ts" setup>
+import ALoading from '~/components/atoms/ALoading.vue'
+
+const imageSrcs = [
+  'wedding/gallery/image_1.png',
+  'wedding/gallery/image_10.png',
+  'wedding/gallery/image_1.png',
+  'wedding/gallery/image_10.png',
+  'wedding/gallery/image_1.png',
+  'wedding/gallery/image_10.png',
+  'wedding/gallery/image_10.png',
+  'wedding/gallery/image_10.png',
+  'wedding/gallery/image_10.png',
+  'wedding/gallery/image_10.png',
+]
+
+type ImageState = {
+  src: string
+  order: number
+  isLoaded: boolean
+}
+
+const initializeImageStates = (): ImageState[] =>
+  imageSrcs.map((src, index) => ({
+    src,
+    order: index + 1,
+    isLoaded: false,
+  }))
+
+const imageStates = ref<ImageState[]>(initializeImageStates())
+
+const isAllImageLoaded = computed(() => imageStates.value.every(({ isLoaded }) => isLoaded))
+
+const handleImageLoaded = (loadedImageOrder: number) => {
+  imageStates.value = imageStates.value.map(state => {
+    if (loadedImageOrder !== state.order) return state
+    return {
+      ...state,
+      isLoaded: true,
+    }
+  })
+}
+</script>
+<script lang="ts">
+export default {
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: 'Gallery',
+}
+</script>
+<style lang="scss" scoped>
+@import '~/assets/css/main';
+
+.heading {
+  &__wrapper {
+    margin-bottom: 60px;
+  }
+
+  & {
+    @include font-family('marcellus');
+    text-align: center;
+    margin-bottom: 20px;
+    @include pc {
+      @include font($size: $font-xhuge);
+    }
+    @include sp {
+      @include font($size: $font-huge);
+    }
+  }
+}
+
+.content {
+  position: relative;
+  margin: 0 auto;
+  max-width: 100%;
+  @include pc {
+    width: 1000px;
+    aspect-ratio: 9/10;
+  }
+  @include sp {
+    width: 350px;
+    aspect-ratio: 6/15;
+  }
+}
+
+.grid,
+.loading-wrapper {
+  @include size(100%, 100%);
+}
+
+.grid {
+  display: grid;
+  gap: 12px;
+
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out;
+
+  &[data-loaded='true'] {
+    opacity: 1;
+  }
+
+  @include pc {
+    grid-template-rows: repeat(10, 1fr);
+    grid-template-columns: repeat(9, 1fr);
+  }
+  @include sp {
+    grid-template-rows: repeat(15, 1fr);
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.loading-wrapper {
+  @include flex;
+  position: absolute;
+  opacity: 1;
+  transition: opacity 0.25s ease-in-out;
+  pointer-events: none;
+
+  &[data-loaded='true'] {
+    opacity: 0;
+  }
+}
+
+.image {
+  @mixin image($grid-row-start, $grid-row-end, $grid-column-start, $grid-column-end) {
+    grid-row-start: $grid-row-start;
+    grid-row-end: $grid-row-end;
+    grid-column-start: $grid-column-start;
+    grid-column-end: $grid-column-end;
+  }
+
+  & {
+    @include flex;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    filter: drop-shadow(0 0 5px $black);
+    transition: filter 0.5s ease-in-out;
+
+    &::after {
+      @include absolute($top: 0, $left: 0);
+      @include size(100%, 100%);
+      content: '';
+      transition: background-color 0.4s ease-in-out;
+      pointer-events: none;
+    }
+
+    &:hover {
+      filter: drop-shadow(0 0 10px $black);
+
+      &::after {
+        background-color: rgba($white, 0.25);
+      }
+    }
+
+    img {
+      @include size(100%, 100%);
+      object-fit: cover;
+    }
+  }
+
+  &--1 {
+    @include pc {
+      @include image(1, 4, 1, 5);
+    }
+    @include sp {
+      @include image(1, 4, 1, 5);
+    }
+  }
+
+  &--2 {
+    @include pc {
+      @include image(1, 4, 5, 7);
+    }
+    @include sp {
+      @include image(1, 4, 5, 7);
+    }
+  }
+
+  &--3 {
+    @include pc {
+      @include image(1, 5, 7, 10);
+    }
+    @include sp {
+      @include image(4, 8, 4, 7);
+    }
+  }
+
+  &--4 {
+    @include pc {
+      @include image(4, 7, 1, 4);
+    }
+    @include sp {
+      @include image(4, 7, 1, 4);
+    }
+  }
+
+  &--5 {
+    @include pc {
+      @include image(4, 6, 4, 7);
+    }
+    @include sp {
+      @include image(14, 16, 1, 4);
+    }
+  }
+
+  &--6 {
+    @include pc {
+      @include image(5, 8, 7, 10);
+    }
+    @include sp {
+      @include image(8, 11, 4, 7);
+    }
+  }
+
+  &--7 {
+    @include pc {
+      @include image(7, 11, 1, 4);
+    }
+    @include sp {
+      @include image(7, 11, 1, 4);
+    }
+  }
+
+  &--8 {
+    @include pc {
+      @include image(6, 9, 4, 7);
+    }
+    @include sp {
+      @include image(11, 14, 1, 4);
+    }
+  }
+
+  &--9 {
+    @include pc {
+      @include image(9, 11, 4, 7);
+    }
+    @include sp {
+      @include image(11, 13, 4, 7);
+    }
+  }
+
+  &--10 {
+    @include pc {
+      @include image(8, 11, 7, 10);
+    }
+    @include sp {
+      @include image(13, 16, 4, 7);
+    }
+  }
+}
+</style>
