@@ -1,10 +1,11 @@
 <template lang="pug">
 .wedding
-  MPageLoading(:is-loading="!isLoadingDone")
+  MPageLoading(:is-loading="isLoading")
     .wrapper
       Hero.hero(
         :invitee="invitee"
         @nav-click="handleNavClick"
+        @loading-done="handleLoadingDone"
       )
       .content
         Events.events(
@@ -27,10 +28,17 @@ import OurStory from '~~/components/organisms/wedding/OurStory.vue'
 import Wishes from '~~/components/organisms/wedding/Wishes.vue'
 import useUid from '~~/composables/wedding/useUid'
 
-const isLoadingDone = ref(false)
+const isMounted = ref(false)
+const isHeroImageLoaded = ref(false)
+const isLoading = computed(() => !isMounted.value || !isHeroImageLoaded.value)
+
 onMounted(() => {
-  isLoadingDone.value = true
+  isMounted.value = true
 })
+
+const handleLoadingDone = () => {
+  isHeroImageLoaded.value = true
+}
 
 const eventsElementRef = ref<InstanceType<typeof Events> | null>()
 const handleNavClick = () => {

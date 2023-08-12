@@ -8,7 +8,10 @@ AModal.story-modal(
     .heading
       h2.heading__main {{ story.title }}
     .content
-      img.content__thumbnail(:src="story.thumbnail")
+      NuxtImg.content__thumbnail(
+        loading="lazy"
+        :src="story.thumbnail"
+      )
       .content__full-text
         template(v-for="content in story.contents")
           .content__paragraph {{ content }}
