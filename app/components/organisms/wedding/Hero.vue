@@ -4,6 +4,11 @@
   .hero__filler(:data-is-blur="isBlur")
     .hero__intersection-observer(ref="observerElementRef")
   .hero__content(:data-is-blur="isBlur")
+    NuxtImg.hero__image(
+      preload
+      :src="'wedding/kv/kv-4.jpg'"
+      @load="handleHeroImageLoaded"
+    )
     .hero__invitation-text.invitation-text
       .invitation-text__type {{ invitationTypeText }}
       .invitation-text__name {{ inviteeNameText }}
@@ -53,12 +58,11 @@ const inviteeNameText = computed(() => {
   return ''
 })
 
-const emit = defineEmits(['navClick'])
+const emit = defineEmits(['loadingDone', 'navClick'])
 
-const isLoadingDone = ref(false)
-onMounted(() => {
-  isLoadingDone.value = true
-})
+const handleHeroImageLoaded = () => {
+  emit('loadingDone')
+}
 
 const isBlur = ref(false)
 const observerElementRef = ref<HTMLDivElement>()
@@ -122,7 +126,6 @@ export default {
     @include size(vw(100), vh(100));
     position: fixed;
     top: 0;
-    &::before,
     &::after {
       @include size(100%, 100%);
       content: '';
@@ -131,16 +134,15 @@ export default {
       left: 0;
       display: block;
     }
-    &::before {
-      background-image: url('@/assets/images/wedding/kv/kv-4.jpg');
-      background-size: cover;
-      // 画像によって調整する
-      background-position: calc(50% + 45px) 50%;
-      filter: blur(3px);
-    }
     &::after {
       background-color: rgba($black, 0.25);
     }
+  }
+
+  &__image {
+    @include size(100%, 100%);
+    object-fit: cover;
+    filter: blur(3px);
   }
 
   &__invitation-text {
