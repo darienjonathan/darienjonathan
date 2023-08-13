@@ -30,6 +30,8 @@ import Wishes from '~~/components/organisms/wedding/Wishes.vue'
 import useUid from '~~/composables/wedding/useUid'
 import Gallery from '~~/components/organisms/wedding/Gallery.vue'
 
+useProvideLoading('wedding')
+
 const isMounted = ref(false)
 const isHeroImageLoaded = ref(false)
 const isLoading = computed(() => !isMounted.value || !isHeroImageLoaded.value)
