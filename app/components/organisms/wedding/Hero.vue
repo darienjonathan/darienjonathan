@@ -96,10 +96,6 @@ const navText = computed(() => {
 })
 </script>
 <script lang="ts">
-definePageMeta({
-  layout: 'base',
-})
-
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Hero',

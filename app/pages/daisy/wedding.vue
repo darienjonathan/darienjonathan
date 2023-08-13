@@ -20,6 +20,7 @@
         Gallery.gallery
 </template>
 <script lang="ts" setup>
+import { useProvideLoading } from '~/composables/dependencyInjection/useLoadingDependencyInjection'
 import Hero from '~/components/organisms/wedding/Hero.vue'
 import Events from '~/components/organisms/wedding/Events.vue'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
@@ -152,11 +153,12 @@ useHead({
   title,
   meta: meta.value,
 })
-</script>
-<script lang="ts">
+
 definePageMeta({
   layout: 'base',
 })
+</script>
+<script lang="ts">
 export default {
   name: 'WeddingPage',
   components: { MPageLoading, Hero, Events, AboutUs, OurStory, Wishes, Gallery },

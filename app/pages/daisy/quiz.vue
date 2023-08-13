@@ -206,12 +206,12 @@ const handleShowRewards = async () => {
 const handleProposalQuestionAnswerChange = (item: number) => {
   proposalQuestionAnswer.value = item
 }
-</script>
-<script lang="ts">
+
 definePageMeta({
   layout: 'base',
 })
-
+</script>
+<script lang="ts">
 export default {
   name: 'ProposalPage',
   components: { ASelect },

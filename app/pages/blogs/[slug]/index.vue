@@ -113,12 +113,12 @@ useHead({
   title: metaTitle.value,
   meta: meta.value,
 })
-</script>
-<script lang="ts">
+
 definePageMeta({
   layout: 'default',
 })
-
+</script>
+<script lang="ts">
 export default {
   name: 'BlogPage',
   components: { MPageLoading, MLangSwitcher, AMarkdown },
