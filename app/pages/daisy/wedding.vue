@@ -18,6 +18,7 @@
         .wishes__wrapper
           Wishes.wishes
         Gallery.gallery
+        Footer.footer
 </template>
 <script lang="ts" setup>
 import { useProvideLoading } from '~/composables/dependencyInjection/useLoadingDependencyInjection'
@@ -30,6 +31,7 @@ import OurStory from '~~/components/organisms/wedding/OurStory.vue'
 import Wishes from '~~/components/organisms/wedding/Wishes.vue'
 import useUid from '~~/composables/wedding/useUid'
 import Gallery from '~~/components/organisms/wedding/Gallery.vue'
+import Footer from '~~/components/organisms/wedding/Footer.vue'
 
 useProvideLoading('wedding')
 
@@ -228,6 +230,20 @@ export default {
 
     & {
       position: relative;
+    }
+  }
+
+  .footer {
+    width: 100%;
+    background-color: rgba($wedding-brown, 0.5);
+    box-shadow: 0 2px 30px 15px rgba($white, 0.5);
+
+    @include pc {
+      height: 50px;
+    }
+
+    @include sp {
+      height: 100px;
     }
   }
 }
