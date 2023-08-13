@@ -27,7 +27,7 @@ const defineViewportVariables = () => {
 }
 
 const useViewportUnitSizes = (createListener = false) => {
-  onMounted(() => {
+  onBeforeMount(() => {
     if (!createListener) return
     defineViewportVariables()
     window.addEventListener('resize', defineViewportVariables, { passive: true })
