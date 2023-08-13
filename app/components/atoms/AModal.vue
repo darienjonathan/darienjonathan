@@ -1,14 +1,13 @@
 <template lang="pug">
-.a-modal(v-show="isModalOpen")
+.a-modal(v-show="isOpen")
   transition(
     name="fade"
-    @before-enter="handleBeforeEnter"
-    @after-leave="handleAfterLeave"
+    @after-leave="$emit('close')"
     appear
   )
     .overlay(
-      @click="$emit('close')"
-      v-show="isOpen"
+      @click="handleClose"
+      v-show="isModalOpen"
     )
       .wrapper(
         :style="{ width, height }"
@@ -16,7 +15,7 @@
         @click.stop
       )
         slot
-        .close__btn(@click="$emit('close')")
+        .close__btn(@click="handleClose")
           .close__icon.material-icons-outlined close
 </template>
 <script lang="ts" setup>
@@ -50,34 +49,38 @@ const isModalOpen = ref(false)
 
 const { getValues, vh } = useViewportUnitSizes()
 
-watch(isOpen, boolean => {
-  getValues()
-  const hasScroll = document.body.clientHeight > vh.value * 100
+watch(
+  isOpen,
+  (currentValue, prevValue) => {
+    if (prevValue || !currentValue) return
 
-  if (boolean) {
+    isModalOpen.value = true
+
+    // freeze body
+    getValues()
+    const hasScroll = document.body.clientHeight > vh.value * 100
     document.body.style.top = `-${window.scrollY}px`
     document.body.style.position = 'fixed'
     document.body.style.overflowY = hasScroll ? 'scroll' : ''
-  } else {
-    const top = parseInt(document.body.style.top || '0') * -1
-    document.body.style.position = ''
-    document.body.style.top = ''
-    document.body.style.overflowY = ''
-    window.scrollTo({
-      left: 0,
-      top,
-      behavior: 'instant',
-    })
+  },
+  {
+    immediate: true,
   }
-})
+)
 
-const handleBeforeEnter = () => {
-  if (!props.isOpen) return
-  isModalOpen.value = true
-}
-
-const handleAfterLeave = () => {
+const handleClose = () => {
   isModalOpen.value = false
+
+  // unfreeze body
+  const top = parseInt(document.body.style.top || '0') * -1
+  document.body.style.position = ''
+  document.body.style.top = ''
+  document.body.style.overflowY = ''
+  window.scrollTo({
+    left: 0,
+    top,
+    behavior: 'instant',
+  })
 }
 </script>
 <style lang="scss" scoped>

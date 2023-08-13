@@ -19,16 +19,16 @@
             @load="handleImageLoaded(imageState.order)"
           )
 
-  AModal(
-    :type="'frameless'"
-    :is-open="isModalOpen"
-    :width="selectedImage?.width"
-    :height="selectedImage?.height"
-    @close="handleCloseModal"
-  )
-    template(v-if="selectedImage?.src")
+  template(v-if="selectedImage")
+    AModal(
+      :type="'frameless'"
+      :is-open="isModalOpen"
+      :width="selectedImage.width"
+      :height="selectedImage.height"
+      @close="handleCloseModal"
+    )
       NuxtImg.modal__img(
-        :src="selectedImage?.src"
+        :src="selectedImage.src"
         loading="lazy"
       )
 </template>
