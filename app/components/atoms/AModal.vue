@@ -47,17 +47,22 @@ const props = defineProps({
 
 const { isOpen } = toRefs(props)
 const isModalOpen = ref(false)
-const { defineViewportVariables } = useViewportUnitSizes()
+
+const { getValues, vh } = useViewportUnitSizes()
 
 watch(isOpen, boolean => {
+  getValues()
+  const hasScroll = document.body.clientHeight > vh.value * 100
+
   if (boolean) {
     document.body.style.top = `-${window.scrollY}px`
     document.body.style.position = 'fixed'
-    defineViewportVariables()
+    document.body.style.overflowY = hasScroll ? 'scroll' : ''
   } else {
     const top = parseInt(document.body.style.top || '0') * -1
     document.body.style.position = ''
     document.body.style.top = ''
+    document.body.style.overflowY = ''
     window.scrollTo({
       left: 0,
       top,
