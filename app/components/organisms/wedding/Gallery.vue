@@ -19,16 +19,16 @@
             @load="handleImageLoaded(imageState.order)"
           )
 
-  AModal(
-    :type="'frameless'"
-    :is-open="isModalOpen"
-    :width="selectedImage?.width"
-    :height="selectedImage?.height"
-    @close="handleCloseModal"
-  )
-    template(v-if="selectedImage?.src")
+  template(v-if="selectedImage")
+    AModal(
+      :type="'frameless'"
+      :is-open="isModalOpen"
+      :width="selectedImage.width"
+      :height="selectedImage.height"
+      @close="handleCloseModal"
+    )
       NuxtImg.modal__img(
-        :src="selectedImage?.src"
+        :src="selectedImage.src"
         loading="lazy"
       )
 </template>
@@ -82,8 +82,9 @@ onUnmounted(() => {
 
 const isAllImageLoaded = computed(() => imageStates.value.every(({ isLoaded }) => isLoaded))
 
-const defineImageSizes = () => {
+watchEffect(() => {
   if (!isAllImageLoaded.value || !vw.value || !vh.value) return
+
   const maxValuePercentage = 80
   const maxWidth = maxValuePercentage * vw.value
   const maxHeight = maxValuePercentage * vh.value
@@ -109,9 +110,7 @@ const defineImageSizes = () => {
     ...imageState,
     ...sizesByOrder.get(imageState.order),
   }))
-}
-
-watch([isAllImageLoaded, vw, vh], defineImageSizes)
+})
 
 const handleImageLoaded = (loadedImageOrder: number) => {
   imageStates.value = imageStates.value.map(state => {
@@ -132,6 +131,7 @@ const handleSelectImage = (imageState: ImageState) => {
   isModalOpen.value = true
 }
 const handleCloseModal = () => {
+  selectedImage.value = undefined
   isModalOpen.value = false
 }
 </script>
