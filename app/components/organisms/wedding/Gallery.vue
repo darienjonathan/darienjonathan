@@ -70,13 +70,8 @@ const initializeImageStates = (): ImageState[] =>
 const imageStates = ref<ImageState[]>(initializeImageStates())
 const imgRefs = ref<InstanceType<typeof NuxtImg>[]>([])
 
-const vw = ref<number>()
-const vh = ref<number>()
+const { vw, vh, getValues } = useViewportUnitSizes()
 
-const getValues = () => {
-  vw.value = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--vw'))
-  vh.value = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--vh'))
-}
 onMounted(() => {
   getValues()
   window.addEventListener('resize', getValues, { passive: true })
