@@ -10,12 +10,12 @@ import OPostBuilder from '~/components/organisms/admin/blog/post/OPostBuilder.vu
 const postUid = ref()
 const route = useRoute()
 postUid.value = route.params.id
-</script>
-<script lang="ts">
+
 definePageMeta({
   layout: 'blog-admin',
 })
-
+</script>
+<script lang="ts">
 export default {
   name: 'AdminBlogPostsEditPage',
   components: { OPostBuilder },

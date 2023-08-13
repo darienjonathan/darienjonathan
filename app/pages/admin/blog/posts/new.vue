@@ -3,12 +3,12 @@ OPostBuilder.new
 </template>
 <script lang="ts" setup>
 import OPostBuilder from '~/components/organisms/admin/blog/post/OPostBuilder.vue'
-</script>
-<script lang="ts">
+
 definePageMeta({
   layout: 'blog-admin',
 })
-
+</script>
+<script lang="ts">
 export default {
   name: 'AdminBlogPostsNewPage',
   components: { OPostBuilder },

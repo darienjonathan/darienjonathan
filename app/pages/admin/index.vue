@@ -12,12 +12,12 @@ const entities = ['blog']
 const handleNavigation = (entity: string) => {
   navigateTo(`/admin/${entity}`)
 }
-</script>
-<script lang="ts">
+
 definePageMeta({
   layout: 'admin',
 })
-
+</script>
+<script lang="ts">
 export default {
   name: 'AdminIndexPage',
 }
