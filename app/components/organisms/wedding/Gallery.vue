@@ -2,19 +2,39 @@
 .gallery
   .heading__wrapper
     .heading {{ 'GALLERY' }}
-    .content
-      .loading-wrapper(:data-loaded="isAllImageLoaded")
-        ALoading
-      .grid(:data-loaded="isAllImageLoaded")
-        template(v-for="{ src, order } in imageStates")
-          .image(:class="`image--${order}`")
-            NuxtImg(
-              :src="src"
-              loading="lazy"
-              @load="handleImageLoaded(order)"
-            )
+  .content
+    .loading-wrapper(:data-loaded="isAllImageLoaded")
+      ALoading
+    .grid(:data-loaded="isAllImageLoaded")
+      template(v-for="imageState in imageStates")
+        .image(
+          :class="`image--${imageState.order}`"
+          :data-order="imageState.order"
+          @click="handleSelectImage(imageState)"
+        )
+          NuxtImg(
+            ref="imgRefs"
+            :src="imageState.src"
+            loading="lazy"
+            @load="handleImageLoaded(imageState.order)"
+          )
+
+  AModal(
+    :type="'frameless'"
+    :is-open="isModalOpen"
+    :width="selectedImage?.width"
+    :height="selectedImage?.height"
+    @close="handleCloseModal"
+  )
+    template(v-if="selectedImage?.src")
+      NuxtImg.modal__img(
+        :src="selectedImage?.src"
+        loading="lazy"
+      )
 </template>
 <script lang="ts" setup>
+import type NuxtImg from '@nuxt/image/dist/runtime/components/nuxt-img'
+import AModal from '~/components/atoms/AModal.vue'
 import ALoading from '~/components/atoms/ALoading.vue'
 
 const imageSrcs = [
@@ -34,6 +54,8 @@ type ImageState = {
   src: string
   order: number
   isLoaded: boolean
+  width?: string
+  height?: string
 }
 
 const initializeImageStates = (): ImageState[] =>
@@ -41,11 +63,60 @@ const initializeImageStates = (): ImageState[] =>
     src,
     order: index + 1,
     isLoaded: false,
+    width: undefined,
+    height: undefined,
   }))
 
 const imageStates = ref<ImageState[]>(initializeImageStates())
+const imgRefs = ref<InstanceType<typeof NuxtImg>[]>([])
+
+const vw = ref<number>()
+const vh = ref<number>()
+
+const getValues = () => {
+  vw.value = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--vw'))
+  vh.value = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--vh'))
+}
+onMounted(() => {
+  getValues()
+  window.addEventListener('resize', getValues, { passive: true })
+})
+onUnmounted(() => {
+  window.removeEventListener('resize', getValues)
+})
 
 const isAllImageLoaded = computed(() => imageStates.value.every(({ isLoaded }) => isLoaded))
+
+const defineImageSizes = () => {
+  if (!isAllImageLoaded.value || !vw.value || !vh.value) return
+  const maxValuePercentage = 80
+  const maxWidth = maxValuePercentage * vw.value
+  const maxHeight = maxValuePercentage * vh.value
+
+  const sizesByOrder = new Map<number, Pick<ImageState, 'width' | 'height'>>()
+  imgRefs.value.forEach(ref => {
+    const el = ref.$el as HTMLImageElement
+    const parent = el.parentElement
+
+    const order = Number(parent?.getAttribute('data-order'))
+
+    const imageRatio = el.naturalWidth / el.naturalHeight
+    const screenRatio = window.innerWidth / window.innerHeight
+    const isMaxValueInWidth = imageRatio > screenRatio
+
+    const width = isMaxValueInWidth ? maxWidth : imageRatio * maxHeight
+    const height = isMaxValueInWidth ? maxWidth / imageRatio : maxHeight
+
+    sizesByOrder.set(order, { width: `${width}px`, height: `${height}px` })
+  })
+
+  imageStates.value = imageStates.value.map(imageState => ({
+    ...imageState,
+    ...sizesByOrder.get(imageState.order),
+  }))
+}
+
+watch([isAllImageLoaded, vw, vh], defineImageSizes)
 
 const handleImageLoaded = (loadedImageOrder: number) => {
   imageStates.value = imageStates.value.map(state => {
@@ -55,6 +126,18 @@ const handleImageLoaded = (loadedImageOrder: number) => {
       isLoaded: true,
     }
   })
+}
+
+// Selected Image
+const isModalOpen = ref(false)
+
+const selectedImage = ref<ImageState>()
+const handleSelectImage = (imageState: ImageState) => {
+  selectedImage.value = imageState
+  isModalOpen.value = true
+}
+const handleCloseModal = () => {
+  isModalOpen.value = false
 }
 </script>
 <script lang="ts">
@@ -89,11 +172,11 @@ export default {
   margin: 0 auto;
   max-width: 100%;
   @include pc {
-    width: 1000px;
+    max-width: 1000px;
     aspect-ratio: 9/10;
   }
   @include sp {
-    width: 350px;
+    max-width: 700px;
     aspect-ratio: 6/15;
   }
 }
@@ -262,6 +345,13 @@ export default {
     @include sp {
       @include image(13, 16, 4, 7);
     }
+  }
+}
+
+.modal {
+  &__img {
+    @include size(100%, 100%);
+    object-fit: cover;
   }
 }
 </style>
