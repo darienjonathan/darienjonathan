@@ -121,6 +121,9 @@ export default {
 
 .wishes {
   margin: 0 auto;
+  @include pc {
+    max-width: 1200px;
+  }
 }
 
 .heading {
@@ -222,6 +225,10 @@ export default {
     @include font($size: $font-sm);
     grid-area: content;
     word-break: break-all;
+  }
+
+  &__empty-text {
+    @include font-family('marcellus');
   }
 }
 </style>
