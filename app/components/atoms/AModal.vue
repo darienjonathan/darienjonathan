@@ -12,7 +12,7 @@
     )
       .wrapper(
         :style="{ width, height }"
-        :data-size="size"
+        :data-type="type"
         @click.stop
       )
         slot
@@ -21,14 +21,14 @@
 </template>
 <script lang="ts" setup>
 interface Props {
-  size: 'default' | 'full-size' | 'auto'
+  type: 'default' | 'full-size' | 'auto' | 'frameless'
   width: string
   height: string
   isOpen: boolean
 }
 const props = defineProps({
-  size: {
-    type: String as () => Props['size'],
+  type: {
+    type: String as () => Props['type'],
     default: 'default',
   },
   width: {
@@ -47,15 +47,22 @@ const props = defineProps({
 
 const { isOpen } = toRefs(props)
 const isModalOpen = ref(false)
+const { defineViewportVariables } = useViewportUnitSizes()
 
 watch(isOpen, boolean => {
   if (boolean) {
-    document.body.style.position = 'fixed'
     document.body.style.top = `-${window.scrollY}px`
+    document.body.style.position = 'fixed'
+    defineViewportVariables()
   } else {
+    const top = parseInt(document.body.style.top || '0') * -1
     document.body.style.position = ''
     document.body.style.top = ''
-    window.scrollTo(0, parseInt(document.body.style.top || '0') * -1)
+    window.scrollTo({
+      left: 0,
+      top,
+      behavior: 'instant',
+    })
   }
 })
 
@@ -95,13 +102,14 @@ const handleAfterLeave = () => {
   color: $white;
   box-shadow: 0 0 12.5px $black;
   max-height: vh(80);
+  max-width: vw(80);
   @include pc {
     padding: 32px;
   }
   @include sp {
     padding: 24px;
   }
-  &[data-size='default'] {
+  &[data-type='default'] {
     height: auto;
     overflow: auto;
     @include pc {
@@ -111,12 +119,15 @@ const handleAfterLeave = () => {
       width: calc(100% - 20px);
     }
   }
-  &[data-size='auto'] {
+  &[data-type='auto'] {
     @include size('auto', 'auto');
   }
-  &[data-size='full-size'] {
+  &[data-type='full-size'] {
     @include size(100%, 100%);
     max-height: initial;
+  }
+  &[data-type='frameless'] {
+    padding: 0;
   }
 }
 
@@ -132,6 +143,12 @@ const handleAfterLeave = () => {
       @include absolute(24px, 24px);
     }
     @include flex;
+
+    @at-root {
+      .wrapper[data-type='frameless'] .close__btn {
+        mix-blend-mode: difference;
+      }
+    }
   }
   &__icon {
     @include font($size: $icon-size, $line-height: 1);
