@@ -15,7 +15,7 @@ AModal.confirm-rsvp-modal(
       .content__item
         .content__label Dinner Reception Attendance
         .content__value {{ attendanceValueText }}
-      template(v-if="isAttendingReception")
+      template(v-if="inviteeRSVP.isAttendingReception")
         .content__item
           .content__label Phone number
           .content__value {{ inviteeRSVP.phoneNumber }}
