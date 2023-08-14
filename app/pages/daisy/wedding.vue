@@ -15,9 +15,11 @@
         )
         AboutUs.about-us
         OurStory.our-story
+        Gallery.gallery
         .wishes__wrapper
           Wishes.wishes
-        Gallery.gallery
+        .line
+        Closing.closing
         Footer.footer
 </template>
 <script lang="ts" setup>
@@ -31,6 +33,7 @@ import OurStory from '~~/components/organisms/wedding/OurStory.vue'
 import Wishes from '~~/components/organisms/wedding/Wishes.vue'
 import useUid from '~~/composables/wedding/useUid'
 import Gallery from '~~/components/organisms/wedding/Gallery.vue'
+import Closing from '~~/components/organisms/wedding/Closing.vue'
 import Footer from '~~/components/organisms/wedding/Footer.vue'
 
 useProvideLoading('wedding')
@@ -163,7 +166,7 @@ definePageMeta({
 <script lang="ts">
 export default {
   name: 'WeddingPage',
-  components: { MPageLoading, Hero, Events, AboutUs, OurStory, Wishes, Gallery },
+  components: { MPageLoading, Hero, Events, AboutUs, OurStory, Wishes, Gallery, Closing, Footer },
 }
 </script>
 <style lang="scss" scoped>
@@ -185,12 +188,13 @@ export default {
 
   .events,
   .about-us,
-  .wishes,
-  .gallery {
+  .gallery,
+  .wishes {
     padding: 60px 20px;
   }
 
-  .our-story {
+  .our-story,
+  .closing {
     padding: 60px 40px;
   }
 
@@ -230,6 +234,16 @@ export default {
 
     & {
       position: relative;
+    }
+  }
+
+  .line {
+    margin: 0 auto;
+    height: 1px;
+    width: calc(100% - 2 * 40px);
+    background-color: rgba($white, 0.5);
+    @include pc {
+      max-width: 1200px;
     }
   }
 
