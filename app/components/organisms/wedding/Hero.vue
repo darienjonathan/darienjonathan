@@ -7,6 +7,7 @@
     NuxtImg.hero__image(
       preload
       :src="'wedding/kv/kv-4.jpg'"
+      :quality="50"
       @load="handleHeroImageLoaded"
     )
     .hero__invitation-text.invitation-text
@@ -91,8 +92,7 @@ onUnmounted(() => {
 
 const navText = computed(() => {
   if (isReceptionInvitation.value) return 'Events and RSVP'
-  if (isMatrimonyInvitation.value) return 'Events'
-  return ''
+  return 'Events'
 })
 </script>
 <script lang="ts">

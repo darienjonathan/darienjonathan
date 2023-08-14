@@ -1,31 +1,46 @@
 <template lang="pug">
-.events(v-if="!isNotInvited")
+.events
   .heading__wrapper
     .heading {{ 'EVENTS' }}
     .heading__sub {{ subHeadingText }}
-  template(v-if="isReceptionInvitation || isMatrimonyInvitation")
+
+  template(v-if="!isNotInvited")
     .content
-      .content__heading {{ 'HOLY MATRIMONY' }}
+      .content__heading {{ 'HOLY MATRIMONY (ONSITE)' }}
       .content__item
-        .location__info
-          .location__name {{ 'Gereja Kristus Yesus (GKY)\nMangga Besar' }}
-          .location__date {{ 'Saturday, 6 January 2024,\n10:00 - 11:30 WIB (UTC+7)' }}
-          // TODO: Live Streaming Link
-        .location__map(ref="holyMatrimonyMapElementRef")
+        .item__text
+          .item__main-info {{ 'Gereja Kristus Yesus (GKY)\nMangga Besar' }}
+          .item__sub-info {{ 'Saturday, 6 January 2024,\n10:00 WIB (UTC+7)' }}
+        .item__graphic.item__graphic--map(ref="holyMatrimonyMapElementRef")
+
+  .content
+    .content__heading {{ 'HOLY MATRIMONY (ONLINE)' }}
+    .content__item
+      .item__text
+        .item__sub-info {{ 'Saturday, 6 January 2024,\n10:00 WIB (UTC+7)' }}
+      //- TODO: Live Streaming Link
+      iframe.item__graphic.item__graphic--embed(
+        src="https://www.youtube.com/embed/RZ9V0-fAfE8"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      )
+
   template(v-if="isReceptionInvitation") 
     .content(data-order="reverse")
       .content__heading {{ 'RECEPTION DINNER' }}
       .content__item
-        .location__info
-          .location__name {{ 'Sailendra Restaurant -\nJW Marriott Hotel Jakarta' }}
-          .location__date {{ 'Saturday, 6 January 2024, 18:00 WIB' }}
-        .location__map(ref="receptionMapElementRef")
+        .item__text
+          .item__main-info {{ 'Sailendra Restaurant -\nJW Marriott Hotel Jakarta' }}
+          .item__sub-info {{ 'Saturday, 6 January 2024, 18:00 WIB' }}
+        .item__graphic.item__graphic--map(ref="receptionMapElementRef")
     .content
       .content__heading {{ 'RECEPTION DINNER RSVP' }}
       .content__item
         .rsvp__info
           .rsvp__description
-            span.rsvp__description-text {{ rsvpText }}
+            span.rsvp__description-text {{ 'Due to limited space, and to ensure the smooth running of the events, We kindly ask your cooperation by confirming your attendance to the dinner reception before' }}
             span.rsvp__description-text.rsvp__description-text--focus {{ 'November 30, 2023.' }}
           .rsvp__note 
             .rsvp__note-text.rsvp__note-text--focus {{ 'Unconfirmed attendance is considered as not attending.' }}
@@ -36,6 +51,7 @@
             :inviteeRSVP="databaseInviteeRSVP"
             @submit="handleSubmitRSVP"
           )
+
   template(v-if="invitee && inviteeRSVPToSubmit")
     ConfirmRSVPModal(
       :is-open="isConfirmRSVPModalOpen"
@@ -79,22 +95,12 @@ const isMatrimonyInvitation = computed(() =>
 )
 const isNotInvited = computed(() => getIsNotInvited(props.invitee?.invitationType))
 
-const eventText = computed(() =>
-  isReceptionInvitation.value
-    ? 'holy matrimony and dinner reception'
-    : isMatrimonyInvitation.value
-    ? 'holy matrimony'
-    : ''
-)
-
 const subHeadingText = computed(() => {
-  if (!eventText.value) return
-  return `We would love to have your presence and blessings at our marriage's ${eventText.value}.`
-})
-
-const rsvpText = computed(() => {
-  if (!eventText.value) return ''
-  return `Due to limited space, and to ensure the smooth running of the events, We kindly ask your cooperation by confirming your attendance to the ${eventText.value} before `
+  if (isReceptionInvitation.value)
+    return "We would love to have your presence and blessings at our marriage's holy matrimony and dinner reception."
+  if (isMatrimonyInvitation.value)
+    return "We would love to have your presence and blessings at our marriage's holy matrimony."
+  return "We would love to have your presence and blessings at the live streaming of our marriage's holy matrimony."
 })
 
 const { receptionMapElementRef, holyMatrimonyMapElementRef } = useMap()
@@ -178,8 +184,8 @@ $reversed-content-class: ".content[data-order='reverse']";
     }
   }
 }
-.location {
-  &__info {
+.item {
+  &__text {
     @include pc {
       margin-right: 32px;
     }
@@ -192,7 +198,7 @@ $reversed-content-class: ".content[data-order='reverse']";
     }
   }
 
-  &__name {
+  &__main-info {
     @include pc {
       @include font($size: $font-xxl);
       margin-bottom: 12px;
@@ -203,7 +209,7 @@ $reversed-content-class: ".content[data-order='reverse']";
       white-space: pre-wrap;
     }
   }
-  &__date {
+  &__sub-info {
     @include sp {
       @include font($size: $font-sm);
       margin-bottom: 16px;
@@ -211,7 +217,7 @@ $reversed-content-class: ".content[data-order='reverse']";
     }
   }
 
-  &__map {
+  &__graphic {
     width: 100%;
     max-width: 750px;
     margin-top: 4px; // NOTE: 地図の上が住所のテキストの上と揃うように
@@ -223,40 +229,48 @@ $reversed-content-class: ".content[data-order='reverse']";
       height: 500px;
     }
 
-    :deep(.address) {
-      @include font-family('cabin');
-      padding: 4px;
+    &--map {
+      :deep(.address) {
+        @include font-family('cabin');
+        padding: 4px;
+      }
+
+      :deep(.address__title),
+      :deep(.address__text) {
+        @include font($size: $font-sm, $line-height: 1.25, $color: $wedding_brown);
+      }
+
+      :deep(.address__title) {
+        font-weight: bold;
+        padding-bottom: 2px;
+      }
+
+      :deep(.address__text) {
+        padding-bottom: 4px;
+      }
+
+      :deep(.address__link) {
+        @include flex($justify: flex-start);
+        border-bottom: 1px solid $wedding-brown;
+        padding-bottom: 2px;
+        width: fit-content;
+      }
+
+      :deep(.link__icon) {
+        @include font($size: $font-sm, $color: $wedding_brown);
+        margin-right: 4px;
+      }
+
+      :deep(.link__href) {
+        @include font($size: $font-sm, $color: $wedding_brown);
+        text-decoration: none;
+      }
     }
 
-    :deep(.address__title),
-    :deep(.address__text) {
-      @include font($size: $font-sm, $line-height: 1.25, $color: $wedding_brown);
-    }
-
-    :deep(.address__title) {
-      font-weight: bold;
-      padding-bottom: 2px;
-    }
-
-    :deep(.address__text) {
-      padding-bottom: 4px;
-    }
-
-    :deep(.address__link) {
-      @include flex($justify: flex-start);
-      border-bottom: 1px solid $wedding-brown;
-      padding-bottom: 2px;
-      width: fit-content;
-    }
-
-    :deep(.link__icon) {
-      @include font($size: $font-sm, $color: $wedding_brown);
-      margin-right: 4px;
-    }
-
-    :deep(.link__href) {
-      @include font($size: $font-sm, $color: $wedding_brown);
-      text-decoration: none;
+    &--embed {
+      @include sp {
+        height: 200px;
+      }
     }
   }
 }
