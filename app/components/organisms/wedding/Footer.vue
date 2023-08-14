@@ -71,7 +71,6 @@ $size: 20px;
 
     &--blog {
       height: $size * 1.75;
-      filter: grayscale(100) brightness(1.5);
     }
   }
 }

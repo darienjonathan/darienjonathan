@@ -19,7 +19,7 @@
         :disabled="!canSubmit"
         @click="handleSubmit"
       ) {{ submitButtonText }}
-    .content__item.item
+    .content__item.item(:data-empty="!wishes.length")
       template(v-if="wishes.length")
         template(v-for="{ name, timestamp, content } in wishes")
           .item__wrapper
@@ -194,6 +194,9 @@ export default {
     @include sp {
       height: 300px;
       padding-right: 8px;
+      &[data-empty='true'] {
+        height: auto;
+      }
     }
   }
 
