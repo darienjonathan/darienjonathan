@@ -137,6 +137,7 @@ export default {
 
   &__image {
     @include size(100%, 100%);
+    @include absolute;
     object-fit: cover;
     filter: blur(3px);
   }
