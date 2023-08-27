@@ -152,13 +152,18 @@ export default {
   }
   &__content {
     & {
-      padding: 20px;
       position: relative;
+      @include pc {
+        padding: 30px;
+      }
+      @include sp {
+        padding: 25px;
+      }
     }
     .content {
       &__title,
       &__text {
-        margin-bottom: 8px;
+        margin-bottom: 16px;
       }
 
       &__text,
