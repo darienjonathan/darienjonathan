@@ -28,7 +28,7 @@ import type { Story } from '~/types/model/wedding/story'
 const stories: Story[] = [
   {
     title: 'Music Director and Pianist',
-    thumbnail: 'wedding/story/story_1.png',
+    thumbnail: 'wedding/story/story_1.jpg',
     summary:
       'Their first meaningful interaction through melodies coming from the white and black they both know and love.',
     contents: [
@@ -40,7 +40,7 @@ const stories: Story[] = [
   },
   {
     title: 'Is Christ Enough?',
-    thumbnail: 'wedding/story/story_2.png',
+    thumbnail: 'wedding/story/story_2.jpg',
     summary:
       'He tried to grow seeds of love that were planted there, but it was futile. "Is Christ enough for you?", said his senior who saw how pitiful he was in the wake of the rejection.',
     contents: [
