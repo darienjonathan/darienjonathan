@@ -12,7 +12,8 @@
         .story__content.content
           .content__title {{ `${index + 1}. ${story.title}` }}
           .content__text {{ story.summary }}
-          .content__read-more {{ 'Read More' }}
+          template(v-if="story.contents.length")
+            .content__read-more {{ 'Read More' }}
   template(v-if="selectedStoryIndex !== undefined")
     StoryModal(
       :is-open="isStoryModalOpen"
@@ -30,49 +31,45 @@ const stories: Story[] = [
     thumbnail: 'wedding/story/story_1.png',
     summary:
       'Their first meaningful interaction through melodies coming from the white and black they both know and love.',
-    contents: 'story 1 full content /'.repeat(20).split('/'),
+    contents: [
+      "They were both studying under the same faculty in a certain university, albeit in different majors. While they were members of that faculty's Christian Community, essentialy they didn't know each other, until the community's certain Easter Celebration Event, in which he was assigned to be the music director for a worship team in which she took the pianist role. ",
+      "They got along pretty well enough through the event's preparation. However, after the event ended, their communication also ended, since he was already graduated at that time, and after that event there were nothing that necessitates their presence in the same place and the same time.",
+      'The most important thing, though, is that through that event they understand that both of them know and love piano, though in different ways. His reading speed is terrible his technical skill is a mess, while she was a classical piano teacher in a reputable music school. His practical experience outside of classical music somewhat makes up for his technical and knowledge shortcomings.',
+      'Sometime later, he moved to another country for a job.',
+    ],
   },
   {
-    title: '"お誕生日おめでとう、Daisy!"',
+    title: 'Is Christ Enough?',
     thumbnail: 'wedding/story/story_2.png',
     summary:
-      'Living overseas and lonely, he looked at his snapchat friend list, hoping to find a companion for his lonely days, and this "Daisy" person left a nice impression for him through the aforementioned event. Hence, above message sent as a birthday greeting to her, hoping to start a conversation.',
-    contents: 'story 2 full content /'.repeat(20).split('/'),
-  },
-  {
-    title: 'He Thought He Had a Chance',
-    thumbnail: 'wedding/story/story_3.png',
-    summary:
-      'Apparently she is a very nice person, which motivated him to try taking the relationship to further stages. While geographical distance meant chat is the only way for him to win over her, things went exceptionally well, until he knew that he actually never had a chance.',
-    contents: 'story 3 full content /'.repeat(20).split('/'),
-  },
-  {
-    title: 'Is Christ Enough for Me?',
-    thumbnail: 'wedding/story/story_4.png',
-    summary:
-      'He left devastated. Seeking emergency guidance from his Christian Community senior, in which "Is Christ enough for you?" became the sentence of the day that pierced his heart deep for weeks. Oh, the senior also said something else, too.',
-    contents: 'story 4 full content /'.repeat(20).split('/'),
-  },
-  {
-    title: 'The Pain Was on Both Sides, and It Was Purposeful',
-    thumbnail: 'wedding/story/story_5.png',
-    summary:
-      'The separation was on good terms, so they tried to keep being friends after a reasonable amount of cut-off time. They soon found out that this cut-off time was a huge gamechanger for each of them personally, and for their relationship.',
-    contents: 'story 5 full content /'.repeat(20).split('/'),
+      'He tried to grow seeds of love that were planted there, but it was futile. "Is Christ enough for you?", said his senior who saw how pitiful he was in the wake of the rejection.',
+    contents: [
+      "Living overseas and lonely, he looked at his snapchat friend list, hoping to find a companion for his lonely days, and this 'Daisy' person left a nice impression for him through the aforementioned event. Hence, 「お誕生日おめでとう！」 message sent as a birthday greeting to her, hoping to start a conversation.",
+      'Apparently she responded well, which motivated him to try taking the relationship to further stages. While geographical distance meant chat is the only way for him to win over her, things went exceptionally well.',
+      'He actually never had a chance, though. As with other boys, he was stubborn eventhough she already gave some warning signals, until a strong word of rejection came, and ended it all. "The sparks were not there", she said. Music was enough to get them close, but not enough to bring them to the next step.',
+      'Left devastated and unable to concentrate in work, he contacted his senior to pour his miserable heart, who responded with "Is Christ enough for you?" after seeing that I\'ve probably dethroned Jesus and in exchange put her on the pedestal of my heart.',
+    ],
   },
   {
     title: 'The Sacred Search',
-    thumbnail: 'wedding/story/story_6.png',
+    thumbnail: 'wedding/story/story_3.png',
     summary:
-      'After things have settled, they agreed to try taking their friendship to the next level through an arguably very conservative and cautious way: book reading sessions to gauge the viability of this relationship.',
-    contents: 'story 6 full content /'.repeat(20).split('/'),
+      'They soon found out that this cut-off time was a huge gamechanger for each of them, though, in which they searched within themselves, who, or what, are they truly searching for.',
+    contents: [
+      'For the sake of both parties, they both agreed to amicably cut-off their communication for a while.',
+      "While his efforts ended in a failure, this has become a very meaningful experience for him. Through this experience, he realized that while he considers himself as a Christian, there were only feint traces of Christianity in how he approach his dating life, which lead him to rethink his relationship with Jesus, and to learn about Christian's worldview of dating.",
+      'Unexpectedly, she also gave a lot of thought about this relationship even after she rejected him. He is unattractive and unable to bring "the sparks" to the relationship, which he acknowledges and admits. However, while attractiveness is certainly an important aspect of a relationship, if what she is seeking is based on Christianity which main objective is Christ-centered marriage, attractiveness should not be that important so that they eclipse all other boring qualities he has which probably bring more value to achieve the objective, should it?',
+      'After some time, she decided to take a huge gamble: to be very rational to herself by disregarding the absence of "the sparks" towards him, and hoping that he has enough other qualities that bring more value to the ideal relationship she envisages. In the end, she agreed to try making it work.',
+      'To answer her faith in him making this relationship work, in addition to him actually understands very well that attractiveness is still a very important part to have a healthy and happy relationship, so he tried (and still trying) his best to improve in that category.',
+      'Thankfully, the gamble paid off. They went off to a flying start.',
+    ],
   },
   {
-    title: 'LDR after LDR; The Sacred Marriage',
-    thumbnail: 'wedding/story/story_7.png',
+    title: 'The Sacred Marriage',
+    thumbnail: 'wedding/story/story_4.png',
     summary:
-      'There is really nothing to write home about this relationship, except the above-average amount of time they spent being separated geographically to pursue their own dreams, until they decided to pursue their dreams together as one, and here they are.',
-    contents: 'story 7 full content /'.repeat(20).split('/'),
+      'Finally, there is really nothing to write home about this relationship, except the above-average amount of time they spent being separated geographically to pursue their own dreams, until they decided to pursue their dreams together as one, and here they are.',
+    contents: [],
   },
 ]
 
