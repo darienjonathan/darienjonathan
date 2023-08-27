@@ -151,10 +151,10 @@ export default {
     z-index: 1;
 
     @include pc {
-      margin-top: 300px;
+      margin-top: vh(15);
     }
     @include sp {
-      margin-top: 150px;
+      margin-top: vh(15);
     }
   }
 }

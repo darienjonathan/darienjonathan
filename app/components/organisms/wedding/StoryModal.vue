@@ -60,13 +60,20 @@ export default {
 
 .content {
   &__thumbnail {
-    max-width: 100%;
     margin-bottom: 32px;
+    @include pc {
+      max-width: 450px;
+      max-height: 300px;
+    }
+    @include sp {
+      width: 100%;
+    }
   }
 
   &__paragraph {
+    line-height: 1.5;
     &:not(:last-child) {
-      margin-bottom: 8px;
+      margin-bottom: 16px;
     }
   }
 }
