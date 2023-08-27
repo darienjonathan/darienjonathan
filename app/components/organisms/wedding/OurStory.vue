@@ -4,7 +4,10 @@
     .heading {{ 'OUR STORY' }}
   .story
     template(v-for="(story, index) in stories")
-      .story__item(@click="handleStoryClick(index)")
+      .story__item(
+        @click="handleStoryClick(index)"
+        :style="{ cursor: story.contents.length ? 'pointer' : 'auto' }"
+      )
         NuxtImg.story__thumbnail(
           loading="lazy"
           :src="story.thumbnail"
@@ -76,6 +79,7 @@ const stories: Story[] = [
 const isStoryModalOpen = ref<boolean>(false)
 const selectedStoryIndex = ref<number | undefined>()
 const handleStoryClick = (index: number) => {
+  if (!stories[index]?.contents?.length) return
   selectedStoryIndex.value = index
   isStoryModalOpen.value = true
 }
@@ -118,28 +122,39 @@ export default {
 }
 
 .story {
-  &__item {
-    margin-bottom: 40px;
-    cursor: pointer;
+  & {
+    margin: 0 auto;
+    display: grid;
+
     @include pc {
-      display: flex;
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: 300px;
+      max-width: 800px;
+    }
+
+    @include sp {
+      grid-auto-rows: 250px;
+      max-width: 400px;
     }
   }
 
+  &__item {
+    position: relative;
+  }
+
   &__thumbnail {
+    @include absolute;
+    @include size(100%, 100%);
+    object-fit: cover;
+    opacity: 0.4;
     box-shadow: 0 0 30px $black;
-    @include pc {
-      width: 400px;
-      max-width: 50%;
-      margin-right: 20px;
-    }
-    @include sp {
-      width: 300px;
-      max-width: 100%;
-      margin-bottom: 12px;
-    }
+    filter: blur(2px);
   }
   &__content {
+    & {
+      padding: 20px;
+      position: relative;
+    }
     .content {
       &__title,
       &__text {
@@ -149,10 +164,10 @@ export default {
       &__text,
       &__read-more {
         @include pc {
-          @include font($size: $font-m);
+          @include font($size: $font-sm, $line-height: 1.35);
         }
         @include sp {
-          @include font($size: $font-sm);
+          @include font($size: $font-xs, $line-height: 1.35);
         }
       }
 
