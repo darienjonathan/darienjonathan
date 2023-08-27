@@ -6,7 +6,7 @@
     template(v-for="(story, index) in stories")
       .story__item(
         @click="handleStoryClick(index)"
-        :style="{ cursor: story.contents.length ? 'pointer' : 'auto' }"
+        :style="{ cursor: isStorySelectable(story) ? 'pointer' : 'auto' }"
       )
         NuxtImg.story__thumbnail(
           loading="lazy"
@@ -15,7 +15,7 @@
         .story__content.content
           .content__title {{ `${index + 1}. ${story.title}` }}
           .content__text {{ story.summary }}
-          template(v-if="story.contents.length")
+          template(v-if="isStorySelectable(story)")
             .content__read-more {{ 'Read More' }}
   template(v-if="selectedStoryIndex !== undefined")
     StoryModal(
@@ -25,8 +25,24 @@
     )
 </template>
 <script lang="ts" setup>
+import type { Invitee } from 'types/model/wedding/invitee'
 import StoryModal from '~/components/organisms/wedding/StoryModal.vue'
 import type { Story } from '~/types/model/wedding/story'
+
+type Props = {
+  invitee: Invitee | null
+}
+
+const props = defineProps({
+  invitee: {
+    type: Object as () => Props['invitee'],
+    default: null,
+  },
+})
+
+const isReceptionInvitation = computed(() =>
+  getIsReceptionInvitation(props.invitee?.invitationType)
+)
 
 const stories: Story[] = [
   {
@@ -75,6 +91,8 @@ const stories: Story[] = [
     contents: [],
   },
 ]
+
+const isStorySelectable = (story: Story) => isReceptionInvitation.value && !!story.contents.length
 
 const isStoryModalOpen = ref<boolean>(false)
 const selectedStoryIndex = ref<number | undefined>()

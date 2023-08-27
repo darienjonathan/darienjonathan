@@ -14,7 +14,7 @@
           ref="eventsElementRef"
         )
         AboutUs.about-us
-        OurStory.our-story
+        OurStory.our-story(:invitee="invitee")
         Gallery.gallery
         .wishes__wrapper
           Wishes.wishes
