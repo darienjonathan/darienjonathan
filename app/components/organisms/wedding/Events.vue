@@ -35,30 +35,6 @@
           .item__main-info {{ 'Sailendra Restaurant -\nJW Marriott Hotel Jakarta' }}
           .item__sub-info {{ 'Saturday, 6 January 2024, 18:00 WIB' }}
         .item__graphic.item__graphic--map(ref="receptionMapElementRef")
-    .content
-      .content__heading {{ 'RECEPTION DINNER RSVP' }}
-      .content__item
-        .rsvp__info
-          .rsvp__description
-            span.rsvp__description-text {{ 'Due to limited space, and to ensure the smooth running of the events, We kindly ask your cooperation by confirming your attendance to the dinner reception before' }}
-            span.rsvp__description-text.rsvp__description-text--focus {{ 'November 30, 2023.' }}
-          .rsvp__note 
-            .rsvp__note-text.rsvp__note-text--focus {{ 'Unconfirmed attendance is considered as not attending.' }}
-            .rsvp__note-text {{ ' We thank you for your kind understanding.' }}
-        template(v-if="invitee")
-          RSVPForm.rsvp__form(
-            :invitee="invitee"
-            :inviteeRSVP="databaseInviteeRSVP"
-            @submit="handleSubmitRSVP"
-          )
-
-  template(v-if="invitee && inviteeRSVPToSubmit")
-    ConfirmRSVPModal(
-      :is-open="isConfirmRSVPModalOpen"
-      :invitee="invitee"
-      :inviteeRSVP="inviteeRSVPToSubmit"
-      @close="handleCancelRSVPSubmission"
-    )
 </template>
 <script lang="ts" setup>
 import useMap from '~/composables/wedding/useMap'
@@ -104,17 +80,6 @@ const subHeadingText = computed(() => {
 })
 
 const { receptionMapElementRef, holyMatrimonyMapElementRef } = useMap()
-
-const isConfirmRSVPModalOpen = ref(false)
-const inviteeRSVPToSubmit = ref<InviteeRSVP>()
-const handleSubmitRSVP = (inviteeRSVP: InviteeRSVP) => {
-  isConfirmRSVPModalOpen.value = true
-  inviteeRSVPToSubmit.value = inviteeRSVP
-}
-const handleCancelRSVPSubmission = () => {
-  isConfirmRSVPModalOpen.value = false
-  inviteeRSVPToSubmit.value = undefined
-}
 </script>
 <script lang="ts">
 export default {
