@@ -132,6 +132,7 @@ const handleClose = () => {
   }
   &[data-type='full-size'] {
     @include size(100%, 100%);
+    max-width: initial;
     max-height: initial;
   }
   &[data-type='frameless'] {
