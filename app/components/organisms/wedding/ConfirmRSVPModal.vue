@@ -1,12 +1,12 @@
 <template lang="pug">
 AModal.confirm-rsvp-modal(
   :is-open="props.isOpen"
-  :width="isSP ? 'calc(100% - 40px)' : 'auto'"
+  :type="isSP ? 'full-size' : 'default'"
   @close="$emit('close')"
 )
   .inner
     .heading
-      h2.heading__main Confirm Reservation
+      h2.heading__main Confirm RSVP
       h3.heading__sub Reserve with below details?
     .content
       .content__item
