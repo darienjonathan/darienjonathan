@@ -8,6 +8,11 @@
         :value="isAttendingReception"
         @change="handleChangeReceptionAttendance"
       )
+        option(
+          :disabled="true"
+          :selected="isAttendingReception === undefined"
+          value
+        )
         option(:value="false") No, I'm not attending
         option(:value="true") Yes, I'm attending
   template(v-if="isAttendingReception")
@@ -100,7 +105,7 @@ const isReceptionInvitation = computed(() =>
 // --------------------------------------------------
 
 // We don't require RSVP for Holy Matrimony Attendance
-const isAttendingReception = ref<boolean | undefined>()
+const isAttendingReception = ref<boolean | undefined>(undefined)
 
 const handleChangeReceptionAttendance = (e: Event) => {
   const target = e.target as HTMLSelectElement
@@ -137,6 +142,7 @@ const handleChildrenGuestNumberChange = (e: Event) => {
 // Form Initialization
 
 const initializeFormValues = () => {
+  console.log(props.inviteeRSVP)
   isAttendingReception.value = props.inviteeRSVP
     ? props.inviteeRSVP.isAttendingReception
     : undefined
@@ -193,7 +199,6 @@ const canSubmit = computed(() => {
 
 const handleSubmit = () => {
   emit('submit', inviteeRSVPToSubmit.value)
-  // TODO: submit
 }
 </script>
 <script lang="ts">

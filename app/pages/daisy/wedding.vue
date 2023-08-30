@@ -1,11 +1,14 @@
 <template lang="pug">
 .wedding
   MPageLoading(:is-loading="isLoading")
+    .buttons-intersection-observer(ref="observerElementRef")
     .wrapper
       Hero.hero(
         :invitee="invitee"
+        :inviteeRSVP="inviteeRSVP"
         @nav-click="handleNavClick"
         @loading-done="handleLoadingDone"
+        @RSVPButtonClick="isRSVPModalOpen = true"
       )
       .content
         Events.events(
@@ -21,6 +24,13 @@
         .line
         Closing.closing
         Footer.footer
+  template(v-if="invitee")
+    RSVP(
+      :isRSVPModalOpen="isRSVPModalOpen"
+      :invitee="invitee"
+      :databaseInviteeRSVP="inviteeRSVP"
+      @closeRSVPModal="isRSVPModalOpen = false"
+    )
 </template>
 <script lang="ts" setup>
 import { useProvideLoading } from '~/composables/dependencyInjection/useLoadingDependencyInjection'
@@ -35,6 +45,7 @@ import useUid from '~~/composables/wedding/useUid'
 import Gallery from '~~/components/organisms/wedding/Gallery.vue'
 import Closing from '~~/components/organisms/wedding/Closing.vue'
 import Footer from '~~/components/organisms/wedding/Footer.vue'
+import RSVP from '~/components/organisms/wedding/RSVP.vue'
 
 useProvideLoading('wedding')
 
@@ -85,6 +96,22 @@ watch(
         childrenGuestNumber: 1,
       }
     }
+    if (uid.value === 'RSVP_DUMMY') {
+      invitee.value = {
+        name: 'Kevin Jonathan',
+        invitationType: 'reception',
+        inviteeSuffix: 'family',
+        databasePhoneNumber: '+6281234567890',
+        adultGuestNumber: 1,
+        childrenGuestNumber: 1,
+      }
+      inviteeRSVP.value = {
+        adultGuestNumber: 1,
+        childrenGuestNumber: 1,
+        isAttendingReception: true,
+        phoneNumber: '+6281234567890',
+      }
+    }
   },
   {
     immediate: true,
@@ -106,6 +133,12 @@ watch(
     immediate: true,
   }
 )
+
+// --------------------------------------------------
+// RSVP
+// --------------------------------------------------
+
+const isRSVPModalOpen = ref(false)
 
 // --------------------------------------------------
 // Meta Tags
@@ -166,7 +199,18 @@ definePageMeta({
 <script lang="ts">
 export default {
   name: 'WeddingPage',
-  components: { MPageLoading, Hero, Events, AboutUs, OurStory, Wishes, Gallery, Closing, Footer },
+  components: {
+    MPageLoading,
+    Hero,
+    Events,
+    AboutUs,
+    OurStory,
+    Wishes,
+    Gallery,
+    Closing,
+    Footer,
+    RSVP,
+  },
 }
 </script>
 <style lang="scss" scoped>
