@@ -1,11 +1,14 @@
 <template lang="pug">
 .wedding
   MPageLoading(:is-loading="isLoading")
+    .buttons-intersection-observer(ref="observerElementRef")
     .wrapper
       Hero.hero(
         :invitee="invitee"
+        :inviteeRSVP="inviteeRSVP"
         @nav-click="handleNavClick"
         @loading-done="handleLoadingDone"
+        @RSVPButtonClick="isRSVPModalOpen = true"
       )
       .content
         Events.events(
@@ -21,6 +24,14 @@
         .line
         Closing.closing
         Footer.footer
+  template(v-if="isDataLoaded && invitee")
+    RSVP(
+      :isRSVPModalOpen="isRSVPModalOpen"
+      :invitee="invitee"
+      :databaseInviteeRSVP="inviteeRSVP"
+      @closeRSVPModal="isRSVPModalOpen = false"
+      @promptUpdateInviteeRSVP="handleUpdateInviteRSVP"
+    )
 </template>
 <script lang="ts" setup>
 import { useProvideLoading } from '~/composables/dependencyInjection/useLoadingDependencyInjection'
@@ -35,6 +46,7 @@ import useUid from '~~/composables/wedding/useUid'
 import Gallery from '~~/components/organisms/wedding/Gallery.vue'
 import Closing from '~~/components/organisms/wedding/Closing.vue'
 import Footer from '~~/components/organisms/wedding/Footer.vue'
+import RSVP from '~/components/organisms/wedding/RSVP.vue'
 
 useProvideLoading('wedding')
 
@@ -68,6 +80,7 @@ const { useInvitees, useInviteeRSVP } = useFirestoreCollections()
 const inviteesFirestore = useInvitees()
 const inviteeRSVPFirestore = useInviteeRSVP()
 
+const isDataLoaded = ref(false)
 const invitee = ref<Invitee | null>()
 const inviteeRSVP = ref<InviteeRSVP | null>()
 
@@ -77,7 +90,7 @@ watch(
   () => {
     if (uid.value === 'DUMMY') {
       invitee.value = {
-        name: 'Kevin Jonathan',
+        databaseName: 'Kevin Jonathan',
         invitationType: 'reception',
         inviteeSuffix: 'family',
         databasePhoneNumber: '+6281234567890',
@@ -85,27 +98,63 @@ watch(
         childrenGuestNumber: 1,
       }
     }
+    if (uid.value === 'RSVP_DUMMY') {
+      invitee.value = {
+        databaseName: 'Kevin Jonathan',
+        invitationType: 'reception',
+        inviteeSuffix: 'family',
+        databasePhoneNumber: '+6281234567890',
+        adultGuestNumber: 1,
+        childrenGuestNumber: 1,
+      }
+      inviteeRSVP.value = {
+        name: 'Kevin Jonathan',
+        adultGuestNumber: 1,
+        childrenGuestNumber: 1,
+        isAttendingReception: true,
+        phoneNumber: '+6281234567890',
+      }
+    }
+
+    isDataLoaded.value = true
   },
   {
     immediate: true,
   }
 )
+
+const setInvitee = async () => {
+  if (!uid.value) return
+  const fetchedInvitee = await inviteesFirestore.loadDocument(uid.value)
+  invitee.value = fetchedInvitee
+}
+
+const setInviteeRSVP = async () => {
+  if (!uid.value) return
+  const fetchedInviteeRSVP = await inviteeRSVPFirestore.loadDocument(uid.value)
+  inviteeRSVP.value = fetchedInviteeRSVP
+}
 
 watch(
   uid,
   async () => {
-    if (!uid.value) return
-
-    const fetchedInvitee = await inviteesFirestore.loadDocument(uid.value)
-    const fetchedInviteeRSVP = await inviteeRSVPFirestore.loadDocument(uid.value)
-
-    invitee.value = fetchedInvitee
-    inviteeRSVP.value = fetchedInviteeRSVP
+    await Promise.all([setInvitee(), setInviteeRSVP()])
+    isDataLoaded.value = true
   },
   {
     immediate: true,
   }
 )
+
+// --------------------------------------------------
+// RSVP
+// --------------------------------------------------
+
+const isRSVPModalOpen = ref(false)
+
+const handleUpdateInviteRSVP = () => {
+  setInviteeRSVP()
+}
 
 // --------------------------------------------------
 // Meta Tags
@@ -166,7 +215,18 @@ definePageMeta({
 <script lang="ts">
 export default {
   name: 'WeddingPage',
-  components: { MPageLoading, Hero, Events, AboutUs, OurStory, Wishes, Gallery, Closing, Footer },
+  components: {
+    MPageLoading,
+    Hero,
+    Events,
+    AboutUs,
+    OurStory,
+    Wishes,
+    Gallery,
+    Closing,
+    Footer,
+    RSVP,
+  },
 }
 </script>
 <style lang="scss" scoped>

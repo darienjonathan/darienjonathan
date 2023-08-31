@@ -1,7 +1,8 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template lang="pug">
 .hero
-  .hero__filler(:data-is-blur="isBlur")
+  .hero__filler
+    .hero__button-intersection-observer(ref="buttonObserverElementRef")
     .hero__intersection-observer(ref="observerElementRef")
   .hero__content(:data-is-blur="isBlur")
     NuxtImg.hero__image(
@@ -19,22 +20,32 @@
       .kv__heading {{ 'DARIEN & DAISY' }}
       .kv__line
       .kv__date {{ 'Saturday, 6 January 2024' }}
-      template(v-if="navText")
-        .kv__rsvp-btn
-          .rsvp-btn__icon.material-icons-outlined expand_more
-          .rsvp-btn__text(@click="emit('navClick')") {{ navText }}
+      .kv__nav-btn
+        .nav-btn__icon.material-icons-outlined expand_more
+        .nav-btn__text(@click="emit('navClick')") {{ 'Events' }}
+
+    template(v-if="invitee")
+      .rsvp-button(
+        @click="handleClickRSVPButton"
+        :data-is-blur="isButtonBlur"
+      ) {{ inviteeRSVP ? 'Review Your RSVP' : 'RSVP' }}
 </template>
 <script lang="ts" setup>
-import type { Invitee } from '~/types/model/wedding/invitee'
+import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
 import { getIsReceptionInvitation, getIsMatrimonyInvitation } from '~/utils/wedding'
 
 type Props = {
   invitee: Invitee | null
+  inviteeRSVP: InviteeRSVP | null
 }
 
 const props = defineProps({
   invitee: {
     type: Object as () => Props['invitee'],
+    default: null,
+  },
+  inviteeRSVP: {
+    type: Object as () => Props['inviteeRSVP'],
     default: null,
   },
 })
@@ -52,18 +63,24 @@ const invitationTypeText = computed(() => {
   return ''
 })
 
+const inviteeName = computed(() => props.inviteeRSVP?.name || props.invitee?.databaseName || '')
+
 const inviteeNameText = computed(() => {
-  const baseText = `For ${props.invitee?.name || ''}`
+  const baseText = `For ${inviteeName.value || ''}`
   if (props.invitee?.inviteeSuffix === 'family') return `${baseText} & Family`
   if (props.invitee?.inviteeSuffix === 'partner') return `${baseText} & Partner`
   return ''
 })
 
-const emit = defineEmits(['loadingDone', 'navClick'])
+const emit = defineEmits(['loadingDone', 'navClick', 'RSVPButtonClick'])
 
 const handleHeroImageLoaded = () => {
   emit('loadingDone')
 }
+
+// --------------------------------------------------
+// Hero Intersection Observer
+// --------------------------------------------------
 
 const isBlur = ref(false)
 const observerElementRef = ref<HTMLDivElement>()
@@ -90,10 +107,38 @@ onUnmounted(() => {
   observerInstance.value.disconnect()
 })
 
-const navText = computed(() => {
-  if (isReceptionInvitation.value) return 'Events and RSVP'
-  return 'Events'
+// --------------------------------------------------
+// Buttons
+// --------------------------------------------------
+
+const isButtonBlur = ref(false)
+const buttonObserverElementRef = ref<HTMLDivElement>()
+const buttonObserverInstance = ref<IntersectionObserver>()
+onMounted(() => {
+  if (!buttonObserverElementRef.value) return
+  const observer = new IntersectionObserver(
+    entries => {
+      const entry = entries.find(e => e.target === buttonObserverElementRef.value)
+      if (!entry) return
+      isButtonBlur.value = !entry.isIntersecting
+    },
+    {
+      rootMargin: '150px',
+      threshold: [0.0, 1.0],
+    }
+  )
+  observer.observe(buttonObserverElementRef.value)
+  buttonObserverInstance.value = observer
 })
+
+onUnmounted(() => {
+  if (!buttonObserverInstance.value) return
+  buttonObserverInstance.value.disconnect()
+})
+
+const handleClickRSVPButton = () => {
+  emit('RSVPButtonClick')
+}
 </script>
 <script lang="ts">
 export default {
@@ -105,13 +150,6 @@ export default {
 @import '~/assets/css/main';
 
 .hero {
-  &__filler,
-  &__content {
-    transition: filter 1s;
-    &[data-is-blur='true'] {
-      filter: blur(15px);
-    }
-  }
   &__filler {
     @include size(vw(100), vh(100));
   }
@@ -122,6 +160,10 @@ export default {
     @include size(vw(100), vh(100));
     position: fixed;
     top: 0;
+    transition: filter 1s;
+    &[data-is-blur='true'] {
+      filter: blur(15px);
+    }
     &::after {
       @include size(100%, 100%);
       content: '';
@@ -129,8 +171,6 @@ export default {
       top: 0;
       left: 0;
       display: block;
-    }
-    &::after {
       background-color: rgba($black, 0.25);
     }
   }
@@ -232,7 +272,7 @@ export default {
     text-align: center;
     margin-bottom: 16px;
   }
-  &__rsvp-btn {
+  &__nav-btn {
     @include flex;
     @include font-family('marcellus');
     @include bounce-animation;
@@ -245,7 +285,7 @@ export default {
   }
 }
 
-.rsvp-btn {
+.nav-btn {
   &__icon {
     @include font($size: $font-xxl);
     margin-right: 4px;
@@ -255,5 +295,41 @@ export default {
     @include font($size: $font-sm);
     cursor: pointer;
   }
+}
+
+@mixin floating-button {
+  @include flex;
+  @include font-family('marcellus');
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 150px;
+  height: 45px;
+  padding: 10px 20px;
+  border: 1px solid rgba($white, 0.5);
+  border-radius: 8px;
+  cursor: pointer;
+  filter: drop-shadow(0 0 5px $white);
+  transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out, opacity 0.5s;
+  &:hover {
+    background-color: rgba($white, 0.05);
+  }
+
+  &[data-scrolled='true'] {
+    background-color: rgba($white, 0.75);
+    color: rgba($wedding_brown, 1);
+  }
+
+  &[data-is-blur='true'] {
+    pointer-events: none;
+    cursor: auto;
+    opacity: 0;
+  }
+}
+
+.rsvp-button {
+  @include floating-button;
+  bottom: 75px;
+  z-index: 1;
 }
 </style>

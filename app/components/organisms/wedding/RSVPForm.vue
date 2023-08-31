@@ -1,6 +1,11 @@
 <template lang="pug">
 .rsvp-form
-  MInput.input(:label="'Name'") {{ invitee?.name }}
+  MInput.input(:label="'Name'")
+    input.phone-number__input(
+      type="text"
+      :value="name"
+      @input="handleChangeName"
+    )
   template(v-if="isReceptionInvitation")
     MInput.input(:label="'Are you attending?'")
       select.input__item(
@@ -8,6 +13,11 @@
         :value="isAttendingReception"
         @change="handleChangeReceptionAttendance"
       )
+        option(
+          :disabled="true"
+          :selected="isAttendingReception === undefined"
+          value
+        )
         option(:value="false") No, I'm not attending
         option(:value="true") Yes, I'm attending
   template(v-if="isAttendingReception")
@@ -65,7 +75,7 @@
   button.button(
     @click="handleSubmit"
     :disabled="!canSubmit"
-  ) Submit
+  ) {{ inviteeRSVP ? 'Update' : 'Submit' }}
 </template>
 <script lang="ts" setup>
 import { phoneCodeList } from '~/utils/phone'
@@ -99,8 +109,14 @@ const isReceptionInvitation = computed(() =>
 // Form
 // --------------------------------------------------
 
+const name = ref<string>('')
+const handleChangeName = (e: Event) => {
+  const target = e.target as HTMLInputElement
+  name.value = String(target.value)
+}
+
 // We don't require RSVP for Holy Matrimony Attendance
-const isAttendingReception = ref<boolean | undefined>()
+const isAttendingReception = ref<boolean | undefined>(undefined)
 
 const handleChangeReceptionAttendance = (e: Event) => {
   const target = e.target as HTMLSelectElement
@@ -128,6 +144,12 @@ const handleAdultGuestNumberChange = (e: Event) => {
   adultGuestNumber.value = Number(target.value)
 }
 
+watch(isAttendingReception, (currentValue, prevValue) => {
+  if (!prevValue && currentValue && adultGuestNumber.value === 0) {
+    adultGuestNumber.value = 1
+  }
+})
+
 const childrenGuestNumber = ref<number>()
 const handleChildrenGuestNumberChange = (e: Event) => {
   const target = e.target as HTMLInputElement
@@ -137,6 +159,8 @@ const handleChildrenGuestNumberChange = (e: Event) => {
 // Form Initialization
 
 const initializeFormValues = () => {
+  name.value = props.inviteeRSVP?.name || props.invitee.databaseName
+
   isAttendingReception.value = props.inviteeRSVP
     ? props.inviteeRSVP.isAttendingReception
     : undefined
@@ -160,13 +184,15 @@ const initializeFormValues = () => {
 onMounted(initializeFormValues)
 
 const inviteeRSVPToSubmit = computed<InviteeRSVP>(() => {
+  const nameToSubmit = isAttendingReception.value ? name.value : ''
   const phoneNumberToSubmit = isAttendingReception.value
     ? `+${phoneCodeNumber.value || ''}${phoneNumber.value || ''}`
-    : props.invitee?.databasePhoneNumber || ''
+    : ''
   const adultGuestNumberToSubmit = (isAttendingReception.value && adultGuestNumber.value) || 0
   const childrenGuestNumberToSubmit = (isAttendingReception.value && childrenGuestNumber.value) || 0
 
   return {
+    name: nameToSubmit,
     isAttendingReception: isAttendingReception.value ?? false,
     phoneNumber: phoneNumberToSubmit,
     adultGuestNumber: adultGuestNumberToSubmit,
@@ -176,6 +202,7 @@ const inviteeRSVPToSubmit = computed<InviteeRSVP>(() => {
 
 const hasChange = computed(() => {
   return !(
+    inviteeRSVPToSubmit.value.name === props.inviteeRSVP?.name &&
     inviteeRSVPToSubmit.value.isAttendingReception === props.inviteeRSVP?.isAttendingReception &&
     inviteeRSVPToSubmit.value.childrenGuestNumber === props.inviteeRSVP?.childrenGuestNumber &&
     inviteeRSVPToSubmit.value.adultGuestNumber === props.inviteeRSVP?.adultGuestNumber &&
@@ -193,7 +220,6 @@ const canSubmit = computed(() => {
 
 const handleSubmit = () => {
   emit('submit', inviteeRSVPToSubmit.value)
-  // TODO: submit
 }
 </script>
 <script lang="ts">

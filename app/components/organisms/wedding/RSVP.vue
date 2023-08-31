@@ -1,58 +1,44 @@
 <template lang="pug">
-.events
-  .heading__wrapper
-    .heading {{ 'EVENTS' }}
-    .heading__sub {{ subHeadingText }}
-
-  template(v-if="!isNotInvited")
-    .content
-      .content__heading {{ 'HOLY MATRIMONY (ONSITE)' }}
-      .content__item
-        .item__text
-          .item__main-info {{ 'Gereja Kristus Yesus (GKY)\nMangga Besar' }}
-          .item__sub-info {{ 'Saturday, 6 January 2024,\n10:00 WIB (UTC+7)' }}
-        .item__graphic.item__graphic--map(ref="holyMatrimonyMapElementRef")
-
-  .content
-    .content__heading {{ 'HOLY MATRIMONY (ONLINE)' }}
-    .content__item
-      .item__text
-        .item__sub-info {{ 'Saturday, 6 January 2024,\n10:00 WIB (UTC+7)' }}
-      //- TODO: Live Streaming Link
-      iframe.item__graphic.item__graphic--embed(
-        src="https://www.youtube.com/embed/RZ9V0-fAfE8"
-        title="YouTube video player"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen
-      )
-
-  template(v-if="isReceptionInvitation") 
-    .content(data-order="reverse")
-      .content__heading {{ 'RECEPTION DINNER' }}
-      .content__item
-        .item__text
-          .item__main-info {{ 'Sailendra Restaurant -\nJW Marriott Hotel Jakarta' }}
-          .item__sub-info {{ 'Saturday, 6 January 2024, 18:00 WIB' }}
-        .item__graphic.item__graphic--map(ref="receptionMapElementRef")
+.rsvp
+  template(v-if="invitee")
+    RSVPModal(
+      :is-open="isRSVPModalOpen"
+      :invitee="invitee"
+      :inviteeRSVP="databaseInviteeRSVP"
+      @close="$emit('closeRSVPModal')"
+      @submit="handleSubmitRSVP"
+    )
+  template(v-if="invitee && inviteeRSVPToSubmit")
+    ConfirmRSVPModal(
+      :is-open="confirmRSVPModalStates.isOpen"
+      :is-submitting="confirmRSVPModalStates.isSubmitting"
+      :is-submit-completed="confirmRSVPModalStates.isSubmitCompleted"
+      :has-error="confirmRSVPModalStates.hasError"
+      :invitee="invitee"
+      :inviteeRSVP="inviteeRSVPToSubmit"
+      @close="handleCloseRSVPSubmission"
+      @confirmRSVP="handleConfirmRSVP"
+    )
 </template>
 <script lang="ts" setup>
-import useMap from '~/composables/wedding/useMap'
-import RSVPForm from '~/components/organisms/wedding/RSVPForm.vue'
+import RSVPModal from '~/components/organisms/wedding/RSVPModal.vue'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
-import {
-  getIsMatrimonyInvitation,
-  getIsReceptionInvitation,
-  getIsNotInvited,
-} from '~/utils/wedding'
 import ConfirmRSVPModal from '~/components/organisms/wedding/ConfirmRSVPModal.vue'
+import useUid from '~/composables/wedding/useUid'
+
+const { uid } = useUid()
 
 type Props = {
+  isRSVPModalOpen: boolean
   invitee: Invitee | null
   databaseInviteeRSVP: InviteeRSVP | null
 }
 
-const props = defineProps({
+defineProps({
+  isRSVPModalOpen: {
+    type: Boolean as () => Props['isRSVPModalOpen'],
+    default: false,
+  },
   invitee: {
     type: Object as () => Props['invitee'],
     default: null,
@@ -63,29 +49,78 @@ const props = defineProps({
   },
 })
 
-const isReceptionInvitation = computed(() =>
-  getIsReceptionInvitation(props.invitee?.invitationType)
-)
-const isMatrimonyInvitation = computed(() =>
-  getIsMatrimonyInvitation(props.invitee?.invitationType)
-)
-const isNotInvited = computed(() => getIsNotInvited(props.invitee?.invitationType))
+const emit = defineEmits(['closeRSVPModal', 'promptUpdateInviteeRSVP'])
 
-const subHeadingText = computed(() => {
-  if (isReceptionInvitation.value)
-    return "We would love to have your presence and blessings at our marriage's holy matrimony and dinner reception."
-  if (isMatrimonyInvitation.value)
-    return "We would love to have your presence and blessings at our marriage's holy matrimony."
-  return "We would love to have your presence and blessings at the live streaming of our marriage's holy matrimony."
+const confirmRSVPModalStates = reactive({
+  isOpen: false,
+  isSubmitting: false,
+  isSubmitCompleted: false,
+  hasError: false,
 })
 
-const { receptionMapElementRef, holyMatrimonyMapElementRef } = useMap()
+const initializeConfirmRSVPModalStates = () => {
+  confirmRSVPModalStates.isSubmitting = false
+  confirmRSVPModalStates.isSubmitCompleted = false
+  confirmRSVPModalStates.hasError = false
+}
+
+const inviteeRSVPToSubmit = ref<InviteeRSVP>()
+const handleSubmitRSVP = (inviteeRSVP: InviteeRSVP) => {
+  confirmRSVPModalStates.isOpen = true
+  inviteeRSVPToSubmit.value = inviteeRSVP
+}
+
+onMounted(initializeConfirmRSVPModalStates)
+
+watch(() => confirmRSVPModalStates.isOpen, initializeConfirmRSVPModalStates)
+
+const shouldCloseModal = computed(
+  () => confirmRSVPModalStates.isSubmitCompleted && !confirmRSVPModalStates.hasError
+)
+
+const handleCloseRSVPSubmission = () => {
+  confirmRSVPModalStates.isOpen = false
+  inviteeRSVPToSubmit.value = undefined
+  if (shouldCloseModal.value) {
+    emit('closeRSVPModal')
+  }
+}
+
+const { useInviteeRSVP } = useFirestoreCollections()
+const inviteeRSVPFirestore = useInviteeRSVP()
+
+const handleConfirmRSVP = () => {
+  if (shouldCloseModal.value) {
+    handleCloseRSVPSubmission()
+    return
+  }
+
+  if (!uid.value || !inviteeRSVPToSubmit.value) {
+    confirmRSVPModalStates.hasError = true
+    return
+  }
+
+  confirmRSVPModalStates.isSubmitting = true
+
+  inviteeRSVPFirestore
+    .set(uid.value, inviteeRSVPToSubmit.value)
+    .then(() => {
+      emit('promptUpdateInviteeRSVP')
+    })
+    .catch(() => {
+      confirmRSVPModalStates.hasError = true
+    })
+    .finally(() => {
+      confirmRSVPModalStates.isSubmitting = false
+      confirmRSVPModalStates.isSubmitCompleted = true
+    })
+}
 </script>
 <script lang="ts">
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Events',
-  components: { RSVPForm, ConfirmRSVPModal },
+  components: { RSVPModal, ConfirmRSVPModal },
 }
 </script>
 <style lang="scss" scoped>

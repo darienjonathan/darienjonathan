@@ -16,17 +16,16 @@ export const onWrite = inviteeRSVP().trigger.onWrite(async (_, after, context) =
   const uidIndex = rows.findIndex(row => row[0] === inviteeRSVPUid)
   if (uidIndex === -1) return
 
-  const { isAttendingReception, phoneNumber, adultGuestNumber, childrenGuestNumber } = after
+  const { isAttendingReception, name, phoneNumber, adultGuestNumber, childrenGuestNumber } = after
 
   const rowNumber = Number(process.env.START_ROW) + uidIndex
   const data = [{
-    range: `${process.env.INVITEE_PHONE_NUMBER_COLUMN}${rowNumber}`,
-    values: [[phoneNumber]]
-  }, {
     range: `${process.env.INVITEE_RSVP_START_COLUMN}${rowNumber}:${process.env.END_COLUMN}${rowNumber}`,
     values: [[
       true,
       isAttendingReception,
+      name,
+      phoneNumber,
       adultGuestNumber,
       childrenGuestNumber
     ]]

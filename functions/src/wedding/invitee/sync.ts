@@ -2,10 +2,11 @@ import { Invitee, InviteeRSVP, parseInvitee, parseInviteeRSVP } from '~/types/mo
 import { invitees as inviteesFirestoreFn, inviteeRSVP as inviteeRSVPFirestoreFn } from '~/lib/firebase/firestore/collections'
 import { getSheetRows, getSheets } from '~/lib/google-sheets'
 import { onRequest } from 'firebase-functions/v2/https'
+import FirestoreCollection from '~/lib/firebase/firestore/Firestore'
 
 const inviteePropertyIndexes: ('uid' | keyof Invitee)[] = [
   'uid',
-  'name',
+  'databaseName',
   'databasePhoneNumber',
   'invitationType',
   'inviteeSuffix',
@@ -15,6 +16,8 @@ const inviteePropertyIndexes: ('uid' | keyof Invitee)[] = [
 
 const inviteeRSVPPropertyIndexes: (keyof InviteeRSVP)[] = [
   'isAttendingReception', 
+  'name',
+  'phoneNumber',
   'adultGuestNumber',
   'childrenGuestNumber'
 ]
@@ -31,7 +34,7 @@ const getInviteeMapFromSpreadsheet = async () => {
   const rows = (await getSheetRows(sheets, range)) || []
 
   const inviteeMap = new Map<string, Invitee>()
-  const inviteeRSVPMap = new Map<string, InviteeRSVP | undefined>()
+  const inviteeRSVPMap = new Map<string, InviteeRSVP>()
 
   rows.forEach(row => {
     if (!row.some(cell => !!cell)) return
@@ -51,24 +54,17 @@ const getInviteeMapFromSpreadsheet = async () => {
 
     // create InviteeRSVP object from spreadsheet data
     const inviteeRSVPIndexOffset = getInviteeRSVPIndexOffset()
-    const inviteeRSVP = inviteeRSVPPropertyIndexes.reduce<InviteeRSVP | undefined>(
-      (result, property, index) => {
-        if (!result) return
-        
-        const hasResponded = row[inviteeRSVPIndexOffset]
-        if (!hasResponded) return
-
-        return {
-          ...result,
-          [property]: row[index + inviteeRSVPIndexOffset + 1]
-        }
-      },
+    
+    const hasResponded = row[inviteeRSVPIndexOffset] === 'TRUE'
+    if (!hasResponded) return
+    
+    const inviteeRSVP =  inviteeRSVPPropertyIndexes.reduce<InviteeRSVP>(
+      (result, property, index) => ({
+        ...result,
+        [property]: row[index + inviteeRSVPIndexOffset + 1]
+      }),
       parseInviteeRSVP({})
     )
-
-    if (inviteeRSVP) {
-      inviteeRSVP.phoneNumber = invitee.databasePhoneNumber
-    }
     inviteeRSVPMap.set(inviteeUid, parseInviteeRSVP(inviteeRSVP))
   })
 
@@ -78,38 +74,33 @@ const getInviteeMapFromSpreadsheet = async () => {
   }
 }
 
+const syncSpreadsheetToFirestore = async <T extends Record<string, any>>(spreadsheetMap: Map<string, T>, firestoreInstance: FirestoreCollection<T>) => {
+  const firestoreCollectionMap = await firestoreInstance.loadCollection()
+
+  // remove data that don't exist in spreadsheet from firestore
+  const uidsToDeleteFromCollection: string[] = []
+  for (const uid of firestoreCollectionMap.keys()) {
+    if (!spreadsheetMap.has(uid)) {
+      uidsToDeleteFromCollection.push(uid)
+    }
+  }
+
+  if (uidsToDeleteFromCollection.length) {
+    await firestoreInstance.bulkDelete(uidsToDeleteFromCollection)
+  }
+  
+  // add data from spreadsheet to firestore
+  await firestoreInstance.bulkInsertMap(spreadsheetMap)
+}
+
 export const sync = onRequest(async (_, res) => {
   const inviteesFirestore = inviteesFirestoreFn()
   const inviteeRSVPFirestore = inviteeRSVPFirestoreFn()
 
   const { inviteeMap: inviteeMapFromSpreadsheet, inviteeRSVPMap: inviteeRSVPMapFromSpreadsheet } = await getInviteeMapFromSpreadsheet()
 
-  // remove invitees that don't exist in spreadsheet
-  const inviteeCollectionMap = await inviteesFirestore.loadCollection()
-  const inviteeUidsToDelete: string[] = []
-  for (const uid of inviteeCollectionMap.keys()) {
-    if (!inviteeMapFromSpreadsheet.has(uid)) {
-      inviteeUidsToDelete.push(uid)
-    }
-  }
-  await inviteesFirestore.bulkDelete(inviteeUidsToDelete)
-
-  // add invitees from spreadsheet to firestore
-  await inviteesFirestore.bulkInsertMap(inviteeMapFromSpreadsheet)
-
-  // remove inviteeRSVP that don't exist in spreadsheet
-  const inviteeRSVPUidsToDelete: string[] = [...inviteeUidsToDelete]
-  for (const uid of inviteeRSVPMapFromSpreadsheet.keys()) {
-    if (!inviteeRSVPMapFromSpreadsheet.get(uid)) {
-      inviteeRSVPMapFromSpreadsheet.delete(uid)
-      inviteeRSVPUidsToDelete.push(uid)
-    }
-  }
-  await inviteeRSVPFirestore.bulkDelete(inviteeRSVPUidsToDelete)
-
-  // add inviteeRSVP from spreadsheet to firestore
-  // undefined values were removed in the above loop so can remove undefined by type assertion
-  await inviteeRSVPFirestore.bulkInsertMap(inviteeRSVPMapFromSpreadsheet as Map<string, InviteeRSVP>)
+  await syncSpreadsheetToFirestore(inviteeMapFromSpreadsheet, inviteesFirestore)
+  await syncSpreadsheetToFirestore(inviteeRSVPMapFromSpreadsheet, inviteeRSVPFirestore)
 
   res.end()
 })
