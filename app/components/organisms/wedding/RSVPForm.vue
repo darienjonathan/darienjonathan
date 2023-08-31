@@ -144,6 +144,12 @@ const handleAdultGuestNumberChange = (e: Event) => {
   adultGuestNumber.value = Number(target.value)
 }
 
+watch(isAttendingReception, (currentValue, prevValue) => {
+  if (!prevValue && currentValue && adultGuestNumber.value === 0) {
+    adultGuestNumber.value = 1
+  }
+})
+
 const childrenGuestNumber = ref<number>()
 const handleChildrenGuestNumberChange = (e: Event) => {
   const target = e.target as HTMLInputElement
