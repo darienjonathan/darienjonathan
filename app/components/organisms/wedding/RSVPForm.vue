@@ -178,14 +178,15 @@ const initializeFormValues = () => {
 onMounted(initializeFormValues)
 
 const inviteeRSVPToSubmit = computed<InviteeRSVP>(() => {
+  const nameToSubmit = isAttendingReception.value ? name.value : ''
   const phoneNumberToSubmit = isAttendingReception.value
     ? `+${phoneCodeNumber.value || ''}${phoneNumber.value || ''}`
-    : props.invitee?.databasePhoneNumber || ''
+    : ''
   const adultGuestNumberToSubmit = (isAttendingReception.value && adultGuestNumber.value) || 0
   const childrenGuestNumberToSubmit = (isAttendingReception.value && childrenGuestNumber.value) || 0
 
   return {
-    name: name.value,
+    name: nameToSubmit,
     isAttendingReception: isAttendingReception.value ?? false,
     phoneNumber: phoneNumberToSubmit,
     adultGuestNumber: adultGuestNumberToSubmit,
