@@ -123,7 +123,7 @@ onMounted(() => {
       isButtonBlur.value = !entry.isIntersecting
     },
     {
-      rootMargin: '75px',
+      rootMargin: '150px',
       threshold: [0.0, 1.0],
     }
   )
