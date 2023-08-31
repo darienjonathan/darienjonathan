@@ -7,7 +7,8 @@ AModal.confirm-rsvp-modal(
   .inner
     .heading
       h2.heading__main Confirm RSVP
-      h3.heading__sub Reserve with below details?
+      template(v-if="inviteeRSVP.isAttendingReception")
+        h3.heading__sub Reserve with below details?
     .content
       .content__item
         .content__label Name
@@ -26,11 +27,11 @@ AModal.confirm-rsvp-modal(
           .content__label Number of guests (children)
           .content__value {{ inviteeRSVP.childrenGuestNumber }}
     button.submit-btn(
-      @click="handleConfirmRSVP"
-      :disabled="isRequesting"
+      @click="$emit('confirmRSVP')"
+      :disabled="isSubmitting"
     )
-      template(v-if="!isRequesting")
-        template(v-if="!isRequestCompleted || hasError")
+      template(v-if="!isSubmitting")
+        template(v-if="!isSubmitCompleted || hasError")
           | Confirm
         template(v-else)
           | Close
@@ -39,11 +40,11 @@ AModal.confirm-rsvp-modal(
           :width="'20px'"
           :height="'20px'"
         )
-    template(v-if="isRequestCompleted")
+    template(v-if="isSubmitCompleted")
       template(v-if="hasError")
-        .notice.notice--error {{ 'There is an error in confirming your reservation. Please refresh your browser and try once again. Sorry for the inconvenience.' }}
+        .notice.notice--error {{ 'There is an error in submitting your reservation. Please refresh your browser and try once again. Sorry for the inconvenience.' }}
       template(v-else)
-        .notice {{ 'Your reservation has been successfully recorded. Thankyou for confirming your reservation.' }}
+        .notice {{ 'Your reservation information has been successfully recorded. Thankyou for submitting your reservation information.' }}
 </template>
 
 <script lang="ts" setup>
@@ -51,9 +52,6 @@ import AModal from '~/components/atoms/AModal.vue'
 import useMedia from '~/composables/useMedia'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
 import ALoading from '~/components/atoms/ALoading.vue'
-import useUid from '~/composables/wedding/useUid'
-
-const { uid } = useUid()
 
 const { isSP } = useMedia()
 
@@ -61,6 +59,9 @@ type Props = {
   isOpen: boolean
   invitee: Invitee
   inviteeRSVP: InviteeRSVP
+  isSubmitting: boolean
+  isSubmitCompleted: boolean
+  hasError: boolean
 }
 
 const props = defineProps({
@@ -76,46 +77,25 @@ const props = defineProps({
     type: Object as () => Props['inviteeRSVP'],
     required: true,
   },
+  isSubmitting: {
+    type: Boolean as () => Props['isSubmitting'],
+    default: false,
+  },
+  isSubmitCompleted: {
+    type: Boolean as () => Props['isSubmitCompleted'],
+    default: false,
+  },
+  hasError: {
+    type: Boolean as () => Props['hasError'],
+    default: false,
+  },
 })
 
-const emit = defineEmits(['close'])
+defineEmits(['close', 'confirmRSVP'])
 
 const attendanceValueText = computed(() =>
-  props.inviteeRSVP.isAttendingReception ? 'Attending' : 'Not Attending'
+  props.inviteeRSVP?.isAttendingReception ? 'Attending' : 'Not Attending'
 )
-
-const { useInviteeRSVP } = useFirestoreCollections()
-const inviteeRSVPFirestore = useInviteeRSVP()
-
-const isRequesting = ref(false)
-const isRequestCompleted = ref(false)
-const hasError = ref(false)
-
-const shouldCloseModal = computed(() => isRequestCompleted.value && !hasError.value)
-
-const handleConfirmRSVP = () => {
-  if (shouldCloseModal.value) {
-    emit('close')
-    return
-  }
-
-  if (!uid.value) {
-    hasError.value = true
-    return
-  }
-
-  isRequesting.value = true
-
-  inviteeRSVPFirestore
-    .set(uid.value, props.inviteeRSVP)
-    .catch(() => {
-      hasError.value = true
-    })
-    .finally(() => {
-      isRequesting.value = false
-      isRequestCompleted.value = true
-    })
-}
 </script>
 <script lang="ts">
 export default {

@@ -10,16 +10,23 @@
     )
   template(v-if="invitee && inviteeRSVPToSubmit")
     ConfirmRSVPModal(
-      :is-open="isConfirmRSVPModalOpen"
+      :is-open="confirmRSVPModalStates.isOpen"
+      :is-submitting="confirmRSVPModalStates.isSubmitting"
+      :is-submit-completed="confirmRSVPModalStates.isSubmitCompleted"
+      :has-error="confirmRSVPModalStates.hasError"
       :invitee="invitee"
       :inviteeRSVP="inviteeRSVPToSubmit"
-      @close="handleCancelRSVPSubmission"
+      @close="handleCloseRSVPSubmission"
+      @confirmRSVP="handleConfirmRSVP"
     )
 </template>
 <script lang="ts" setup>
 import RSVPModal from '~/components/organisms/wedding/RSVPModal.vue'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
 import ConfirmRSVPModal from '~/components/organisms/wedding/ConfirmRSVPModal.vue'
+import useUid from '~/composables/wedding/useUid'
+
+const { uid } = useUid()
 
 type Props = {
   isRSVPModalOpen: boolean
@@ -42,16 +49,71 @@ defineProps({
   },
 })
 
-const isConfirmRSVPModalOpen = ref(false)
+const emit = defineEmits(['closeRSVPModal', 'promptUpdateInviteeRSVP'])
+
+const confirmRSVPModalStates = reactive({
+  isOpen: false,
+  isSubmitting: false,
+  isSubmitCompleted: false,
+  hasError: false,
+})
+
+const initializeConfirmRSVPModalStates = () => {
+  confirmRSVPModalStates.isSubmitting = false
+  confirmRSVPModalStates.isSubmitCompleted = false
+  confirmRSVPModalStates.hasError = false
+}
 
 const inviteeRSVPToSubmit = ref<InviteeRSVP>()
 const handleSubmitRSVP = (inviteeRSVP: InviteeRSVP) => {
-  isConfirmRSVPModalOpen.value = true
+  confirmRSVPModalStates.isOpen = true
   inviteeRSVPToSubmit.value = inviteeRSVP
 }
-const handleCancelRSVPSubmission = () => {
-  isConfirmRSVPModalOpen.value = false
+
+onMounted(initializeConfirmRSVPModalStates)
+
+watch(() => confirmRSVPModalStates.isOpen, initializeConfirmRSVPModalStates)
+
+const shouldCloseModal = computed(
+  () => confirmRSVPModalStates.isSubmitCompleted && !confirmRSVPModalStates.hasError
+)
+
+const handleCloseRSVPSubmission = () => {
+  confirmRSVPModalStates.isOpen = false
   inviteeRSVPToSubmit.value = undefined
+  if (shouldCloseModal.value) {
+    emit('closeRSVPModal')
+  }
+}
+
+const { useInviteeRSVP } = useFirestoreCollections()
+const inviteeRSVPFirestore = useInviteeRSVP()
+
+const handleConfirmRSVP = () => {
+  if (shouldCloseModal.value) {
+    handleCloseRSVPSubmission()
+    return
+  }
+
+  if (!uid.value || !inviteeRSVPToSubmit.value) {
+    confirmRSVPModalStates.hasError = true
+    return
+  }
+
+  confirmRSVPModalStates.isSubmitting = true
+
+  inviteeRSVPFirestore
+    .set(uid.value, inviteeRSVPToSubmit.value)
+    .then(() => {
+      emit('promptUpdateInviteeRSVP')
+    })
+    .catch(() => {
+      confirmRSVPModalStates.hasError = true
+    })
+    .finally(() => {
+      confirmRSVPModalStates.isSubmitting = false
+      confirmRSVPModalStates.isSubmitCompleted = true
+    })
 }
 </script>
 <script lang="ts">

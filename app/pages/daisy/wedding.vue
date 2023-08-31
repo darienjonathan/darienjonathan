@@ -30,6 +30,7 @@
       :invitee="invitee"
       :databaseInviteeRSVP="inviteeRSVP"
       @closeRSVPModal="isRSVPModalOpen = false"
+      @promptUpdateInviteeRSVP="handleUpdateInviteRSVP"
     )
 </template>
 <script lang="ts" setup>
@@ -119,16 +120,22 @@ watch(
   }
 )
 
+const setInvitee = async () => {
+  if (!uid.value) return
+  const fetchedInvitee = await inviteesFirestore.loadDocument(uid.value)
+  invitee.value = fetchedInvitee
+}
+
+const setInviteeRSVP = async () => {
+  if (!uid.value) return
+  const fetchedInviteeRSVP = await inviteeRSVPFirestore.loadDocument(uid.value)
+  inviteeRSVP.value = fetchedInviteeRSVP
+}
+
 watch(
   uid,
   async () => {
-    if (!uid.value) return
-
-    const fetchedInvitee = await inviteesFirestore.loadDocument(uid.value)
-    const fetchedInviteeRSVP = await inviteeRSVPFirestore.loadDocument(uid.value)
-
-    invitee.value = fetchedInvitee
-    inviteeRSVP.value = fetchedInviteeRSVP
+    await Promise.all([setInvitee(), setInviteeRSVP()])
   },
   {
     immediate: true,
@@ -140,6 +147,10 @@ watch(
 // --------------------------------------------------
 
 const isRSVPModalOpen = ref(false)
+
+const handleUpdateInviteRSVP = () => {
+  setInviteeRSVP()
+}
 
 // --------------------------------------------------
 // Meta Tags
