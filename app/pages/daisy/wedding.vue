@@ -24,7 +24,7 @@
         .line
         Closing.closing
         Footer.footer
-  template(v-if="invitee")
+  template(v-if="isDataLoaded && invitee")
     RSVP(
       :isRSVPModalOpen="isRSVPModalOpen"
       :invitee="invitee"
@@ -80,6 +80,7 @@ const { useInvitees, useInviteeRSVP } = useFirestoreCollections()
 const inviteesFirestore = useInvitees()
 const inviteeRSVPFirestore = useInviteeRSVP()
 
+const isDataLoaded = ref(false)
 const invitee = ref<Invitee | null>()
 const inviteeRSVP = ref<InviteeRSVP | null>()
 
@@ -136,6 +137,7 @@ watch(
   uid,
   async () => {
     await Promise.all([setInvitee(), setInviteeRSVP()])
+    isDataLoaded.value = true
   },
   {
     immediate: true,
