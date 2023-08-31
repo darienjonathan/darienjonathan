@@ -8,13 +8,18 @@ AModal.rsvp-modal(
     .heading
       h2.heading__main {{ inviteeRSVP ? 'Review Your RSVP' : 'RSVP' }}
     .content
-      .info
-        .info__description
-          span.info__description-text {{ 'Due to limited space, and to ensure the smooth running of the events, We kindly ask your cooperation by confirming your attendance to the dinner reception before ' }}
+      template(v-if="inviteeRSVP")
+        .info
+          span.info__description-text {{ 'You can review and update your RSVP details using below form through ' }}
           span.info__description-text.info__description-text--focus {{ 'November 30, 2023.' }}
-        .info__note 
-          .info__note-text.rsvp__note-text--focus {{ 'Unconfirmed attendance is considered as not attending.' }}
-          .info__note-text {{ ' We thank you for your kind understanding.' }}
+      template(v-else)
+        .info
+          .info__description
+            span.info__description-text {{ 'Due to limited space, and to ensure the smooth running of the events, We kindly ask your cooperation by confirming your attendance to the dinner reception before ' }}
+            span.info__description-text.info__description-text--focus {{ 'November 30, 2023.' }}
+          .info__note 
+            .info__note-text.rsvp__note-text--focus {{ 'Unconfirmed attendance is considered as not attending.' }}
+            .info__note-text {{ ' We thank you for your kind understanding.' }}
       RSVPForm(
         :invitee="invitee"
         :inviteeRSVP="inviteeRSVP"
@@ -76,7 +81,12 @@ export default {
 
 .heading {
   & {
-    margin-bottom: 32px;
+    @include pc {
+      margin-bottom: 16px;
+    }
+    @include sp {
+      margin-bottom: 16px;
+    }
   }
   &__main {
     @include font($size: $font-xl);
