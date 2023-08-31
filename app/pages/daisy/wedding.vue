@@ -115,6 +115,8 @@ watch(
         phoneNumber: '+6281234567890',
       }
     }
+
+    isDataLoaded.value = true
   },
   {
     immediate: true,
