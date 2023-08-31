@@ -1,6 +1,11 @@
 <template lang="pug">
 .rsvp-form
-  MInput.input(:label="'Name'") {{ invitee?.name }}
+  MInput.input(:label="'Name'")
+    input.phone-number__input(
+      type="text"
+      :value="name"
+      @input="handleChangeName"
+    )
   template(v-if="isReceptionInvitation")
     MInput.input(:label="'Are you attending?'")
       select.input__item(
@@ -70,7 +75,7 @@
   button.button(
     @click="handleSubmit"
     :disabled="!canSubmit"
-  ) Submit
+  ) {{ inviteeRSVP ? 'Update' : 'Submit' }}
 </template>
 <script lang="ts" setup>
 import { phoneCodeList } from '~/utils/phone'
@@ -103,6 +108,12 @@ const isReceptionInvitation = computed(() =>
 // --------------------------------------------------
 // Form
 // --------------------------------------------------
+
+const name = ref<string>('')
+const handleChangeName = (e: Event) => {
+  const target = e.target as HTMLInputElement
+  name.value = String(target.value)
+}
 
 // We don't require RSVP for Holy Matrimony Attendance
 const isAttendingReception = ref<boolean | undefined>(undefined)
@@ -142,7 +153,8 @@ const handleChildrenGuestNumberChange = (e: Event) => {
 // Form Initialization
 
 const initializeFormValues = () => {
-  console.log(props.inviteeRSVP)
+  name.value = props.inviteeRSVP?.name || props.invitee.databaseName
+
   isAttendingReception.value = props.inviteeRSVP
     ? props.inviteeRSVP.isAttendingReception
     : undefined
@@ -173,6 +185,7 @@ const inviteeRSVPToSubmit = computed<InviteeRSVP>(() => {
   const childrenGuestNumberToSubmit = (isAttendingReception.value && childrenGuestNumber.value) || 0
 
   return {
+    name: name.value,
     isAttendingReception: isAttendingReception.value ?? false,
     phoneNumber: phoneNumberToSubmit,
     adultGuestNumber: adultGuestNumberToSubmit,
@@ -182,6 +195,7 @@ const inviteeRSVPToSubmit = computed<InviteeRSVP>(() => {
 
 const hasChange = computed(() => {
   return !(
+    inviteeRSVPToSubmit.value.name === props.inviteeRSVP?.name &&
     inviteeRSVPToSubmit.value.isAttendingReception === props.inviteeRSVP?.isAttendingReception &&
     inviteeRSVPToSubmit.value.childrenGuestNumber === props.inviteeRSVP?.childrenGuestNumber &&
     inviteeRSVPToSubmit.value.adultGuestNumber === props.inviteeRSVP?.adultGuestNumber &&

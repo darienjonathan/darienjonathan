@@ -21,7 +21,7 @@ export const parseInviteeSuffix = (inviteeSuffix: any): InviteeSuffix | undefine
 }
 
 export interface Invitee {
-  name: string
+  databaseName: string
   invitationType?: InvitationType
   inviteeSuffix?: InviteeSuffix
   databasePhoneNumber: string
@@ -30,7 +30,7 @@ export interface Invitee {
 }
 
 export const parseInvitee = (data: any): Invitee => ({
-  name: parseString(data.name),
+  databaseName: parseString(data.name),
   invitationType: parseInvitationType(data.invitationType),
   inviteeSuffix: parseInviteeSuffix(data.inviteeSuffix),
   databasePhoneNumber: parseString(data.databasePhoneNumber),
@@ -39,6 +39,7 @@ export const parseInvitee = (data: any): Invitee => ({
 })
 
 export interface InviteeRSVP {
+  name: string
   isAttendingReception: boolean
   phoneNumber: string
   adultGuestNumber: number
@@ -46,6 +47,7 @@ export interface InviteeRSVP {
 }
 
 export const parseInviteeRSVP = (data: any): InviteeRSVP => ({
+  name: parseString(data.name),
   isAttendingReception: parseBoolean(data.isAttendingReception),
   phoneNumber: parseString(data.phoneNumber),
   adultGuestNumber: parseNumber(data.adultGuestNumber),

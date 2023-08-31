@@ -88,7 +88,7 @@ watch(
   () => {
     if (uid.value === 'DUMMY') {
       invitee.value = {
-        name: 'Kevin Jonathan',
+        databaseName: 'Kevin Jonathan',
         invitationType: 'reception',
         inviteeSuffix: 'family',
         databasePhoneNumber: '+6281234567890',
@@ -98,7 +98,7 @@ watch(
     }
     if (uid.value === 'RSVP_DUMMY') {
       invitee.value = {
-        name: 'Kevin Jonathan',
+        databaseName: 'Kevin Jonathan',
         invitationType: 'reception',
         inviteeSuffix: 'family',
         databasePhoneNumber: '+6281234567890',
@@ -106,6 +106,7 @@ watch(
         childrenGuestNumber: 1,
       }
       inviteeRSVP.value = {
+        name: 'Kevin Jonathan',
         adultGuestNumber: 1,
         childrenGuestNumber: 1,
         isAttendingReception: true,

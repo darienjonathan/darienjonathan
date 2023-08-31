@@ -11,7 +11,7 @@ AModal.confirm-rsvp-modal(
     .content
       .content__item
         .content__label Name
-        .content__value {{ invitee.name }}
+        .content__value {{ inviteeRSVP.name || invitee.databaseName }}
       .content__item
         .content__label Dinner Reception Attendance
         .content__value {{ attendanceValueText }}
