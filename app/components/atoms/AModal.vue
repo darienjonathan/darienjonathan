@@ -19,6 +19,8 @@
           .close__icon.material-icons-outlined close
 </template>
 <script lang="ts" setup>
+import { useModalStore } from '~/store'
+
 interface Props {
   type: 'default' | 'full-size' | 'auto' | 'frameless'
   width: string
@@ -44,24 +46,26 @@ const props = defineProps({
   },
 })
 
+const modalStore = useModalStore()
+
 const { isOpen } = toRefs(props)
 const isModalOpen = ref(false)
-
-const { getValues, vh } = useViewportUnitSizes()
 
 watch(
   isOpen,
   (currentValue, prevValue) => {
-    if (prevValue || !currentValue) return
+    const isOpened = !prevValue && currentValue
+    if (isOpened) {
+      isModalOpen.value = true
+      modalStore.incrementModalCount()
+    }
 
-    isModalOpen.value = true
-
-    // freeze body
-    getValues()
-    const hasScroll = document.body.clientHeight > vh.value * 100
-    document.body.style.top = `-${window.scrollY}px`
-    document.body.style.position = 'fixed'
-    document.body.style.overflowY = hasScroll ? 'scroll' : ''
+    const isClosed = prevValue && !currentValue
+    if (isClosed) {
+      // if it's closed from outside, set isModalOpen to false
+      isModalOpen.value = false
+      modalStore.decrementModalCount()
+    }
   },
   {
     immediate: true,
@@ -70,18 +74,11 @@ watch(
 
 const handleClose = () => {
   isModalOpen.value = false
-
-  // unfreeze body
-  const top = parseInt(document.body.style.top || '0') * -1
-  document.body.style.position = ''
-  document.body.style.top = ''
-  document.body.style.overflowY = ''
-  window.scrollTo({
-    left: 0,
-    top,
-    behavior: 'instant',
-  })
 }
+
+onUnmounted(() => {
+  modalStore.decrementModalCount()
+})
 </script>
 <style lang="scss" scoped>
 @use 'sass:math';
