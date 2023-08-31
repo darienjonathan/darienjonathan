@@ -63,8 +63,10 @@ const invitationTypeText = computed(() => {
   return ''
 })
 
+const inviteeName = computed(() => props.inviteeRSVP?.name || props.invitee?.databaseName || '')
+
 const inviteeNameText = computed(() => {
-  const baseText = `For ${props.invitee?.databaseName || ''}`
+  const baseText = `For ${inviteeName.value || ''}`
   if (props.invitee?.inviteeSuffix === 'family') return `${baseText} & Family`
   if (props.invitee?.inviteeSuffix === 'partner') return `${baseText} & Partner`
   return ''
