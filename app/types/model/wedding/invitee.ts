@@ -30,7 +30,7 @@ export interface Invitee {
 }
 
 export const parseInvitee = (data: any): Invitee => ({
-  databaseName: parseString(data.name),
+  databaseName: parseString(data.databaseName),
   invitationType: parseInvitationType(data.invitationType),
   inviteeSuffix: parseInviteeSuffix(data.inviteeSuffix),
   databasePhoneNumber: parseString(data.databasePhoneNumber),
