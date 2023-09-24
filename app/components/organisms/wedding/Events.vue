@@ -6,7 +6,7 @@
 
   template(v-if="!isNotInvited")
     .content
-      .content__heading {{ 'HOLY MATRIMONY (ONSITE)' }}
+      .content__heading {{ 'HOLY MATRIMONY' }}
       .content__item
         .item__text
           .item__main-info {{ 'Gereja Kristus Yesus (GKY)\nMangga Besar' }}
