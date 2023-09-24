@@ -11,11 +11,12 @@
         @RSVPButtonClick="isRSVPModalOpen = true"
       )
       .content
-        Events.events(
-          :invitee="invitee"
-          :databaseInviteeRSVP="inviteeRSVP"
-          ref="eventsElementRef"
-        )
+        template(v-if="invitee")
+          Events.events(
+            :invitee="invitee"
+            :databaseInviteeRSVP="inviteeRSVP"
+            ref="eventsElementRef"
+          )
         AboutUs.about-us
         OurStory.our-story(:invitee="invitee")
         Gallery.gallery
