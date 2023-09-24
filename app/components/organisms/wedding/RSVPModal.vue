@@ -11,12 +11,12 @@ AModal.rsvp-modal(
       template(v-if="inviteeRSVP")
         .info
           span.info__description-text {{ 'You can review and update your RSVP details using below form through ' }}
-          span.info__description-text.info__description-text--focus {{ 'November 30, 2023.' }}
+          span.info__description-text.info__description-text--focus {{ `${deadlineString}.` }}
       template(v-else)
         .info
           .info__description
             span.info__description-text {{ 'Due to limited space, and to ensure the smooth running of the events, We kindly ask your cooperation by confirming your attendance to the dinner reception before ' }}
-            span.info__description-text.info__description-text--focus {{ 'November 30, 2023.' }}
+            span.info__description-text.info__description-text--focus {{ `${deadlineString}.` }}
           .info__note 
             .info__note-text.rsvp__note-text--focus {{ 'Unconfirmed attendance is considered as not attending.' }}
             .info__note-text {{ ' We thank you for your kind understanding.' }}
@@ -28,6 +28,7 @@ AModal.rsvp-modal(
 </template>
 
 <script lang="ts" setup>
+import { unix } from 'dayjs'
 import AModal from '~/components/atoms/AModal.vue'
 import useMedia from '~/composables/useMedia'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
@@ -62,6 +63,10 @@ const { isSP } = useMedia()
 const handleSubmit = (inviteeRSVP: InviteeRSVP) => {
   emit('submit', inviteeRSVP)
 }
+
+const config = useRuntimeConfig().public.wedding
+
+const deadlineString = computed(() => unix(config.rsvpDeadline).format('MMMM D, YYYY'))
 </script>
 <script lang="ts">
 export default {
