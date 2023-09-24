@@ -13,20 +13,6 @@
           .item__sub-info {{ 'Saturday, 6 January 2024,\n10:00 WIB (UTC+7)' }}
         .item__graphic.item__graphic--map(ref="holyMatrimonyMapElementRef")
 
-  .content
-    .content__heading {{ 'HOLY MATRIMONY (ONLINE)' }}
-    .content__item
-      .item__text
-        .item__sub-info {{ 'Saturday, 6 January 2024,\n10:00 WIB (UTC+7)' }}
-      //- TODO: Live Streaming Link
-      iframe.item__graphic.item__graphic--embed(
-        src="https://www.youtube.com/embed/RZ9V0-fAfE8"
-        title="YouTube video player"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen
-      )
-
   template(v-if="isReceptionInvitation") 
     .content(data-order="reverse")
       .content__heading {{ 'RECEPTION DINNER' }}
@@ -229,12 +215,6 @@ $reversed-content-class: ".content[data-order='reverse']";
       :deep(.link__href) {
         @include font($size: $font-sm, $color: $wedding_brown);
         text-decoration: none;
-      }
-    }
-
-    &--embed {
-      @include sp {
-        height: 200px;
       }
     }
   }

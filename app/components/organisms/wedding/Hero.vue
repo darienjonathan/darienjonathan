@@ -24,11 +24,19 @@
         .nav-btn__icon.material-icons-outlined expand_more
         .nav-btn__text(@click="emit('navClick')") {{ 'Events' }}
 
-    template(v-if="invitee")
-      .rsvp-button(
-        @click="handleClickRSVPButton"
-        :data-is-blur="isButtonBlur"
-      ) {{ inviteeRSVP ? 'Review Your RSVP' : 'RSVP' }}
+    .button__wrapper
+      template(v-if="invitee")
+        .button(
+          @click="handleClickRSVPButton"
+          :data-is-blur="isButtonBlur"
+        ) {{ inviteeRSVP ? 'Review Your RSVP' : 'RSVP' }}
+      template(v-if="shouldShowStreamingButton")
+        a.button(
+          :href="streamingButtonLink"
+          target="_blank"
+          rel="noopener noreferrer"
+          role="button"
+        ) {{ 'Attend Online' }}
 </template>
 <script lang="ts" setup>
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
@@ -139,6 +147,11 @@ onUnmounted(() => {
 const handleClickRSVPButton = () => {
   emit('RSVPButtonClick')
 }
+
+const config = useRuntimeConfig().public
+
+const streamingButtonLink = computed(() => config.streamingLink)
+const shouldShowStreamingButton = computed(() => Date.now() > config.showStreamingButtonTimestamp)
 </script>
 <script lang="ts">
 export default {
@@ -300,9 +313,6 @@ export default {
 @mixin floating-button {
   @include flex;
   @include font-family('marcellus');
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
   min-width: 150px;
   height: 45px;
   padding: 10px 20px;
@@ -327,9 +337,22 @@ export default {
   }
 }
 
-.rsvp-button {
-  @include floating-button;
-  bottom: 75px;
-  z-index: 1;
+.button {
+  &__wrapper {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 75px;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 16px;
+    z-index: 1;
+  }
+
+  & {
+    @include floating-button;
+    text-decoration: none;
+    color: inherit;
+  }
 }
 </style>

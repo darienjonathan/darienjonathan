@@ -39,6 +39,8 @@ export default defineNuxtConfig({
       },
       proposalPagePassword: process.env.DAISY_PAGE_PASSWORD,
       googleApiKey: process.env.GOOGLE_MAPS_API_KEY,
+      showStreamingButtonTimestamp: Number(process.env.SHOW_STREAMING_BUTTON_TIMESTAMP),
+      streamingLink: process.env.STREAMING_LINK,
     },
   },
   css: ['@/assets/css/global.scss'],
