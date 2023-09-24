@@ -25,7 +25,7 @@
         .nav-btn__text(@click="emit('navClick')") {{ 'Events' }}
 
     .button__wrapper
-      template(v-if="invitee")
+      template(v-if="shouldShowRSVPButton")
         .button(
           @click="handleClickRSVPButton"
           :data-is-blur="isButtonBlur"
@@ -39,8 +39,13 @@
         ) {{ 'Attend Online' }}
 </template>
 <script lang="ts" setup>
+import dayjs, { unix, extend } from 'dayjs'
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
 import { getIsReceptionInvitation, getIsMatrimonyInvitation } from '~/utils/wedding'
+extend(isSameOrAfter)
+extend(isSameOrBefore)
 
 type Props = {
   invitee: Invitee | null
@@ -150,10 +155,15 @@ const handleClickRSVPButton = () => {
 
 const config = useRuntimeConfig().public.wedding
 
+const shouldShowRSVPButton = computed(() => {
+  if (!props.invitee) return false
+  if (props.inviteeRSVP) return true
+  return dayjs().isSameOrBefore(unix(config.rsvpDeadline))
+})
+
 const streamingButtonLink = computed(() => config.streamingLink)
-const shouldShowStreamingButton = computed(
-  // NOTE: Date.now() is in ms while config value is in second
-  () => Date.now() / 1000 > config.showStreamingButtonTimestamp
+const shouldShowStreamingButton = computed(() =>
+  dayjs().isSameOrAfter(unix(config.showStreamingButtonTimestamp))
 )
 </script>
 <script lang="ts">

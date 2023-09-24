@@ -39,6 +39,7 @@ export default defineNuxtConfig({
       },
       wedding: {
         proposalPagePassword: process.env.DAISY_PAGE_PASSWORD,
+        rsvpDeadline: Number(process.env.RSVP_DEADLINE),
         showStreamingButtonTimestamp: Number(process.env.SHOW_STREAMING_BUTTON_TIMESTAMP),
         streamingLink: process.env.STREAMING_LINK,
       },
