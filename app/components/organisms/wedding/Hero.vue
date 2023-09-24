@@ -148,7 +148,7 @@ const handleClickRSVPButton = () => {
   emit('RSVPButtonClick')
 }
 
-const config = useRuntimeConfig().public
+const config = useRuntimeConfig().public.wedding
 
 const streamingButtonLink = computed(() => config.streamingLink)
 const shouldShowStreamingButton = computed(() => Date.now() > config.showStreamingButtonTimestamp)
