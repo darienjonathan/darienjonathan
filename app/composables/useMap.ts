@@ -6,7 +6,7 @@ const useMap = () => {
 
   const initializeLoader = () => {
     loader.value = new Loader({
-      apiKey: config.googleApiKey,
+      apiKey: config.googleMapsApiKey,
       version: 'weekly',
     })
   }
