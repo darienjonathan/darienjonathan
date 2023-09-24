@@ -156,7 +156,7 @@ const handleClickRSVPButton = () => {
 const config = useRuntimeConfig().public.wedding
 
 const shouldShowRSVPButton = computed(() => {
-  if (!props.invitee) return false
+  if (!isReceptionInvitation.value) return false
   if (props.inviteeRSVP) return true
   return dayjs().isSameOrBefore(unix(config.rsvpDeadline))
 })
