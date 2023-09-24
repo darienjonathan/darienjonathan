@@ -152,6 +152,7 @@ const config = useRuntimeConfig().public.wedding
 
 const streamingButtonLink = computed(() => config.streamingLink)
 const shouldShowStreamingButton = computed(
+  // NOTE: Date.now() is in ms while config value is in second
   () => Date.now() / 1000 > config.showStreamingButtonTimestamp
 )
 </script>
