@@ -151,7 +151,9 @@ const handleClickRSVPButton = () => {
 const config = useRuntimeConfig().public.wedding
 
 const streamingButtonLink = computed(() => config.streamingLink)
-const shouldShowStreamingButton = computed(() => Date.now() > config.showStreamingButtonTimestamp)
+const shouldShowStreamingButton = computed(
+  () => Date.now() / 1000 > config.showStreamingButtonTimestamp
+)
 </script>
 <script lang="ts">
 export default {
