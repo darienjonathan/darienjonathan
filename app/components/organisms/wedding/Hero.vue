@@ -40,13 +40,13 @@
         ) {{ 'Attend Online' }}
 </template>
 <script lang="ts" setup>
-import dayjs, { unix, extend } from 'dayjs'
+import dayjs from 'dayjs'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
 import { getIsReceptionInvitation, getIsMatrimonyInvitation } from '~/utils/wedding'
-extend(isSameOrAfter)
-extend(isSameOrBefore)
+dayjs.extend(isSameOrAfter)
+dayjs.extend(isSameOrBefore)
 
 type Props = {
   invitee: Invitee | null
@@ -160,12 +160,12 @@ const config = useRuntimeConfig().public.wedding
 const shouldShowRSVPButton = computed(() => {
   if (!isReceptionInvitation.value) return false
   if (props.inviteeRSVP) return true
-  return dayjs().isSameOrBefore(unix(config.rsvpDeadline))
+  return dayjs().isSameOrBefore(dayjs.unix(config.rsvpDeadline))
 })
 
 const streamingButtonLink = computed(() => config.streamingLink)
 const shouldShowStreamingButton = computed(() =>
-  dayjs().isSameOrAfter(unix(config.showStreamingButtonTimestamp))
+  dayjs().isSameOrAfter(dayjs.unix(config.showStreamingButtonTimestamp))
 )
 </script>
 <script lang="ts">

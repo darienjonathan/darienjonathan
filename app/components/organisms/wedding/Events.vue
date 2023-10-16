@@ -29,7 +29,7 @@
       .content__button(@click="handleClickRSVPButton") {{ databaseInviteeRSVP ? 'Review Your RSVP' : 'RSVP Here' }}
 </template>
 <script lang="ts" setup>
-import dayjs, { unix } from 'dayjs'
+import dayjs from 'dayjs'
 import MRSVPNotes from '~/components/molecules/wedding/MRSVPNotes.vue'
 import useMap from '~/composables/wedding/useMap'
 import RSVPForm from '~/components/organisms/wedding/RSVPForm.vue'
@@ -80,7 +80,7 @@ const config = useRuntimeConfig().public.wedding
 const shouldShowRSVPSection = computed(() => {
   if (!isReceptionInvitation.value) return false
   if (props.databaseInviteeRSVP) return true
-  return dayjs().isSameOrBefore(unix(config.rsvpDeadline))
+  return dayjs().isSameOrBefore(dayjs.unix(config.rsvpDeadline))
 })
 
 const emit = defineEmits(['RSVPButtonClick'])

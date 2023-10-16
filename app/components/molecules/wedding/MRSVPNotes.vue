@@ -14,7 +14,7 @@ template(v-else)
 </template>
 
 <script lang="ts" setup>
-import { unix } from 'dayjs'
+import dayjs from 'dayjs'
 import type { InviteeRSVP } from '~/types/model/wedding/invitee'
 
 type Props = {
@@ -30,7 +30,7 @@ defineProps({
 
 const config = useRuntimeConfig().public.wedding
 
-const deadlineString = computed(() => unix(config.rsvpDeadline).format('MMMM D, YYYY'))
+const deadlineString = computed(() => dayjs.unix(config.rsvpDeadline).format('MMMM D, YYYY'))
 </script>
 <script lang="ts">
 export default {
