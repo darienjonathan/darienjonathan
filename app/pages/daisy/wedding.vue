@@ -277,25 +277,6 @@ export default {
   .wishes {
     &__wrapper {
       position: relative;
-      &::before {
-        @include size(100%, 100%);
-        @include absolute($top: 0, $left: 0);
-        content: '';
-
-        // TODO: change with proper background
-        background-image: url('@/assets/images/wedding/story/story_1.png');
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
-        opacity: 0.2;
-        mask-image: linear-gradient(
-          to bottom,
-          rgba(0, 0, 0, 0),
-          rgba(0, 0, 0, 1) 25%,
-          rgba(0, 0, 0, 1) 75%,
-          rgba(0, 0, 0, 0)
-        );
-      }
     }
 
     & {
