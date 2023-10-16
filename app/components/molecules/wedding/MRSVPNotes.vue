@@ -9,7 +9,7 @@ template(v-else)
       span.info__description-text {{ 'Due to limited space, and to ensure the smooth running of the events, We kindly ask your cooperation by confirming your attendance to the dinner reception before ' }}
       span.info__description-text.info__description-text--focus {{ `${deadlineString}.` }}
     .info__note 
-      .info__note-text.rsvp__note-text--focus {{ 'Unconfirmed attendance is considered as not attending.' }}
+      .info__note-text.info__note-text--focus {{ 'Unconfirmed attendance is considered as not attending.' }}
       .info__note-text {{ ' We thank you for your kind understanding.' }}
 </template>
 

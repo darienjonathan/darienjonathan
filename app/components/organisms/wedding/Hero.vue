@@ -20,9 +20,10 @@
       .kv__heading {{ 'DARIEN & DAISY' }}
       .kv__line
       .kv__date {{ 'Saturday, 6 January 2024' }}
-      .kv__nav-btn
-        .nav-btn__icon.material-icons-outlined expand_more
-        .nav-btn__text(@click="emit('navClick')") {{ 'Events' }}
+      template(v-if="!isNotInvited")
+        .kv__nav-btn
+          .nav-btn__icon.material-icons-outlined expand_more
+          .nav-btn__text(@click="emit('navClick')") {{ 'Events' }}
 
     .button__wrapper
       template(v-if="shouldShowRSVPButton")
@@ -69,6 +70,7 @@ const isReceptionInvitation = computed(() =>
 const isMatrimonyInvitation = computed(() =>
   getIsMatrimonyInvitation(props.invitee?.invitationType)
 )
+const isNotInvited = computed(() => getIsNotInvited(props.invitee?.invitationType))
 
 const invitationTypeText = computed(() => {
   if (isReceptionInvitation.value) return 'Holy Matrimony & Wedding Reception Invitation'
