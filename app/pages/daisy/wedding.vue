@@ -22,6 +22,7 @@
         Gallery.gallery
         .wishes__wrapper
           Wishes.wishes
+        Registry.registry
         .line
         Closing.closing
         Footer.footer
@@ -48,6 +49,7 @@ import Gallery from '~~/components/organisms/wedding/Gallery.vue'
 import Closing from '~~/components/organisms/wedding/Closing.vue'
 import Footer from '~~/components/organisms/wedding/Footer.vue'
 import RSVP from '~/components/organisms/wedding/RSVP.vue'
+import Registry from '~/components/organisms/wedding/Registry.vue'
 
 useProvideLoading('wedding')
 
@@ -225,6 +227,7 @@ export default {
     Wishes,
     Gallery,
     Closing,
+    Registry,
     Footer,
     RSVP,
   },
@@ -250,7 +253,8 @@ export default {
   .events,
   .about-us,
   .gallery,
-  .wishes {
+  .wishes,
+  .registry {
     padding: 60px 20px;
   }
 
