@@ -12,7 +12,7 @@
           :data-order="imageState.order"
           @click="handleSelectImage(imageState)"
         )
-          NuxtImg(
+          img(
             ref="imgRefs"
             :src="imageState.src"
             loading="lazy"
@@ -27,27 +27,28 @@
       :height="selectedImage.height"
       @close="handleCloseModal"
     )
-      NuxtImg.modal__img(
+      img.modal__img(
         :src="selectedImage.src"
         loading="lazy"
       )
 </template>
 <script lang="ts" setup>
-import type NuxtImg from '@nuxt/image/dist/runtime/components/nuxt-img'
 import AModal from '~/components/atoms/AModal.vue'
 import ALoading from '~/components/atoms/ALoading.vue'
+import image1 from '~/assets/images/wedding/gallery/image_1.png'
+import image10 from '~/assets/images/wedding/gallery/image_10.png'
 
 const imageSrcs = [
-  'wedding/gallery/image_1.png',
-  'wedding/gallery/image_10.png',
-  'wedding/gallery/image_1.png',
-  'wedding/gallery/image_10.png',
-  'wedding/gallery/image_1.png',
-  'wedding/gallery/image_10.png',
-  'wedding/gallery/image_10.png',
-  'wedding/gallery/image_10.png',
-  'wedding/gallery/image_10.png',
-  'wedding/gallery/image_10.png',
+  image1,
+  image10,
+  image1,
+  image10,
+  image1,
+  image10,
+  image10,
+  image10,
+  image10,
+  image10,
 ]
 
 type ImageState = {
@@ -68,7 +69,7 @@ const initializeImageStates = (): ImageState[] =>
   }))
 
 const imageStates = ref<ImageState[]>(initializeImageStates())
-const imgRefs = ref<InstanceType<typeof NuxtImg>[]>([])
+const imgRefs = ref<HTMLImageElement[]>([])
 
 const { vw, vh, getValues } = useViewportUnitSizes()
 
@@ -90,8 +91,7 @@ watchEffect(() => {
   const maxHeight = maxValuePercentage * vh.value
 
   const sizesByOrder = new Map<number, Pick<ImageState, 'width' | 'height'>>()
-  imgRefs.value.forEach(ref => {
-    const el = ref.$el as HTMLImageElement
+  imgRefs.value.forEach(el => {
     const parent = el.parentElement
 
     const order = Number(parent?.getAttribute('data-order'))
@@ -121,6 +121,34 @@ const handleImageLoaded = (loadedImageOrder: number) => {
     }
   })
 }
+
+// apparently there are cases when img element's load event is not triggered. check loaded status by interval
+const updateImageLoaded = () => {
+  const imageLoadedByOrder = new Map<number, ImageState['isLoaded']>()
+  imgRefs.value.forEach(el => {
+    const parent = el.parentElement
+    const order = Number(parent?.getAttribute('data-order'))
+    imageLoadedByOrder.set(order, el.complete)
+  })
+
+  imageStates.value = imageStates.value.map(imageState => ({
+    ...imageState,
+    isLoaded: imageLoadedByOrder.get(imageState.order) || false,
+  }))
+}
+
+const INTERVAL_TIME = 2500
+const updateImageLoadedInterval = ref<ReturnType<typeof setInterval>>()
+
+onMounted(() => {
+  updateImageLoadedInterval.value = setInterval(updateImageLoaded, INTERVAL_TIME)
+})
+
+watch(isAllImageLoaded, () => {
+  if (isAllImageLoaded.value) {
+    clearInterval(updateImageLoadedInterval.value)
+  }
+})
 
 // Selected Image
 const isModalOpen = ref(false)

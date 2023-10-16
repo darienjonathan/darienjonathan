@@ -8,7 +8,7 @@
         @click="handleStoryClick(index)"
         :style="{ cursor: isStorySelectable(story) ? 'pointer' : 'auto' }"
       )
-        NuxtImg.story__thumbnail(
+        img.story__thumbnail(
           loading="lazy"
           :src="story.thumbnail"
         )
@@ -29,6 +29,11 @@ import type { Invitee } from 'types/model/wedding/invitee'
 import StoryModal from '~/components/organisms/wedding/StoryModal.vue'
 import type { Story } from '~/types/model/wedding/story'
 
+import story1 from '~/assets/images/wedding/story/story_1.jpg'
+import story2 from '~/assets/images/wedding/story/story_2.jpg'
+import story3 from '~/assets/images/wedding/story/story_3.png'
+import story4 from '~/assets/images/wedding/story/story_4.png'
+
 type Props = {
   invitee: Invitee | null
 }
@@ -47,7 +52,7 @@ const isReceptionInvitation = computed(() =>
 const stories: Story[] = [
   {
     title: 'Music Director and Pianist',
-    thumbnail: 'wedding/story/story_1.jpg',
+    thumbnail: story1,
     summary:
       'Their first meaningful interaction through melodies coming from the white and black they both know and love.',
     contents: [
@@ -59,7 +64,7 @@ const stories: Story[] = [
   },
   {
     title: 'Is Christ Enough?',
-    thumbnail: 'wedding/story/story_2.jpg',
+    thumbnail: story2,
     summary:
       'He tried to grow seeds of love that were planted there, but it was futile. "Is Christ enough for you?", said his senior who saw how pitiful he was in the wake of the rejection.',
     contents: [
@@ -71,7 +76,7 @@ const stories: Story[] = [
   },
   {
     title: 'The Sacred Search',
-    thumbnail: 'wedding/story/story_3.png',
+    thumbnail: story3,
     summary:
       'They soon found out that this cut-off time was a huge gamechanger for each of them, though, in which they searched within themselves, who, or what, are they truly searching for.',
     contents: [
@@ -85,7 +90,7 @@ const stories: Story[] = [
   },
   {
     title: 'The Sacred Marriage',
-    thumbnail: 'wedding/story/story_4.png',
+    thumbnail: story4,
     summary:
       'Finally, there is really nothing to write home about this relationship, except the above-average amount of time they spent being separated geographically to pursue their own dreams, until they decided to pursue their dreams together as one, and here they are.',
     contents: [],

@@ -7,17 +7,17 @@
     .kv__sub {{ 'Gary Thomas on "The Sacred Search"' }}
   .biodata
     .biodata__item
-      NuxtImg.biodata__image(
+      img.biodata__image(
         loading="lazy"
-        src="wedding/about-us/picture_groom.jpg"
+        src="~/assets/images/wedding/about-us/picture_groom.jpg"
       )
       .biodata__info
         .biodata__name {{ 'DARIEN\nJONATHAN' }}
         .biodata__parents {{ 'Second son of\nPdt. Hasan Winata (✝) &\nHeniwati Suwardi' }}
     .biodata__item(data-order="reverse")
-      NuxtImg.biodata__image(
+      img.biodata__image(
         loading="lazy"
-        src="wedding/about-us/picture_bride.jpg"
+        src="~/assets/images/wedding/about-us/picture_bride.jpg"
       )
       .biodata__info
         .biodata__name {{ 'DAISY\nCHRISTINA' }}

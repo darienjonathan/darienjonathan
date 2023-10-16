@@ -5,12 +5,7 @@
     .hero__button-intersection-observer(ref="buttonObserverElementRef")
     .hero__intersection-observer(ref="observerElementRef")
   .hero__content(:data-is-blur="isBlur")
-    NuxtImg.hero__image(
-      preload
-      :src="'wedding/kv/kv-4.jpg'"
-      :quality="50"
-      @load="handleHeroImageLoaded"
-    )
+    img.hero__image(src="~/assets/images/wedding/kv/kv-4.jpg")
     .hero__invitation-text.invitation-text
       .invitation-text__type {{ invitationTypeText }}
       .invitation-text__name {{ inviteeNameText }}
@@ -89,10 +84,6 @@ const inviteeNameText = computed(() => {
 
 const emit = defineEmits(['loadingDone', 'navClick', 'RSVPButtonClick'])
 
-const handleHeroImageLoaded = () => {
-  emit('loadingDone')
-}
-
 // --------------------------------------------------
 // Hero Intersection Observer
 // --------------------------------------------------
@@ -115,6 +106,7 @@ onMounted(() => {
   )
   observer.observe(observerElementRef.value)
   observerInstance.value = observer
+  emit('loadingDone')
 })
 
 onUnmounted(() => {

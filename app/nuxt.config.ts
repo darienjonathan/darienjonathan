@@ -1,6 +1,6 @@
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
-  modules: ['@nuxt/image', '@pinia/nuxt'],
+  modules: ['@pinia/nuxt'],
   image: {
     dir: 'assets/images',
   },

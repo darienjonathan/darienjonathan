@@ -8,7 +8,7 @@ AModal.story-modal(
     .heading
       h2.heading__main {{ story.title }}
     .content
-      NuxtImg.content__thumbnail(
+      img.content__thumbnail(
         loading="lazy"
         :src="story.thumbnail"
       )
