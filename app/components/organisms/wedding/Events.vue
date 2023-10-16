@@ -21,8 +21,16 @@
           .item__main-info {{ 'Sailendra Restaurant -\nJW Marriott Hotel Jakarta' }}
           .item__sub-info {{ 'Saturday, 6 January 2024, 18:00 WIB' }}
         .item__graphic.item__graphic--map(ref="receptionMapElementRef")
+  template(v-if="shouldShowRSVPSection")
+    .content
+      .content__heading {{ 'RSVP' }}
+      .content__item
+        MRSVPNotes(:inviteeRSVP="databaseInviteeRSVP")
+      .content__button(@click="handleClickRSVPButton") {{ databaseInviteeRSVP ? 'Review Your RSVP' : 'RSVP Here' }}
 </template>
 <script lang="ts" setup>
+import dayjs, { unix } from 'dayjs'
+import MRSVPNotes from '~/components/molecules/wedding/MRSVPNotes.vue'
 import useMap from '~/composables/wedding/useMap'
 import RSVPForm from '~/components/organisms/wedding/RSVPForm.vue'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
@@ -66,6 +74,20 @@ const subHeadingText = computed(() => {
 })
 
 const { receptionMapElementRef, holyMatrimonyMapElementRef } = useMap()
+
+const config = useRuntimeConfig().public.wedding
+
+const shouldShowRSVPSection = computed(() => {
+  if (!isReceptionInvitation.value) return false
+  if (props.databaseInviteeRSVP) return true
+  return dayjs().isSameOrBefore(unix(config.rsvpDeadline))
+})
+
+const emit = defineEmits(['RSVPButtonClick'])
+
+const handleClickRSVPButton = () => {
+  emit('RSVPButtonClick')
+}
 </script>
 <script lang="ts">
 export default {
@@ -140,6 +162,11 @@ $reversed-content-class: ".content[data-order='reverse']";
     @include pc {
       margin-right: 32px;
     }
+
+    @include sp {
+      margin-bottom: 16px;
+    }
+
     #{$reversed-content-class} & {
       text-align: right;
       @include pc {
@@ -163,9 +190,13 @@ $reversed-content-class: ".content[data-order='reverse']";
   &__sub-info {
     @include sp {
       @include font($size: $font-sm);
-      margin-bottom: 16px;
       white-space: pre-wrap;
     }
+  }
+
+  &__hr {
+    margin: 16px 0;
+    color: rgba($white, 0.25);
   }
 
   &__graphic {
@@ -220,41 +251,25 @@ $reversed-content-class: ".content[data-order='reverse']";
   }
 }
 
-.rsvp {
-  $content-margin: 30px;
-  &__form {
-    width: 100%;
-    margin-top: 4px; // NOTE: 入力欄の上が予約説明のテキストの上と揃うように
-    @include pc {
-      max-width: calc(50% - $content-margin);
-      margin-right: $content-margin;
-      order: 0;
-    }
+@mixin floating-button {
+  @include font-family('marcellus');
+  display: inline-block;
+  height: 45px;
+  padding: 10px 20px;
+  border: 1px solid rgba($white, 0.5);
+  border-radius: 8px;
+  cursor: pointer;
+  filter: drop-shadow(0 0 5px $white);
+  transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out, opacity 0.5s;
+  &:hover {
+    background-color: rgba($white, 0.05);
   }
-  &__info {
-    margin-left: auto;
-    @include pc {
-      max-width: calc(50% - $content-margin);
-      margin-left: $content-margin;
-      order: 1;
-    }
-    @include sp {
-      margin-bottom: 20px;
-    }
-  }
-  &__description {
-    margin-bottom: 12px;
-    &-text--focus {
-      font-weight: bold;
-      text-decoration: underline;
-    }
-  }
+}
 
-  &__note {
-    @include font($size: $font-sm);
-    &-text--focus {
-      font-weight: bold;
-    }
-  }
+.content__button {
+  @include floating-button;
+  text-decoration: none;
+  color: inherit;
+  margin-top: 16px;
 }
 </style>
