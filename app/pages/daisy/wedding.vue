@@ -16,6 +16,7 @@
             :invitee="invitee"
             :databaseInviteeRSVP="inviteeRSVP"
             ref="eventsElementRef"
+            @RSVPButtonClick="isRSVPModalOpen = true"
           )
         AboutUs.about-us
         OurStory.our-story(:invitee="invitee")

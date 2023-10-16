@@ -29,7 +29,7 @@
         .button(
           @click="handleClickRSVPButton"
           :data-is-blur="isButtonBlur"
-        ) {{ inviteeRSVP ? 'Review Your RSVP' : 'RSVP' }}
+        ) {{ inviteeRSVP ? 'Review Your RSVP' : 'RSVP Here' }}
       template(v-if="shouldShowStreamingButton")
         a.button(
           :href="streamingButtonLink"
