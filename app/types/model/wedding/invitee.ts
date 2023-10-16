@@ -4,26 +4,26 @@
 import { parseString, parseNumber, parseBoolean } from '~/types/model/parse'
 
 // Invitees that is invited to reception is considered to be invited to matrimony as well
-export type InvitationType = 'reception' | 'matrimony'
-export const parseInvitationType = (invitationType: any): InvitationType | undefined => {
+export type InvitationType = 'reception' | 'matrimony' | null
+export const parseInvitationType = (invitationType: any): InvitationType => {
   const stringifiedType = parseString(invitationType)
   if (stringifiedType === 'reception') return 'reception'
   if (stringifiedType === 'matrimony') return 'matrimony'
-  return undefined
+  return null
 }
 
-export type InviteeSuffix = 'partner' | 'family'
-export const parseInviteeSuffix = (inviteeSuffix: any): InviteeSuffix | undefined => {
+export type InviteeSuffix = 'partner' | 'family' | null
+export const parseInviteeSuffix = (inviteeSuffix: any): InviteeSuffix => {
   const stringifiedSuffix = parseString(inviteeSuffix)
   if (stringifiedSuffix === 'partner') return 'partner'
   if (stringifiedSuffix === 'family') return 'family'
-  return undefined
+  return null
 }
 
 export interface Invitee {
   databaseName: string
-  invitationType?: InvitationType
-  inviteeSuffix?: InviteeSuffix
+  invitationType: InvitationType
+  inviteeSuffix: InviteeSuffix
   databasePhoneNumber: string
   adultGuestNumber: number
   childrenGuestNumber: number
