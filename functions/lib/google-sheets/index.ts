@@ -31,24 +31,27 @@ export const getSheets = (): Promise<sheets_v4.Sheets> => {
   )
 }
 
-export const batchUpdate = async (sheets: sheets_v4.Sheets, data: sheets_v4.Schema$ValueRange[]) => {
+export const batchUpdate = async (
+  sheets: sheets_v4.Sheets,
+  data: sheets_v4.Schema$ValueRange[]
+) => {
   const request: sheets_v4.Params$Resource$Spreadsheets$Values$Batchupdate = {
     spreadsheetId: process.env.SPREADSHEET_ID,
     requestBody: {
       data,
-      valueInputOption: 'RAW'
-    }
+      valueInputOption: 'RAW',
+    },
   }
 
-   return sheets.spreadsheets.values.batchUpdate(request).catch(err => {
+  return sheets.spreadsheets.values.batchUpdate(request).catch(err => {
     console.log(err)
-   })
+  })
 }
 
 export const getSheetRows = async (
   sheets: sheets_v4.Sheets,
   range?: string
-): Promise<sheets_v4.Schema$ValueRange["values"]> => {
+): Promise<sheets_v4.Schema$ValueRange['values']> => {
   if (!range) return
 
   const res = await sheets.spreadsheets.values.get({
