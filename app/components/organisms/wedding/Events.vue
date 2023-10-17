@@ -64,7 +64,7 @@ const {
   canReviewRSVP,
   canEditRSVP,
   shouldContact,
-} = useInvitee(props.invitee, props.databaseInviteeRSVP)
+} = useInvitee(toRef(props, 'invitee'), toRef(props, 'databaseInviteeRSVP'))
 
 const subHeadingText = computed(() => {
   if (isReceptionInvitation.value)

@@ -101,7 +101,7 @@ const props = defineProps({
 
 const emit = defineEmits<{ (e: 'submit', inviteeRSVP: InviteeRSVP): void }>()
 
-const { isReceptionInvitation } = useInvitee(props.invitee, props.inviteeRSVP)
+const { isReceptionInvitation } = useInvitee(toRef(props, 'invitee'), toRef(props, 'inviteeRSVP'))
 
 // --------------------------------------------------
 // Form

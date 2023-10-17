@@ -68,7 +68,7 @@ const {
   canReviewRSVP,
   shouldContact,
   rsvpDeadlineString,
-} = useInvitee(props.invitee, props.inviteeRSVP)
+} = useInvitee(toRef(props, 'invitee'), toRef(props, 'inviteeRSVP'))
 
 const invitationStatusText = computed(() => {
   if (props.inviteeRSVP)

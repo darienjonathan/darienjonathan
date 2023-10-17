@@ -10,7 +10,7 @@ const getIsMatrimonyInvitation = (invitationType?: InvitationType) => invitation
 const getIsNotInvited = (invitationType?: InvitationType) =>
   !invitationType || !['reception', 'matrimony'].includes(invitationType)
 
-export const useInvitee = (invitee?: Invitee | null, inviteeRSVP?: InviteeRSVP | null) => {
+export const useInvitee = (invitee: Ref<Invitee | null>, inviteeRSVP: Ref<InviteeRSVP | null>) => {
   const config = useRuntimeConfig().public.wedding
   const isBeforeRSVPDeadline = computed(() =>
     dayjs().isSameOrBefore(dayjs.unix(config.rsvpDeadline))
@@ -18,34 +18,39 @@ export const useInvitee = (invitee?: Invitee | null, inviteeRSVP?: InviteeRSVP |
 
   const hasDeclinedReceptionInvitation = computed(
     () =>
-      getIsReceptionInvitation(invitee?.invitationType) &&
+      getIsReceptionInvitation(invitee.value?.invitationType) &&
       !isBeforeRSVPDeadline.value &&
-      inviteeRSVP?.isAttendingReception === false
+      inviteeRSVP.value?.isAttendingReception === false
   )
 
-  const isReceptionInvitation = computed(
-    () => getIsReceptionInvitation(invitee?.invitationType) && !hasDeclinedReceptionInvitation.value
-  )
+  const isReceptionInvitation = computed(() => {
+    return (
+      getIsReceptionInvitation(invitee.value?.invitationType) &&
+      !hasDeclinedReceptionInvitation.value
+    )
+  })
 
   const isMatrimonyInvitation = computed(
-    () => getIsMatrimonyInvitation(invitee?.invitationType) || hasDeclinedReceptionInvitation.value
+    () =>
+      getIsMatrimonyInvitation(invitee.value?.invitationType) ||
+      hasDeclinedReceptionInvitation.value
   )
 
-  const isNotInvited = computed(() => getIsNotInvited(invitee?.invitationType))
+  const isNotInvited = computed(() => getIsNotInvited(invitee.value?.invitationType))
 
   const canRSVP = computed<boolean>(() => {
     if (!isReceptionInvitation.value) return false
-    return !inviteeRSVP
+    return !inviteeRSVP.value
   })
 
   const canEditRSVP = computed<boolean>(() => {
     if (!isReceptionInvitation.value) return false
-    return !!inviteeRSVP && isBeforeRSVPDeadline.value
+    return !!inviteeRSVP.value && isBeforeRSVPDeadline.value
   })
 
   const canReviewRSVP = computed<boolean>(() => {
     if (!isReceptionInvitation.value) return false
-    return !!inviteeRSVP
+    return !!inviteeRSVP.value
   })
 
   const shouldContact = computed<boolean>(() => {

@@ -58,8 +58,8 @@ const props = defineProps({
 })
 
 const { isReceptionInvitation, isMatrimonyInvitation, isNotInvited } = useInvitee(
-  props.invitee,
-  props.inviteeRSVP
+  toRef(props, 'invitee'),
+  toRef(props, 'inviteeRSVP')
 )
 
 const invitationTypeText = computed(() => {
@@ -142,7 +142,7 @@ const handleClickRSVPButton = () => {
   emit('RSVPButtonClick')
 }
 
-const { canRSVP, canReviewRSVP } = useInvitee(props.invitee, props.inviteeRSVP)
+const { canRSVP, canReviewRSVP } = useInvitee(toRef(props, 'invitee'), toRef(props, 'inviteeRSVP'))
 const shouldShowRSVPButton = computed(() => {
   return canRSVP.value || canReviewRSVP.value
 })

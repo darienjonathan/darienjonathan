@@ -55,7 +55,7 @@ const emit = defineEmits(['close', 'submit'])
 
 const { isSP } = useMedia()
 
-const { canRSVP, canEditRSVP } = useInvitee(props.invitee, props.inviteeRSVP)
+const { canRSVP, canEditRSVP } = useInvitee(toRef(props, 'invitee'), toRef(props, 'inviteeRSVP'))
 
 const handleSubmit = (inviteeRSVP: InviteeRSVP) => {
   emit('submit', inviteeRSVP)
