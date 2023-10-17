@@ -38,11 +38,6 @@ import MRSVPNotes from '~/components/molecules/wedding/MRSVPNotes.vue'
 import useMap from '~/composables/wedding/useMap'
 import RSVPForm from '~/components/organisms/wedding/RSVPForm.vue'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
-import {
-  getIsMatrimonyInvitation,
-  getIsReceptionInvitation,
-  getIsNotInvited,
-} from '~/utils/wedding'
 import ConfirmRSVPModal from '~/components/organisms/wedding/ConfirmRSVPModal.vue'
 
 type Props = {
@@ -61,15 +56,15 @@ const props = defineProps({
   },
 })
 
-const { isReceptionInvitation, canRSVP, canReviewRSVP, canEditRSVP, shouldContact } = useInvitee(
-  props.invitee,
-  props.databaseInviteeRSVP
-)
-
-const isMatrimonyInvitation = computed(() =>
-  getIsMatrimonyInvitation(props.invitee?.invitationType)
-)
-const isNotInvited = computed(() => getIsNotInvited(props.invitee?.invitationType))
+const {
+  isReceptionInvitation,
+  isMatrimonyInvitation,
+  isNotInvited,
+  canRSVP,
+  canReviewRSVP,
+  canEditRSVP,
+  shouldContact,
+} = useInvitee(props.invitee, props.databaseInviteeRSVP)
 
 const subHeadingText = computed(() => {
   if (isReceptionInvitation.value)

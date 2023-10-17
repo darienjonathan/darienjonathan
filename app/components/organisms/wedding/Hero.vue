@@ -39,7 +39,6 @@ import dayjs from 'dayjs'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import { useInvitee } from '~/composables/wedding/useInvitee'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
-import { getIsMatrimonyInvitation } from '~/utils/wedding'
 dayjs.extend(isSameOrAfter)
 
 type Props = {
@@ -58,12 +57,10 @@ const props = defineProps({
   },
 })
 
-const { isReceptionInvitation } = useInvitee(props.invitee, props.inviteeRSVP)
-
-const isMatrimonyInvitation = computed(() =>
-  getIsMatrimonyInvitation(props.invitee?.invitationType)
+const { isReceptionInvitation, isMatrimonyInvitation, isNotInvited } = useInvitee(
+  props.invitee,
+  props.inviteeRSVP
 )
-const isNotInvited = computed(() => getIsNotInvited(props.invitee?.invitationType))
 
 const invitationTypeText = computed(() => {
   if (isReceptionInvitation.value) return 'Holy Matrimony & Wedding Reception Invitation'
