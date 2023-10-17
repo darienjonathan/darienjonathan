@@ -115,7 +115,7 @@ watch(
         name: 'Kevin Jonathan',
         adultGuestNumber: 1,
         childrenGuestNumber: 1,
-        isAttendingReception: true,
+        isAttendingReception: false,
         phoneNumber: '+6281234567890',
       }
     }
@@ -142,6 +142,7 @@ const setInviteeRSVP = async () => {
 watch(
   uid,
   async () => {
+    if (['DUMMY', 'RSVP_DUMMY'].includes(uid.value)) return
     await Promise.all([setInvitee(), setInviteeRSVP()])
     isDataLoaded.value = true
   },

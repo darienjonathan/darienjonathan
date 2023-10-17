@@ -37,11 +37,10 @@
 <script lang="ts" setup>
 import dayjs from 'dayjs'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
+import { useInvitee } from '~/composables/wedding/useInvitee'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
-import { getIsReceptionInvitation, getIsMatrimonyInvitation } from '~/utils/wedding'
+import { getIsMatrimonyInvitation } from '~/utils/wedding'
 dayjs.extend(isSameOrAfter)
-dayjs.extend(isSameOrBefore)
 
 type Props = {
   invitee: Invitee | null
@@ -59,9 +58,8 @@ const props = defineProps({
   },
 })
 
-const isReceptionInvitation = computed(() =>
-  getIsReceptionInvitation(props.invitee?.invitationType)
-)
+const { isReceptionInvitation } = useInvitee(props.invitee, props.inviteeRSVP)
+
 const isMatrimonyInvitation = computed(() =>
   getIsMatrimonyInvitation(props.invitee?.invitationType)
 )
@@ -147,14 +145,12 @@ const handleClickRSVPButton = () => {
   emit('RSVPButtonClick')
 }
 
-const config = useRuntimeConfig().public.wedding
-
+const { canRSVP, canReviewRSVP } = useInvitee(props.invitee, props.inviteeRSVP)
 const shouldShowRSVPButton = computed(() => {
-  if (!isReceptionInvitation.value) return false
-  if (props.inviteeRSVP) return true
-  return dayjs().isSameOrBefore(dayjs.unix(config.rsvpDeadline))
+  return canRSVP.value || canReviewRSVP.value
 })
 
+const config = useRuntimeConfig().public.wedding
 const streamingButtonLink = computed(() => config.streamingLink)
 const shouldShowStreamingButton = computed(() =>
   dayjs().isSameOrAfter(dayjs.unix(config.showStreamingButtonTimestamp))

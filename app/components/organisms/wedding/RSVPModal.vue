@@ -8,12 +8,16 @@ AModal.rsvp-modal(
     .heading
       h2.heading__main {{ inviteeRSVP ? 'Review Your RSVP' : 'RSVP' }}
     .content
-      MRSVPNotes.content__notes(:inviteeRSVP="inviteeRSVP")
-      RSVPForm(
+      MRSVPNotes.content__notes(
         :invitee="invitee"
         :inviteeRSVP="inviteeRSVP"
-        @submit="handleSubmit"
       )
+      template(v-if="canRSVP || canEditRSVP")
+        RSVPForm(
+          :invitee="invitee"
+          :inviteeRSVP="inviteeRSVP"
+          @submit="handleSubmit"
+        )
 </template>
 
 <script lang="ts" setup>
@@ -23,6 +27,8 @@ import useMedia from '~/composables/useMedia'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
 import ALoading from '~/components/atoms/ALoading.vue'
 import RSVPForm from '~/components/organisms/wedding/RSVPForm.vue'
+
+import { useInvitee } from '~/composables/wedding/useInvitee'
 
 type Props = {
   isOpen: boolean
@@ -48,6 +54,8 @@ const props = defineProps({
 const emit = defineEmits(['close', 'submit'])
 
 const { isSP } = useMedia()
+
+const { canRSVP, canEditRSVP } = useInvitee(props.invitee, props.inviteeRSVP)
 
 const handleSubmit = (inviteeRSVP: InviteeRSVP) => {
   emit('submit', inviteeRSVP)

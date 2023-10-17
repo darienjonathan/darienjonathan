@@ -25,11 +25,15 @@
     .content
       .content__heading {{ 'RSVP' }}
       .content__item
-        MRSVPNotes(:inviteeRSVP="databaseInviteeRSVP")
-      .content__button(@click="handleClickRSVPButton") {{ databaseInviteeRSVP ? 'Review Your RSVP' : 'RSVP Here' }}
+        MRSVPNotes(
+          :invitee="invitee"
+          :inviteeRSVP="databaseInviteeRSVP"
+        )
+      template(v-if="canRSVP || canEditRSVP")
+        .content__button(@click="handleClickRSVPButton") {{ databaseInviteeRSVP ? 'Edit Your RSVP' : 'RSVP Here' }}
 </template>
 <script lang="ts" setup>
-import dayjs from 'dayjs'
+import { useInvitee } from '~/composables/wedding/useInvitee'
 import MRSVPNotes from '~/components/molecules/wedding/MRSVPNotes.vue'
 import useMap from '~/composables/wedding/useMap'
 import RSVPForm from '~/components/organisms/wedding/RSVPForm.vue'
@@ -57,9 +61,11 @@ const props = defineProps({
   },
 })
 
-const isReceptionInvitation = computed(() =>
-  getIsReceptionInvitation(props.invitee?.invitationType)
+const { isReceptionInvitation, canRSVP, canReviewRSVP, canEditRSVP, shouldContact } = useInvitee(
+  props.invitee,
+  props.databaseInviteeRSVP
 )
+
 const isMatrimonyInvitation = computed(() =>
   getIsMatrimonyInvitation(props.invitee?.invitationType)
 )
@@ -75,14 +81,9 @@ const subHeadingText = computed(() => {
 
 const { receptionMapElementRef, holyMatrimonyMapElementRef } = useMap()
 
-const config = useRuntimeConfig().public.wedding
-
-const shouldShowRSVPSection = computed(() => {
-  if (!isReceptionInvitation.value) return false
-  if (props.databaseInviteeRSVP) return true
-  return dayjs().isSameOrBefore(dayjs.unix(config.rsvpDeadline))
-})
-
+const shouldShowRSVPSection = computed(
+  () => canRSVP.value || canReviewRSVP.value || shouldContact.value
+)
 const emit = defineEmits(['RSVPButtonClick'])
 
 const handleClickRSVPButton = () => {
