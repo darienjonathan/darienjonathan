@@ -81,7 +81,7 @@
 import { phoneCodeList } from '~/utils/phone'
 import MInput from '~/components/molecules/wedding/MInput.vue'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
-import { getIsReceptionInvitation } from '~/utils/wedding'
+import { useInvitee } from '~/composables/wedding/useInvitee'
 
 type Props = {
   invitee: Invitee
@@ -101,9 +101,7 @@ const props = defineProps({
 
 const emit = defineEmits<{ (e: 'submit', inviteeRSVP: InviteeRSVP): void }>()
 
-const isReceptionInvitation = computed(() =>
-  getIsReceptionInvitation(props.invitee?.invitationType)
-)
+const { isReceptionInvitation } = useInvitee(props.invitee, props.inviteeRSVP)
 
 // --------------------------------------------------
 // Form
