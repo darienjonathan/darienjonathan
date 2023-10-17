@@ -38,16 +38,12 @@ type Props = {
   invitee: Invitee | null
 }
 
-const props = defineProps({
+defineProps({
   invitee: {
     type: Object as () => Props['invitee'],
     default: null,
   },
 })
-
-const isReceptionInvitation = computed(() =>
-  getIsReceptionInvitation(props.invitee?.invitationType)
-)
 
 const stories: Story[] = [
   {
@@ -97,7 +93,7 @@ const stories: Story[] = [
   },
 ]
 
-const isStorySelectable = (story: Story) => isReceptionInvitation.value && !!story.contents.length
+const isStorySelectable = (story: Story) => !!story.contents.length
 
 const isStoryModalOpen = ref<boolean>(false)
 const selectedStoryIndex = ref<number | undefined>()
