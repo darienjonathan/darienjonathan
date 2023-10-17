@@ -10,7 +10,7 @@
       .content__item
         .item__text
           .item__main-info {{ 'Gereja Kristus Yesus (GKY)\nMangga Besar' }}
-          .item__sub-info {{ 'Saturday, 6 January 2024,\n10:00 WIB (UTC+7)' }}
+          .item__sub-info {{ 'Saturday, 6 January 2024,\nStarting Time TBD (around 10~11AM UTC+7)' }}
         .item__graphic.item__graphic--map(ref="holyMatrimonyMapElementRef")
 
   template(v-if="isReceptionInvitation") 
@@ -19,7 +19,7 @@
       .content__item
         .item__text
           .item__main-info {{ 'Sailendra Restaurant -\nJW Marriott Hotel Jakarta' }}
-          .item__sub-info {{ 'Saturday, 6 January 2024, 18:00 WIB' }}
+          .item__sub-info {{ 'Saturday, 6 January 2024,\n18:30 WIB' }}
         .item__graphic.item__graphic--map(ref="receptionMapElementRef")
   template(v-if="shouldShowRSVPSection")
     .content
