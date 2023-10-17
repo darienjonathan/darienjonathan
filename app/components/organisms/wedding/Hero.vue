@@ -171,13 +171,13 @@ export default {
 
 .hero {
   &__filler {
-    @include size(vw(100), vh(100));
+    @include size(vw(100), 100vh);
   }
   &__intersection-observer {
     padding-top: 30vh;
   }
   &__content {
-    @include size(vw(100), vh(100));
+    @include size(vw(100), 100vh);
     position: fixed;
     top: 0;
     transition: filter 1s;

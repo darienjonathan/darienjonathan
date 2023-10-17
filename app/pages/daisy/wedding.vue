@@ -237,10 +237,15 @@ export default {
 <style lang="scss" scoped>
 @import '~/assets/css/main';
 .wedding {
+  overscroll-behavior: none;
   overflow-x: hidden;
 
   .loading {
     @include absolute-center;
+  }
+
+  .wrapper {
+    background-color: $wedding-brown;
   }
 
   .hero {
