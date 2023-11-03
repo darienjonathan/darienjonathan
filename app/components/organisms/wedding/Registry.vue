@@ -4,7 +4,7 @@
     .heading {{ 'REGISTRY' }}
   .kv
     .kv__main {{ 'Your presence, prayer, and wishes are enough for a present to us.' }}
-    .kv__sub {{ 'However, for you who wish to take further steps to support our new family, check out below:' }}
+    .kv__sub {{ 'However, for you who wish to take further steps to support our new family, please check out below:' }}
   .account
     .account__item.account__item--jp.item
       .item__label {{ '金融機関名' }}
@@ -46,10 +46,10 @@ export default {
     @include font-family('marcellus');
     text-align: center;
     @include pc {
-      @include font($size: $font-xl);
+      @include font($size: $font-xl, $letter-spacing: 1px);
     }
     @include sp {
-      @include font($size: $font-lg);
+      @include font($size: $font-lg, $letter-spacing: 1px);
     }
   }
 }
@@ -119,8 +119,11 @@ export default {
     font-weight: bold;
   }
 
-  &__value {
-    @include font($size: $font-sm);
+  @include sp {
+    &__label,
+    &__value {
+      @include font($size: $font-sm);
+    }
   }
 }
 </style>

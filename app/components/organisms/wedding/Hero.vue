@@ -71,7 +71,8 @@ const invitationTypeText = computed(() => {
 const inviteeName = computed(() => props.inviteeRSVP?.name || props.invitee?.databaseName || '')
 
 const inviteeNameText = computed(() => {
-  const baseText = `For ${inviteeName.value || ''}`
+  const inviteePrefix = props.invitee?.inviteePrefix ? `${props.invitee?.inviteePrefix} ` : ''
+  const baseText = `For ${inviteePrefix}${inviteeName.value || ''}`
   if (props.invitee?.inviteeSuffix === 'family') return `${baseText} & Family`
   if (props.invitee?.inviteeSuffix === 'partner') return `${baseText} & Partner`
   return ''
@@ -197,7 +198,6 @@ export default {
 
   &__invitation-text {
     @include font-family('marcellus');
-    @include font($size: $font-sm);
     position: relative;
     text-align: center;
     text-shadow: 2px 2px 2px rgba($black, 0.25);
@@ -207,6 +207,7 @@ export default {
       margin-top: vh(15);
     }
     @include sp {
+      @include font($size: $font-sm);
       margin-top: vh(15);
     }
   }
@@ -264,6 +265,7 @@ export default {
 
   &__heading {
     @include font-family('marcellus');
+    @include font($letter-spacing: 0.2rem);
     text-align: center;
     font-size: 4rem;
   }
@@ -280,7 +282,7 @@ export default {
   }
   &__date {
     @include font-family('marcellus');
-    @include font($size: $font-lg);
+    @include font($size: $font-lg, $letter-spacing: 0.05rem);
     line-height: 2;
     text-align: center;
     margin-bottom: 16px;
