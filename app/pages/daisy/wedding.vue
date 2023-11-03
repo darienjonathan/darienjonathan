@@ -96,6 +96,7 @@ watch(
       invitee.value = {
         databaseName: 'Kevin Jonathan',
         invitationType: 'reception',
+        inviteePrefix: 'Mr.',
         inviteeSuffix: 'family',
         databasePhoneNumber: '+6281234567890',
         adultGuestNumber: 1,
@@ -105,6 +106,7 @@ watch(
     if (uid.value === 'RSVP_DUMMY') {
       invitee.value = {
         databaseName: 'Kevin Jonathan',
+        inviteePrefix: 'Mr.',
         invitationType: 'reception',
         inviteeSuffix: 'family',
         databasePhoneNumber: '+6281234567890',
