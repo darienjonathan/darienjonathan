@@ -1,7 +1,7 @@
 <template lang="pug">
 .footer
   .footer__text.text
-    span.text__item {{ 'Curated With Love by: ' }}
+    span.text__item {{ 'Curated with love by: ' }}
     span.text__item.text__item--emphasis {{ 'Calon Pengantin Pria' }}
   .footer__links
     a.footer__link(

@@ -109,10 +109,10 @@ export default {
   & {
     margin-bottom: 20px;
     @include pc {
-      @include font($size: $font-xhuge);
+      @include font($size: $font-xxhuge, $letter-spacing: 2px);
     }
     @include sp {
-      @include font($size: $font-huge);
+      @include font($size: $font-xhuge, $letter-spacing: 2px);
     }
   }
 }
@@ -128,15 +128,16 @@ $reversed-content-class: ".content[data-order='reverse']";
   }
 
   &__heading {
+    @include font-family('marcellus');
     padding-bottom: 16px;
     margin-bottom: 16px;
     width: 100%;
     border-bottom: 1px solid $white;
     @include pc {
-      @include font($size: $font-huge);
+      @include font($size: $font-huge, $letter-spacing: 1px);
     }
     @include sp {
-      @include font($size: $font-xxxl);
+      @include font($size: $font-xxxl, $letter-spacing: 1px);
     }
     #{$reversed-content-class} & {
       text-align: right;

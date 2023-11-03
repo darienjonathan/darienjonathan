@@ -13,7 +13,7 @@
       )
       .biodata__info
         .biodata__name {{ 'DARIEN\nJONATHAN' }}
-        .biodata__parents {{ 'Second son of\nPdt. Hasan Winata (✝) &\nHeniwati Suwardi' }}
+        .biodata__parents {{ 'Second son of\nPdt. Hasan Winata (✝) &\nMrs. Heniwati Suwardi' }}
     .biodata__item(data-order="reverse")
       img.biodata__image(
         loading="lazy"
@@ -21,7 +21,7 @@
       )
       .biodata__info
         .biodata__name {{ 'DAISY\nCHRISTINA' }}
-        .biodata__parents {{ 'Second daughter of\nSie Manule &\nWilyanti Tjahjana' }}
+        .biodata__parents {{ 'Second daughter of\nMr. Sie Manule &\nMrs. Wilyanti Tjahjana' }}
 </template>
 <script lang="ts" setup></script>
 <script lang="ts">
@@ -42,10 +42,10 @@ export default {
     text-align: center;
     margin-bottom: 20px;
     @include pc {
-      @include font($size: $font-xhuge);
+      @include font($size: $font-xxhuge, $letter-spacing: 2px);
     }
     @include sp {
-      @include font($size: $font-huge);
+      @include font($size: $font-xhuge, $letter-spacing: 2px);
     }
   }
 }
@@ -124,10 +124,10 @@ export default {
     margin-bottom: 8px;
     font-weight: bold;
     @include pc {
-      @include font($size: $font-xl);
+      @include font($size: $font-xl, $letter-spacing: 1px);
     }
     @include sp {
-      @include font($size: $font-lg);
+      @include font($size: $font-lg, $letter-spacing: 1px);
       white-space: pre-line;
     }
   }

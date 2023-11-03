@@ -23,6 +23,7 @@ export default {
 
 .text {
   @include font-family('marcellus');
+  @include font($line-height: 1.5);
   text-align: center;
   &__main {
     margin-bottom: 8px;

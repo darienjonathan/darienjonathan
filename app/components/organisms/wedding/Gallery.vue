@@ -182,10 +182,10 @@ export default {
     text-align: center;
     margin-bottom: 20px;
     @include pc {
-      @include font($size: $font-xhuge);
+      @include font($size: $font-xxhuge, $letter-spacing: 2px);
     }
     @include sp {
-      @include font($size: $font-huge);
+      @include font($size: $font-xhuge, $letter-spacing: 2px);
     }
   }
 }

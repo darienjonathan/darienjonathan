@@ -55,6 +55,13 @@ export default {
 .heading {
   & {
     margin-bottom: 32px;
+    padding-right: 28px;
+  }
+
+  &__main {
+    @include font-family('marcellus');
+    @include font($size: $font-xxxl, $letter-spacing: 1px);
+    text-transform: uppercase;
   }
 }
 
