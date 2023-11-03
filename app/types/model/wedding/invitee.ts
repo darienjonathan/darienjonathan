@@ -12,6 +12,31 @@ export const parseInvitationType = (invitationType: any): InvitationType => {
   return null
 }
 
+export type InviteePrefix =
+  | 'Mr.'
+  | 'Mrs.'
+  | 'Ms.'
+  | 'Pdt.'
+  | 'Pdt. Em.'
+  | 'GI.'
+  | 'Pnt.K.'
+  | 'Ls.'
+  | 'dr.'
+  | 'drg.'
+  | null
+export const parseInviteePrefix = (inviteePrefix: any): InviteePrefix => {
+  const stringifiedPrefix = parseString(inviteePrefix)
+  if (stringifiedPrefix === 'Mr.') return 'Mr.'
+  if (stringifiedPrefix === 'Mrs.') return 'Mrs.'
+  if (stringifiedPrefix === 'Ms.') return 'Ms.'
+  if (stringifiedPrefix === 'Pdt.') return 'Pdt.'
+  if (stringifiedPrefix === 'GI.') return 'GI.'
+  if (stringifiedPrefix === 'Pnt.K.') return 'Pnt.K.'
+  if (stringifiedPrefix === 'dr.') return 'dr.'
+  if (stringifiedPrefix === 'drg.') return 'drg.'
+  return null
+}
+
 export type InviteeSuffix = 'partner' | 'family' | null
 export const parseInviteeSuffix = (inviteeSuffix: any): InviteeSuffix => {
   const stringifiedSuffix = parseString(inviteeSuffix)
@@ -23,6 +48,7 @@ export const parseInviteeSuffix = (inviteeSuffix: any): InviteeSuffix => {
 export interface Invitee {
   databaseName: string
   invitationType: InvitationType
+  inviteePrefix: InviteePrefix
   inviteeSuffix: InviteeSuffix
   databasePhoneNumber: string
   adultGuestNumber: number
@@ -32,6 +58,7 @@ export interface Invitee {
 export const parseInvitee = (data: any): Invitee => ({
   databaseName: parseString(data.databaseName),
   invitationType: parseInvitationType(data.invitationType),
+  inviteePrefix: parseInviteePrefix(data.inviteePrefix),
   inviteeSuffix: parseInviteeSuffix(data.inviteeSuffix),
   databasePhoneNumber: parseString(data.databasePhoneNumber),
   adultGuestNumber: parseNumber(data.adultGuestNumber),

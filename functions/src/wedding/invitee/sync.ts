@@ -12,6 +12,7 @@ const inviteePropertyIndexes: ('uid' | keyof Invitee)[] = [
   'databaseName',
   'databasePhoneNumber',
   'invitationType',
+  'inviteePrefix',
   'inviteeSuffix',
   'adultGuestNumber',
   'childrenGuestNumber',
