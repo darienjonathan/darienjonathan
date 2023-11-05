@@ -7,12 +7,12 @@
       input.form__name(
         type="text"
         placeholder="Name"
-        :value="currentWish?.name || existingWish?.name"
+        :value="currentWish.name"
         @input="handleInputName"
       )
       textarea.form__textarea(
         placeholder="Your greetings & wishes for the couple"
-        :value="currentWish?.content || existingWish?.content"
+        :value="currentWish.content"
         @input="handleInputContent"
       )
       button.form__submit(
@@ -67,7 +67,9 @@ onMounted(() => {
     wishes.value = Array.from(wishMap.values())
 
     if (wishUid.value) {
-      existingWish.value = wishMap.get(wishUid.value)
+      const fetchedWish = wishMap.get(wishUid.value)
+      existingWish.value = structuredClone(fetchedWish)
+      currentWish.value = structuredClone(fetchedWish) || currentWish.value
     }
   })
 })
@@ -78,11 +80,15 @@ onUnmounted(() => {
 
 // Submit
 const canSubmit = computed(() => {
-  const keys: (keyof Wish)[] = ['name', 'content']
-  const hasChange = keys.some(key => existingWish.value?.[key] !== currentWish.value[key])
-  const isInputComplete = keys.every(key => !!currentWish.value[key])
+  const isInputComplete = !!currentWish.value.name.trim() && !!currentWish.value.content.trim()
 
-  return hasChange && isInputComplete
+  if (!isUpdate.value) return isInputComplete
+
+  const hasNameChange = existingWish.value?.name.trim() !== currentWish.value.name.trim()
+  const hasContentChange = existingWish.value?.content.trim() !== currentWish.value.content.trim()
+  const hasChange = hasNameChange || hasContentChange
+
+  return isInputComplete && hasChange
 })
 
 const submitButtonText = computed(() => (isUpdate.value ? 'Update' : 'Submit'))
@@ -104,7 +110,7 @@ const handleSubmit = () => {
 
   const uid = wishUid.value && isUpdate.value ? wishUid.value : wishesFirestore.getNewId()
   wishesFirestore.set(uid, currentWish.value).then(() => {
-    existingWish.value = currentWish.value
+    existingWish.value = structuredClone(currentWish.value)
     localStorage.setItem(WISH_UID_LOCALSTORAGE_KEY, uid)
     updateWishUid()
   })
