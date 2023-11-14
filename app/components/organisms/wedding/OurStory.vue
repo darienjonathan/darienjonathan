@@ -31,8 +31,8 @@ import type { Story } from '~/types/model/wedding/story'
 
 import story1 from '~/assets/images/wedding/story/story_1.jpg'
 import story2 from '~/assets/images/wedding/story/story_2.jpg'
-import story3 from '~/assets/images/wedding/story/story_3.png'
-import story4 from '~/assets/images/wedding/story/story_4.png'
+import story3 from '~/assets/images/wedding/story/story_3.jpg'
+import story4 from '~/assets/images/wedding/story/story_4.jpg'
 
 type Props = {
   invitee: Invitee | null

@@ -5,7 +5,7 @@
     .hero__button-intersection-observer(ref="buttonObserverElementRef")
     .hero__intersection-observer(ref="observerElementRef")
   .hero__content(:data-is-blur="isBlur")
-    img.hero__image(src="~/assets/images/wedding/kv/kv-4.jpg")
+    img.hero__image(src="~/assets/images/wedding/kv.jpg")
     .hero__invitation-text.invitation-text
       .invitation-text__type {{ invitationTypeText }}
       .invitation-text__name {{ inviteeNameText }}
