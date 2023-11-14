@@ -4,7 +4,7 @@
     .heading
       .heading__main darienjonathan.com
       .heading__sub is live!
-        img.heading__icon(src="@/assets/images/under-construction/dogebread.png")
+        img.heading__icon(src="@/assets/images/sns/blog.png")
     .line
     .sns
       a.sns__item(

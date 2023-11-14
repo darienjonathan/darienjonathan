@@ -80,7 +80,7 @@ const SUBMISSION_COUNT_FOR_HINT = 3
 
 // Unlock Logic
 
-const config = useRuntimeConfig()
+const config = useRuntimeConfig().public.wedding
 
 const isUnlocked = ref(false)
 const initialPassword = ref('')
@@ -206,12 +206,12 @@ const handleShowRewards = async () => {
 const handleProposalQuestionAnswerChange = (item: number) => {
   proposalQuestionAnswer.value = item
 }
-</script>
-<script lang="ts">
+
 definePageMeta({
   layout: 'base',
 })
-
+</script>
+<script lang="ts">
 export default {
   name: 'ProposalPage',
   components: { ASelect },

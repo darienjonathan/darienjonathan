@@ -1,5 +1,12 @@
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
+  modules: ['@pinia/nuxt'],
+  image: {
+    dir: 'assets/images',
+  },
+  build: {
+    transpile: ['@googlemaps/js-api-loader'],
+  },
   app: {
     head: {
       link: [
@@ -10,7 +17,6 @@ export default defineNuxtConfig({
       ],
     },
   },
-
   runtimeConfig: {
     public: {
       firebaseConfig: {
@@ -31,7 +37,13 @@ export default defineNuxtConfig({
         authEmail: process.env.EMULATOR_AUTH_EMAIL,
         authPassword: process.env.EMULATOR_AUTH_PASSWORD,
       },
-      proposalPagePassword: process.env.DAISY_PAGE_PASSWORD,
+      wedding: {
+        proposalPagePassword: process.env.DAISY_PAGE_PASSWORD,
+        rsvpDeadline: Number(process.env.RSVP_DEADLINE),
+        showStreamingButtonTimestamp: Number(process.env.SHOW_STREAMING_BUTTON_TIMESTAMP),
+        streamingLink: process.env.STREAMING_LINK,
+      },
+      googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
     },
   },
   css: ['@/assets/css/global.scss'],

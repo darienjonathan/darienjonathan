@@ -10,12 +10,12 @@ import OMediaBuilder from '~/components/organisms/admin/blog/media/OMediaBuilder
 const mediaUid = ref()
 const route = useRoute()
 mediaUid.value = route.params.id
-</script>
-<script lang="ts">
+
 definePageMeta({
   layout: 'blog-admin',
 })
-
+</script>
+<script lang="ts">
 export default {
   name: 'AdminBlogMediasEditPage',
   components: { OMediaBuilder },

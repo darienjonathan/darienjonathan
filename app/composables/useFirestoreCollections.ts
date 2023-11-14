@@ -1,3 +1,4 @@
+import { Wish, parseWish } from '~/types/model/wedding/wish'
 import { Media, parseMedia } from '~/types/model/blog/media'
 import { parsePost, parsePostComment, Post, PostComment } from '~/types/model/blog/post'
 import { parseRole, Role } from '~/types/model/blog/role'
@@ -8,6 +9,12 @@ import {
   parseQuestion as parseDaisyProposalQuestion,
   Question as DaisyProposalQuestion,
 } from '~/types/model/others/daisy/proposal'
+import {
+  Invitee,
+  parseInvitee,
+  InviteeRSVP,
+  parseInviteeRSVP,
+} from '~~/types/model/wedding/invitee'
 
 const useFirestoreCollections = () => {
   const usePosts = () => useFirestore<Post>('posts', parsePost)
@@ -19,8 +26,15 @@ const useFirestoreCollections = () => {
   const useUserInfo = () => useFirestore<UserInfo>('userInfo', parseUserInfo)
   const useRoles = () => useFirestore<Role>('roles', parseRole)
 
+  // Proposal
   const useProposalQuestions = () =>
     useFirestore<DaisyProposalQuestion>('daisy-proposal', parseDaisyProposalQuestion)
+
+  // Wedding
+  const useInvitees = () => useFirestore<Invitee>('invitees', parseInvitee)
+  const useInviteeRSVP = () => useFirestore<InviteeRSVP>('inviteeRSVP', parseInviteeRSVP)
+  const useWishes = () => useFirestore<Wish>('wishes', parseWish)
+
   return {
     usePosts,
     usePostComments,
@@ -30,6 +44,9 @@ const useFirestoreCollections = () => {
     useUserInfo,
     useRoles,
     useProposalQuestions,
+    useInvitees,
+    useInviteeRSVP,
+    useWishes,
   }
 }
 

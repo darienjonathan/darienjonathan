@@ -4,7 +4,7 @@ import { connectStorageEmulator } from 'firebase/storage'
 
 const useEmulator = () => {
   const $firebase = useNuxtApp().$firebase
-  const firebaseEmulator = useRuntimeConfig().firebaseEmulator as {
+  const firebaseEmulator = useRuntimeConfig().public.firebaseEmulator as {
     [key: string]: string
   }
 

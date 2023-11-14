@@ -1,12 +1,15 @@
 <template lang="pug">
-.loading(:style="{ width, height }")
+.loading(
+  :style="{ width, height }"
+  :data-type="loadingType"
+)
 </template>
 <script lang="ts" setup>
+import { useInjectLoading } from '~/composables/dependencyInjection/useLoadingDependencyInjection'
+
 interface Props {
-  size: 'default' | 'full-size' | 'auto'
   width: string
   height: string
-  isOpen: boolean
 }
 defineProps({
   width: {
@@ -18,6 +21,8 @@ defineProps({
     default: '',
   },
 })
+
+const { loadingType } = useInjectLoading()
 </script>
 <script lang="ts">
 export default {
@@ -38,7 +43,8 @@ export default {
     content: '';
     @include size(100%, 100%);
     box-sizing: border-box;
-    border: 2px solid #fff;
+    border-width: 2px;
+    border-style: solid;
     position: absolute;
     left: 0;
     top: 0;
@@ -46,8 +52,27 @@ export default {
   }
 
   &::after {
-    border-color: $navy-blue-light;
     animation-direction: alternate-reverse;
+  }
+
+  &[data-type='default'] {
+    &::before {
+      border-color: $white;
+    }
+
+    &::after {
+      border-color: $navy-blue-light;
+    }
+  }
+
+  &[data-type='wedding'] {
+    &::before {
+      border-color: $wedding_brown;
+    }
+
+    &::after {
+      border-color: $wedding_green;
+    }
   }
 }
 
