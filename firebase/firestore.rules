@@ -62,6 +62,8 @@ service cloud.firestore {
       return dataType in role.data.writePermission;
     }
 
+    // Super Admin
+
     function isSuperAdmin() {
       return getSelfRole().data.name == 'superadmin';
     }
@@ -119,9 +121,30 @@ service cloud.firestore {
       allow delete: if hasWritePermission('tags');
     }
 
+    // Proposal
+
     match /daisy-proposal/{any=**} {
       allow read: if true;
     }
+
+    // Wedding
+
+    match /invitees/{inviteeUid} {
+      allow read: if true;
+    }
+
+    match /inviteeRSVP/{inviteeRSVPUid} {
+      allow read: if true;
+      allow write: if exists(/databases/$(database)/documents/invitees/$(inviteeRSVPUid));
+    }
+
+    match /wishes/{wishUid} {
+      allow read: if true;
+      allow create: if true;
+      allow update: if exists(/databases/$(database)/documents/wishes/$(wishUid));
+    }
+
+    // Super Admin
 
     match /{any=**} {
       allow read: if isSuperAdmin();

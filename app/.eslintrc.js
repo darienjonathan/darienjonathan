@@ -28,6 +28,7 @@ module.exports = {
     'quotes': ['error', 'single', { avoidEscape: true }],
     'prettier/prettier': 'error',
     'prefer-const': 'error',
+    'import/no-named-as-default-member': ['off'], // doing import { unix } as 'dayjs' results in error in the built file
     'vue/multi-word-component-names': 'error',
     '@typescript-eslint/no-unused-vars': ['error', { 'varsIgnorePattern': '^_', 'argsIgnorePattern': '^_' }],
     '@typescript-eslint/no-floating-promises': ['off'],

@@ -31,7 +31,7 @@ export const onCreate = getFunctions()
         username: emailRegex[1],
         roleUid,
       })
-      userInfo().set(user.uid, {
+      return userInfo().set(user.uid, {
         email: user.email,
       })
     } catch (err) {
@@ -56,7 +56,7 @@ export const onDelete = getFunctions()
         throw new Error('No User Document')
       }
       userInfoCollection.deleteDocument(userInfoDocument.id)
-      users().deleteDocument(userInfoDocument.id)
+      return users().deleteDocument(userInfoDocument.id)
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err)

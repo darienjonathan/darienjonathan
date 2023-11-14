@@ -51,12 +51,12 @@ const handleConfirmDelete = async () => {
   await postsFirestore.deleteRecord(uidToBeDeleted.value)
   isDeleteModalOpen.value = false
 }
-</script>
-<script lang="ts">
+
 definePageMeta({
   layout: 'blog-admin',
 })
-
+</script>
+<script lang="ts">
 export default {
   name: 'AdminBlogPostsIndexPage',
   components: { MPostListItem, AModal },
