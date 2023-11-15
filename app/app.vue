@@ -46,6 +46,11 @@ const meta = computed(() => {
     }))
   )
 
+  metaArr.push({
+    name: 'format-detection',
+    content: 'telephone=no',
+  })
+
   return metaArr
 })
 

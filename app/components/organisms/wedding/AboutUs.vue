@@ -13,7 +13,11 @@
       )
       .biodata__info
         .biodata__name {{ 'DARIEN\nJONATHAN' }}
-        .biodata__parents {{ 'Second son of\nPdt. Hasan Winata (✝) &\nMrs. Heniwati Suwardi' }}
+        .biodata__parents
+          .biodata__parent {{ 'Second son of' }}
+          //- NOTE: &#xFE0E; is used to disable auto conversion to emoji in iOS
+          .biodata__parent {{ 'Pdt. Hasan Winata (&#x271D;&#xFE0E;) &' }}
+          .biodata__parent {{ 'Mrs. Heniwati Suwardi' }}
     .biodata__item(data-order="reverse")
       img.biodata__image(
         loading="lazy"
@@ -21,8 +25,12 @@
       )
       .biodata__info
         .biodata__name {{ 'DAISY\nCHRISTINA' }}
-        .biodata__parents {{ 'Second daughter of\nMr. Sie Manule &\nMrs. Wilyanti Tjahjana' }}
+        .biodata__parents
+          .biodata__parent {{ 'Second daughter of' }}
+          .biodata__parent {{ 'Mr. Sie Manule &' }}
+          .biodata__parent {{ 'Mrs. Wilyanti Tjahjana' }}
 </template>
+✝ LATIN CROSS Unicode: U+271D, UTF-8: E2 9C 9D
 <script lang="ts" setup></script>
 <script lang="ts">
 export default {

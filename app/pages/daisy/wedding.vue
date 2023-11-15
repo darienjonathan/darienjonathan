@@ -167,21 +167,24 @@ const handleUpdateInviteRSVP = () => {
 // Meta Tags
 // --------------------------------------------------
 
-const url = 'https://darienjonathan.com/daisy/wedding'
-const title = 'Darien & Daisy | Wedding Invitation'
+const BASE_URL = 'https://darienjonathan.com'
+const url = `${BASE_URL}/daisy/wedding`
 
-// TODO: description
-const description =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua'
+const title = 'Darien & Daisy | Wedding Page'
 
-// TODO: OGP Image
-const image = url + '/'
+const description = 'Wedding Page of Darien Jonathan & Daisy Christina'
+
+const image = `${BASE_URL}/ogp-wedding.jpg`
 
 const meta = computed(() => {
   const metaArr: Record<string, string>[] = [
     {
       name: 'og:url',
-      content: url,
+      content: image,
+    },
+    {
+      name: 'og:image',
+      content: image,
     },
     {
       name: 'twitter:card',
@@ -213,6 +216,12 @@ const meta = computed(() => {
 useHead({
   title,
   meta: meta.value,
+  link: [
+    {
+      rel: 'canonical',
+      href: url,
+    },
+  ],
 })
 
 definePageMeta({
