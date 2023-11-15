@@ -110,7 +110,8 @@ const handleSubmit = () => {
 
   const uid = wishUid.value && isUpdate.value ? wishUid.value : wishesFirestore.getNewId()
   wishesFirestore.set(uid, currentWish.value).then(() => {
-    existingWish.value = structuredClone(currentWish.value)
+    // NOTE: refs are proxies, which cannot be structuredCloned, thus toRaw being used to get rid of the proxy
+    existingWish.value = structuredClone(toRaw(currentWish.value))
     localStorage.setItem(WISH_UID_LOCALSTORAGE_KEY, uid)
     updateWishUid()
   })
