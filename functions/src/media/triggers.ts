@@ -12,10 +12,14 @@ const deleteFile = (fileLocation: Media['fileLocation']) => {
 }
 
 export const onChange = medias().trigger.onUpdate((before, after) => {
+  if (!before || !after) return
   if (before.fileLocation === after.fileLocation) {
     return
   }
   return deleteFile(before.fileLocation)
 })
 
-export const onDelete = medias().trigger.onDelete(snapshot => deleteFile(snapshot.fileLocation))
+export const onDelete = medias().trigger.onDelete(snapshot => {
+  if (!snapshot) return
+  return deleteFile(snapshot.fileLocation)
+})

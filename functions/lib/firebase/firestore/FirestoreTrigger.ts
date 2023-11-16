@@ -30,41 +30,42 @@ class FirestoreTrigger<T> {
   private snapshotCallback<U>(
     snapshot: QueryDocumentSnapshot,
     context: functions.EventContext,
-    callbackFn: SnapshotCallbackFunction<T | U>
+    callbackFn: SnapshotCallbackFunction<T | U | undefined>
   ) {
-    const data = this.parse(snapshot.data() || {})
+    const data = snapshot.exists ? this.parse(snapshot.data() || {}) : undefined
     return callbackFn(data, context)
   }
 
   private changeCallback<U>(
     change: functions.Change<DocumentSnapshot>,
     context: functions.EventContext,
-    callbackFn: ChangeCallbackFunction<T | U>
+    callbackFn: ChangeCallbackFunction<T | U | undefined>
   ) {
-    const before = this.parse(change.before.data() || {})
-    const after = this.parse(change.after.data() || {})
+    console.log(change.before.data(), change.after.data())
+    const before = change.before.exists ? this.parse(change.before.data() || {}) : undefined
+    const after = change.after.exists ? this.parse(change.after.data() || {}) : undefined
     return callbackFn(before, after, context)
   }
 
-  public onCreate<U = T>(callbackFn: SnapshotCallbackFunction<T | U>) {
+  public onCreate<U = T>(callbackFn: SnapshotCallbackFunction<T | U | undefined>) {
     return this.documentPath.onCreate((snapshot, context) =>
       this.snapshotCallback(snapshot, context, callbackFn)
     )
   }
 
-  public onDelete<U = T>(callbackFn: SnapshotCallbackFunction<T | U>) {
+  public onDelete<U = T>(callbackFn: SnapshotCallbackFunction<T | U | undefined>) {
     return this.documentPath.onDelete((snapshot, context) =>
       this.snapshotCallback(snapshot, context, callbackFn)
     )
   }
 
-  public onWrite<U = T>(callbackFn: ChangeCallbackFunction<T | U>) {
+  public onWrite<U = T>(callbackFn: ChangeCallbackFunction<T | U | undefined>) {
     return this.documentPath.onWrite((change, context) =>
       this.changeCallback(change, context, callbackFn)
     )
   }
 
-  public onUpdate<U = T>(callbackFn: ChangeCallbackFunction<T | U>) {
+  public onUpdate<U = T>(callbackFn: ChangeCallbackFunction<T | U | undefined>) {
     return this.documentPath.onUpdate((change, context) =>
       this.changeCallback(change, context, callbackFn)
     )
