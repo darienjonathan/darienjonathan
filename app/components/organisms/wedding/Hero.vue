@@ -21,18 +21,19 @@
           .nav-btn__text(@click="emit('navClick')") {{ 'Events' }}
 
     .bottom__wrapper
-      template(v-if="shouldShowRSVPButton")
-        .bottom__button.bottom__button--left(
-          @click="handleClickRSVPButton"
+      .bottom__buttons
+        template(v-if="shouldShowRSVPButton")
+          .bottom__button.bottom__button--left(
+            @click="handleClickRSVPButton"
+            :data-is-blur="isButtonBlur"
+          ) {{ inviteeRSVP ? 'Review Your RSVP' : 'RSVP Here' }}
+        a.bottom__button.bottom__button--right(
+          :href="streamingButtonLink"
           :data-is-blur="isButtonBlur"
-        ) {{ inviteeRSVP ? 'Review Your RSVP' : 'RSVP Here' }}
-      a.bottom__button.bottom__button--right(
-        :href="streamingButtonLink"
-        :data-is-blur="isButtonBlur"
-        target="_blank"
-        rel="noopener noreferrer"
-        role="button"
-      ) {{ 'Attend Online' }}
+          target="_blank"
+          rel="noopener noreferrer"
+          role="button"
+        ) {{ 'Attend Online' }}
       .bottom__text {{ 'Live streaming starts at 10:00 AM UTC+7' }}
 </template>
 <script lang="ts" setup>
@@ -343,21 +344,13 @@ export default {
     left: 50%;
     transform: translateX(-50%);
     bottom: 75px;
-    display: grid;
-    grid-template-areas:
-      'btn-left btn-right'
-      'text text';
-    grid-template-rows: repeat(2, auto);
-    grid-template-columns: repeat(2, auto);
     gap: 16px;
     z-index: 1;
   }
 
-  &__text {
-    grid-area: text;
-    text-align: center;
-    @include font-family('marcellus');
-    @include font($size: $font-sm);
+  &__buttons {
+    @include flex;
+    margin-bottom: 16px;
   }
 
   &__button {
@@ -372,6 +365,17 @@ export default {
     &--right {
       grid-area: btn-right;
     }
+
+    &:not(:last-child) {
+      margin-right: 16px;
+    }
+  }
+
+  &__text {
+    grid-area: text;
+    text-align: center;
+    @include font-family('marcellus');
+    @include font($size: $font-sm);
   }
 }
 </style>
