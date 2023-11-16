@@ -9,8 +9,16 @@
       .content__heading {{ 'HOLY MATRIMONY' }}
       .content__item
         .item__text
-          .item__main-info {{ 'Gereja Kristus Yesus (GKY)\nMangga Besar' }}
-          .item__sub-info {{ 'Saturday, 6 January 2024,\n10:00 AM UTC+7' }}
+          .item__info
+            .info__main {{ 'Gereja Kristus Yesus (GKY)\nMangga Besar' }}
+            .info__sub {{ 'Saturday, 6 January 2024,\n10:00 AM UTC+7' }}
+          .item__info
+            a.button(
+              :href="streamingButtonLink"
+              target="_blank"
+              rel="noopener noreferrer"
+              role="button"
+            ) {{ 'Attend Online' }}
         .item__graphic.item__graphic--map(ref="holyMatrimonyMapElementRef")
 
   template(v-if="isReceptionInvitation") 
@@ -18,8 +26,9 @@
       .content__heading {{ 'RECEPTION DINNER' }}
       .content__item
         .item__text
-          .item__main-info {{ 'Sailendra Restaurant -\nJW Marriott Hotel Jakarta' }}
-          .item__sub-info {{ 'Saturday, 6 January 2024,\n18:30 WIB' }}
+          .item__info
+            .info__main {{ 'Sailendra Restaurant -\nJW Marriott Hotel Jakarta' }}
+            .info__sub {{ 'Saturday, 6 January 2024,\n18:30 WIB' }}
         .item__graphic.item__graphic--map(ref="receptionMapElementRef")
   template(v-if="shouldShowRSVPSection")
     .content
@@ -30,7 +39,7 @@
           :inviteeRSVP="databaseInviteeRSVP"
         )
       template(v-if="canRSVP || canEditRSVP")
-        .content__button(@click="handleClickRSVPButton") {{ databaseInviteeRSVP ? 'Edit Your RSVP' : 'RSVP Here' }}
+        .button(@click="handleClickRSVPButton") {{ databaseInviteeRSVP ? 'Edit Your RSVP' : 'RSVP Here' }}
 </template>
 <script lang="ts" setup>
 import { useInvitee } from '~/composables/wedding/useInvitee'
@@ -73,6 +82,9 @@ const subHeadingText = computed(() => {
     return "We would love to have your presence and blessings at our marriage's holy matrimony."
   return "We would love to have your presence and blessings at the live streaming of our marriage's holy matrimony."
 })
+
+const config = useRuntimeConfig().public.wedding
+const streamingButtonLink = computed(() => config.streamingLink)
 
 const { receptionMapElementRef, holyMatrimonyMapElementRef } = useMap()
 
@@ -173,22 +185,7 @@ $reversed-content-class: ".content[data-order='reverse']";
     }
   }
 
-  &__main-info {
-    @include pc {
-      @include font($size: $font-xxl);
-      margin-bottom: 12px;
-    }
-    @include sp {
-      @include font($size: $font-xl);
-      margin-bottom: 4px;
-      white-space: pre-wrap;
-    }
-  }
-  &__sub-info {
-    @include sp {
-      @include font($size: $font-sm);
-      white-space: pre-wrap;
-    }
+  &__info {
   }
 
   &__hr {
@@ -248,6 +245,26 @@ $reversed-content-class: ".content[data-order='reverse']";
   }
 }
 
+.info {
+  &__main {
+    @include pc {
+      @include font($size: $font-xxl);
+      margin-bottom: 12px;
+    }
+    @include sp {
+      @include font($size: $font-xl);
+      margin-bottom: 4px;
+      white-space: pre-wrap;
+    }
+  }
+  &__sub {
+    @include sp {
+      @include font($size: $font-sm);
+      white-space: pre-wrap;
+    }
+  }
+}
+
 @mixin floating-button {
   @include font-family('marcellus');
   display: inline-block;
@@ -263,7 +280,7 @@ $reversed-content-class: ".content[data-order='reverse']";
   }
 }
 
-.content__button {
+.button {
   @include floating-button;
   text-decoration: none;
   color: inherit;

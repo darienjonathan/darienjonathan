@@ -20,19 +20,20 @@
           .nav-btn__icon.material-icons-outlined expand_more
           .nav-btn__text(@click="emit('navClick')") {{ 'Events' }}
 
-    .button__wrapper
+    .bottom__wrapper
       template(v-if="shouldShowRSVPButton")
-        .button(
+        .bottom__button.bottom__button--left(
           @click="handleClickRSVPButton"
           :data-is-blur="isButtonBlur"
         ) {{ inviteeRSVP ? 'Review Your RSVP' : 'RSVP Here' }}
-      template(v-if="shouldShowStreamingButton")
-        a.button(
-          :href="streamingButtonLink"
-          target="_blank"
-          rel="noopener noreferrer"
-          role="button"
-        ) {{ 'Attend Online' }}
+      a.bottom__button.bottom__button--right(
+        :href="streamingButtonLink"
+        :data-is-blur="isButtonBlur"
+        target="_blank"
+        rel="noopener noreferrer"
+        role="button"
+      ) {{ 'Attend Online' }}
+      .bottom__text {{ 'Live streaming starts at 10:00 AM UTC+7' }}
 </template>
 <script lang="ts" setup>
 import dayjs from 'dayjs'
@@ -150,9 +151,6 @@ const shouldShowRSVPButton = computed(() => {
 
 const config = useRuntimeConfig().public.wedding
 const streamingButtonLink = computed(() => config.streamingLink)
-const shouldShowStreamingButton = computed(() =>
-  dayjs().isSameOrAfter(dayjs.unix(config.showStreamingButtonTimestamp))
-)
 </script>
 <script lang="ts">
 export default {
@@ -339,22 +337,41 @@ export default {
   }
 }
 
-.button {
+.bottom {
   &__wrapper {
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
     bottom: 75px;
     display: grid;
+    grid-template-areas:
+      'btn-left btn-right'
+      'text text';
+    grid-template-rows: repeat(2, auto);
     grid-template-columns: repeat(2, auto);
     gap: 16px;
     z-index: 1;
   }
 
-  & {
+  &__text {
+    grid-area: text;
+    text-align: center;
+    @include font-family('marcellus');
+    @include font($size: $font-sm);
+  }
+
+  &__button {
     @include floating-button;
     text-decoration: none;
     color: inherit;
+
+    &--left {
+      grid-area: btn-left;
+    }
+
+    &--right {
+      grid-area: btn-right;
+    }
   }
 }
 </style>
