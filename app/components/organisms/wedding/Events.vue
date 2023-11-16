@@ -11,7 +11,7 @@
         .item__text
           .item__info
             .info__main {{ 'Gereja Kristus Yesus (GKY)\nMangga Besar' }}
-            .info__sub {{ 'Saturday, 6 January 2024,\n10:00 AM UTC+7' }}
+            .info__sub {{ 'Saturday, 6 January 2024,\n10:00 AM WIB' }}
           .item__info
             a.button(
               :href="streamingButtonLink"
