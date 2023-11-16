@@ -6,9 +6,10 @@
     .hero__intersection-observer(ref="observerElementRef")
   .hero__content(:data-is-blur="isBlur")
     img.hero__image(src="~/assets/images/wedding/kv.jpg")
-    .hero__invitation-text.invitation-text
-      .invitation-text__type {{ invitationTypeText }}
-      .invitation-text__name {{ inviteeNameText }}
+    template(v-if="!isNotInvited")
+      .hero__invitation-text.invitation-text
+        .invitation-text__type {{ invitationTypeText }}
+        .invitation-text__name {{ inviteeNameText }}
     .hero__kv.kv
       .kv__subheading.kv__subheading--jp {{ '恵みを語るメロディー' }}
       .kv__subheading.kv__subheading--en {{ 'The Melody of Grace' }}
@@ -74,10 +75,14 @@ const inviteeName = computed(() => props.inviteeRSVP?.name || props.invitee?.dat
 
 const inviteeNameText = computed(() => {
   const inviteePrefix = props.invitee?.inviteePrefix ? `${props.invitee?.inviteePrefix} ` : ''
-  const baseText = `For ${inviteePrefix}${inviteeName.value || ''}`
-  if (props.invitee?.inviteeSuffix === 'family') return `${baseText} & Family`
-  if (props.invitee?.inviteeSuffix === 'partner') return `${baseText} & Partner`
-  return ''
+
+  const inviteeSuffix =
+    props.invitee?.inviteeSuffix === 'family'
+      ? ' & Family'
+      : props.invitee?.inviteeSuffix === 'partner'
+      ? ' & Partner'
+      : ''
+  return `For ${inviteePrefix}${inviteeName.value}${inviteeSuffix}`
 })
 
 const emit = defineEmits(['loadingDone', 'navClick', 'RSVPButtonClick'])
