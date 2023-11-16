@@ -54,7 +54,7 @@ const stories: Story[] = [
     contents: [
       "They were both studying under the same faculty in a certain university, albeit in different majors. While they were members of that faculty's Christian Community, essentialy they didn't know each other, until the community's certain Easter Celebration Event, in which he was assigned to be the music director for a worship team in which she took the pianist role. ",
       "They got along pretty well enough through the event's preparation. However, after the event ended, their communication also ended, since he was already graduated at that time, and after that event there were nothing that necessitates their presence in the same place and the same time.",
-      'The most important thing, though, is that through that event they understand that both of them know and love piano, albeit in different ways. He, who is mostly self-taught, has plenty of practical experience in non-classical music to make up for his terrible reading speed and technical skills. She, on the other hand, was a classical piano teacher in a reputable music school.',
+      'The most important thing, though, is that through that event they understand that both of them know and love piano, albeit in different ways. He, who is mostly self-taught, has plenty of practical experience in non-classical music to make up for his terrible reading speed and technical skills. She, on the other hand, has classical music being part of her life since her childhood.',
       'Sometime later, he moved to another country for a job.',
     ],
   },
