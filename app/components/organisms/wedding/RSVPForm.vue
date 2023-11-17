@@ -164,7 +164,9 @@ const initializeFormValues = () => {
     : undefined
 
   const basePhoneNumber = props.inviteeRSVP?.phoneNumber || props.invitee?.databasePhoneNumber
-  const existingCode = phoneCodeList.find(c => basePhoneNumber?.includes(String(c.number)))
+  const existingCode = phoneCodeList.find(c =>
+    basePhoneNumber?.slice(1).startsWith(String(c.number))
+  )
   const defaultCode = phoneCodeList.find(c => c.isDefault)
   phoneCodeNumber.value = existingCode?.number || defaultCode?.number
 
