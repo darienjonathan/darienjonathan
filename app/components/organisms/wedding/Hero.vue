@@ -212,7 +212,7 @@ export default {
     }
     @include sp {
       @include font($size: $font-sm);
-      padding: 20px;
+      padding: 0 20px;
       margin-top: vh(10);
     }
   }
