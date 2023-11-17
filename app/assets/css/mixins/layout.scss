@@ -46,8 +46,12 @@
   }
 }
 
-@mixin flex($direction: row, $justify: center, $align-items: center, $align-content: center, $wrap: nowrap) {
-  display: flex;
+@mixin flex($direction: row, $justify: center, $align-items: center, $align-content: center, $wrap: nowrap, $is-inline: false) {
+  @if $is-inline == true {
+    display: inline-flex;
+  } @else {
+    display: flex;
+  }
   flex-direction: $direction;
   justify-content: $justify;
   align-items: $align-items;

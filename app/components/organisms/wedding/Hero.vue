@@ -319,9 +319,6 @@ export default {
 @mixin floating-button {
   @include flex;
   @include font-family('marcellus');
-  min-width: 150px;
-  height: 45px;
-  padding: 10px 20px;
   border: 1px solid rgba($white, 0.5);
   border-radius: 8px;
   cursor: pointer;
@@ -341,6 +338,19 @@ export default {
     cursor: auto;
     opacity: 0;
   }
+
+  @include pc {
+    height: 45px;
+    min-width: 150px;
+    padding: 10px 20px;
+  }
+
+  @include sp {
+    @include font($size: $font-sm);
+    height: 35px;
+    min-width: 115px;
+    padding: 5px 10px;
+  }
 }
 
 .bottom {
@@ -348,9 +358,14 @@ export default {
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
-    bottom: 75px;
     gap: 16px;
     z-index: 1;
+    @include pc {
+      bottom: 75px;
+    }
+    @include sp {
+      bottom: 25px;
+    }
   }
 
   &__buttons {
@@ -380,7 +395,12 @@ export default {
     grid-area: text;
     text-align: center;
     @include font-family('marcellus');
-    @include font($size: $font-sm);
+    @include pc {
+      @include font($size: $font-sm);
+    }
+    @include sp {
+      @include font($size: $font-xs);
+    }
   }
 }
 </style>

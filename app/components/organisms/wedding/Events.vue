@@ -253,7 +253,7 @@ $reversed-content-class: ".content[data-order='reverse']";
     }
     @include sp {
       @include font($size: $font-xl);
-      margin-bottom: 4px;
+      margin-bottom: 8px;
       white-space: pre-wrap;
     }
   }
@@ -266,10 +266,8 @@ $reversed-content-class: ".content[data-order='reverse']";
 }
 
 @mixin floating-button {
+  @include flex($is-inline: true);
   @include font-family('marcellus');
-  display: inline-block;
-  height: 45px;
-  padding: 10px 20px;
   border: 1px solid rgba($white, 0.5);
   border-radius: 8px;
   cursor: pointer;
@@ -278,12 +276,31 @@ $reversed-content-class: ".content[data-order='reverse']";
   &:hover {
     background-color: rgba($white, 0.05);
   }
+
+  @include pc {
+    height: 45px;
+    min-width: 150px;
+    padding: 10px 20px;
+  }
+
+  @include sp {
+    @include font($size: $font-sm);
+    height: 35px;
+    min-width: 115px;
+    padding: 5px 10px;
+  }
 }
 
 .button {
   @include floating-button;
   text-decoration: none;
   color: inherit;
-  margin-top: 16px;
+  @include pc {
+    margin-top: 16px;
+  }
+
+  @include sp {
+    margin-top: 8px;
+  }
 }
 </style>
