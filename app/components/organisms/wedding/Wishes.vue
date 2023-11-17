@@ -234,7 +234,7 @@ export default {
   &__content {
     @include font($size: $font-sm);
     grid-area: content;
-    word-break: break-all;
+    word-break: break-word;
   }
 
   &__empty-text {
