@@ -32,7 +32,7 @@
         .item__graphic.item__graphic--map(ref="receptionMapElementRef")
   template(v-if="shouldShowRSVPSection")
     .content
-      .content__heading {{ 'RSVP' }}
+      .content__heading {{ 'RECEPTION DINNER RSVP' }}
       .content__item
         MRSVPNotes(
           :invitee="invitee"
@@ -183,9 +183,6 @@ $reversed-content-class: ".content[data-order='reverse']";
         margin-left: 32px;
       }
     }
-  }
-
-  &__info {
   }
 
   &__hr {

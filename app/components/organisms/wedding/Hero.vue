@@ -27,7 +27,7 @@
           .bottom__button.bottom__button--left(
             @click="handleClickRSVPButton"
             :data-is-blur="isButtonBlur"
-          ) {{ inviteeRSVP ? 'Review Your RSVP' : 'RSVP Here' }}
+          ) {{ inviteeRSVP ? 'Review Your RSVP' : 'Reception Dinner RSVP' }}
         a.bottom__button.bottom__button--right(
           :href="streamingButtonLink"
           :data-is-blur="isButtonBlur"
@@ -212,7 +212,8 @@ export default {
     }
     @include sp {
       @include font($size: $font-sm);
-      margin-top: vh(15);
+      padding: 20px;
+      margin-top: vh(10);
     }
   }
 }
@@ -377,6 +378,7 @@ export default {
     @include floating-button;
     text-decoration: none;
     color: inherit;
+    white-space: pre;
 
     &--left {
       grid-area: btn-left;

@@ -6,7 +6,7 @@ AModal.rsvp-modal(
 )
   .inner
     .heading
-      h2.heading__main {{ inviteeRSVP ? 'Review Your RSVP' : 'RSVP' }}
+      h2.heading__main {{ inviteeRSVP ? 'Review Your RSVP' : 'Reception Dinner RSVP' }}
     .content
       MRSVPNotes.content__notes(
         :invitee="invitee"
