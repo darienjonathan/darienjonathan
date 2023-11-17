@@ -41,7 +41,6 @@ class FirestoreTrigger<T> {
     context: functions.EventContext,
     callbackFn: ChangeCallbackFunction<T | U | undefined>
   ) {
-    console.log(change.before.data(), change.after.data())
     const before = change.before.exists ? this.parse(change.before.data() || {}) : undefined
     const after = change.after.exists ? this.parse(change.after.data() || {}) : undefined
     return callbackFn(before, after, context)
