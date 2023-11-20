@@ -13,6 +13,7 @@
             .info__main {{ 'Gereja Kristus Yesus (GKY)\nMangga Besar' }}
             .info__sub {{ 'Saturday, 6 January 2024,\n10:00 AM WIB' }}
           .item__info
+            .info__sub {{ 'We would love to have your physical presence at our marriage\'s holy matrimony. However, if you are unable to attend physically, please attend online through below link:' }}
             a.button(
               :href="streamingButtonLink"
               target="_blank"
@@ -167,6 +168,18 @@ $reversed-content-class: ".content[data-order='reverse']";
   }
 }
 .item {
+  &__info {
+    &:not(:last-child) {
+      @include pc {
+        margin-bottom: 12px;
+      }
+
+      @include sp {
+        margin-bottom: 8px;
+      }
+    }
+  }
+
   &__text {
     @include pc {
       margin-right: 32px;
