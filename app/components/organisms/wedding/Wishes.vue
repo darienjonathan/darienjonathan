@@ -211,8 +211,9 @@ export default {
   &__wrapper {
     display: grid;
     grid-template-areas:
-      'name date'
-      'content content';
+      'name'
+      'date'
+      'content';
     grid-template-columns: auto 1fr;
     align-items: baseline;
     column-gap: 20px;
@@ -228,8 +229,13 @@ export default {
   }
 
   &__date {
-    @include font($size: $font-xs);
     grid-area: date;
+    @include pc {
+      @include font($size: $font-xs);
+    }
+    @include sp {
+      @include font($size: $font-xxs);
+    }
   }
 
   &__content {
