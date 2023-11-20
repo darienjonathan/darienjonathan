@@ -52,8 +52,8 @@ const stories: Story[] = [
     summary:
       'Their first meaningful interaction through melodies coming from the white and black they both know and love.',
     contents: [
-      "They were both studying under the same faculty in a certain university, albeit in different majors. While they were members of that faculty's Christian Community, essentialy they didn't know each other, until the community's certain Easter Celebration Event, in which he was assigned to be the music director for a worship team in which she took the pianist role. ",
-      "They got along pretty well enough through the event's preparation. However, after the event ended, their communication also ended, since he was already graduated at that time, and after that event there were nothing that necessitates their presence in the same place and the same time.",
+      "They were both studying under the same faculty in a certain university, though in different majors. While they were members of that faculty's Christian Community, essentialy they didn't know each other, until the community's certain Easter Celebration Event, in which he was assigned to be the music director for the event's worship team. She took the pianist role in that team.",
+      "They got along pretty well enough through the event's preparation. However, after the event ended, their communication also ended. The cause being he was already graduated at that time, and after that event there were nothing that necessitates their presence in the same place and the same time.",
       'The most important thing, though, is that through that event they understand that both of them know and love piano, albeit in different ways. He, who is mostly self-taught, has plenty of practical experience in non-classical music to make up for his terrible reading speed and technical skills. She, on the other hand, has classical music being part of her life since her childhood.',
       'Sometime later, he moved to another country for a job.',
     ],
@@ -66,7 +66,7 @@ const stories: Story[] = [
     contents: [
       "Living overseas and lonely, he looked at his snapchat friend list, hoping to find a companion for his lonely days, and this 'Daisy' person left a nice impression for him through the aforementioned event. Hence, 「お誕生日おめでとう！」 message sent as a birthday greeting to her, hoping to start a conversation.",
       'Apparently she responded well, which motivated him to try taking the relationship to further stages. While geographical distance meant chat is the only way for him to win over her, things went exceptionally well.',
-      'He actually never had a chance, though. As with other boys, he was stubborn eventhough she already gave some warning signals, until a strong word of rejection came, and ended it all. "The sparks were not there", she said. Music was enough to get them close, but not enough to bring them to the next step.',
+      'He actually never had a chance, though. He was stubborn eventhough she already gave some warning signals, until a strong word of rejection came, and ended it all. "The sparks were not there", she said. Music was enough to get them close, but not enough to bring them to the next step.',
       'Left devastated and unable to concentrate in work, he contacted his senior to pour his miserable heart, who responded with "Is Christ enough for you?" after seeing that he probably had dethroned Jesus and in exchange put her on the pedestal of his heart.',
     ],
   },
