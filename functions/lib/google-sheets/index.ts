@@ -14,6 +14,13 @@ const credentials = {
   universe_domain: process.env.UNIVERSE_DOMAIN,
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const parseCellValue = (val: any) => {
+  if (val === 'FALSE') return false
+  if (val === 'TRUE') return true
+  return val
+}
+
 export const getSheets = (): Promise<sheets_v4.Sheets> => {
   const auth = new google.auth.JWT({
     email: credentials.client_email,
