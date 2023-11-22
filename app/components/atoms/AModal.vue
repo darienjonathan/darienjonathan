@@ -138,7 +138,7 @@ onUnmounted(() => {
   }
 }
 
-. {
+.close {
   $icon-size: 3rem;
   &__btn {
     $btn-el-size: math.div(2, 3) * $icon-size;
