@@ -46,7 +46,6 @@
 import { useInvitee } from '~/composables/wedding/useInvitee'
 import MRSVPNotes from '~/components/molecules/wedding/MRSVPNotes.vue'
 import useMap from '~/composables/wedding/useMap'
-import RSVPForm from '~/components/organisms/wedding/RSVPForm.vue'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
 import ConfirmRSVPModal from '~/components/organisms/wedding/ConfirmRSVPModal.vue'
 
@@ -102,7 +101,7 @@ const handleClickRSVPButton = () => {
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Events',
-  components: { RSVPForm, ConfirmRSVPModal },
+  components: { ConfirmRSVPModal },
 }
 </script>
 <style lang="scss" scoped>
