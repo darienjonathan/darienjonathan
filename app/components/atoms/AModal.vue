@@ -108,6 +108,7 @@ onUnmounted(() => {
   box-shadow: 0 0 12.5px $black;
   max-height: vh(80);
   max-width: vw(80);
+  overflow-y: auto;
   @include pc {
     padding: 32px;
   }
@@ -137,7 +138,7 @@ onUnmounted(() => {
   }
 }
 
-.close {
+. {
   $icon-size: 3rem;
   &__btn {
     $btn-el-size: math.div(2, 3) * $icon-size;
