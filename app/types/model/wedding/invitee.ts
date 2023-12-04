@@ -25,6 +25,7 @@ export type InviteePrefix =
   | 'dr.'
   | 'drg.'
   | 'Kel.'
+  | 'Ai'
   | null
 
 export const parseInviteePrefix = (inviteePrefix: any): InviteePrefix => {
@@ -34,11 +35,14 @@ export const parseInviteePrefix = (inviteePrefix: any): InviteePrefix => {
   if (stringifiedPrefix === 'Mr. & Mrs.') return 'Mr. & Mrs.'
   if (stringifiedPrefix === 'Ms.') return 'Ms.'
   if (stringifiedPrefix === 'Pdt.') return 'Pdt.'
+  if (stringifiedPrefix === 'Pdt. Em.') return 'Pdt. Em.'
   if (stringifiedPrefix === 'GI.') return 'GI.'
   if (stringifiedPrefix === 'Pnt.K.') return 'Pnt.K.'
+  if (stringifiedPrefix === 'Ls.') return 'Ls.'
   if (stringifiedPrefix === 'dr.') return 'dr.'
   if (stringifiedPrefix === 'drg.') return 'drg.'
   if (stringifiedPrefix === 'Kel.') return 'Kel.'
+  if (stringifiedPrefix === 'Ai') return 'Ai'
   return null
 }
 
