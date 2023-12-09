@@ -9,7 +9,7 @@
           span.info__description-text {{ ' Your RSVP details are as follows: ' }}
       template(v-if="inviteeRSVP?.isAttendingReception && canReviewRSVP")
         .info__description
-          span.info__description-text {{ 'Name:' }}
+          span.info__description-text {{ 'Name: ' }}
           span.info__description-text {{ inviteeRSVP?.name || '-' }}
         .info__description
           span.info__description-text {{ 'Adult(s): ' }}

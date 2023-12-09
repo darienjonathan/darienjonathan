@@ -108,6 +108,7 @@ onUnmounted(() => {
   box-shadow: 0 0 12.5px $black;
   max-height: vh(80);
   max-width: vw(80);
+  overflow-y: auto;
   @include pc {
     padding: 32px;
   }

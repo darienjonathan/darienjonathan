@@ -164,7 +164,9 @@ const initializeFormValues = () => {
     : undefined
 
   const basePhoneNumber = props.inviteeRSVP?.phoneNumber || props.invitee?.databasePhoneNumber
-  const existingCode = phoneCodeList.find(c => basePhoneNumber?.includes(String(c.number)))
+  const existingCode = phoneCodeList.find(c =>
+    basePhoneNumber?.slice(1).startsWith(String(c.number))
+  )
   const defaultCode = phoneCodeList.find(c => c.isDefault)
   phoneCodeNumber.value = existingCode?.number || defaultCode?.number
 
@@ -212,8 +214,7 @@ const canSubmit = computed(() => {
   if (!hasChange.value) return false
   if (isAttendingReception.value === undefined) return false
   if (isAttendingReception.value === false) return true
-  const minPhoneNumberLength = 9 // NOTE: 昔の電話番号は10桁で、0抜きで9桁になる
-  return !!phoneNumber.value && String(phoneNumber.value).length >= minPhoneNumberLength
+  return !!phoneNumber.value
 })
 
 const handleSubmit = () => {

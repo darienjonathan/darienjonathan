@@ -19,9 +19,9 @@
         :disabled="!canSubmit"
         @click="handleSubmit"
       ) {{ submitButtonText }}
-    .content__item.item(:data-empty="!wishes.length")
-      template(v-if="wishes.length")
-        template(v-for="{ name, timestamp, content } in wishes")
+    .content__item.item(:data-empty="!sortedWishes.length")
+      template(v-if="sortedWishes.length")
+        template(v-for="{ name, timestamp, content } in sortedWishes")
           .item__wrapper
             .item__name {{ name }}
             .item__date {{ formatWithDay(new Date(timestamp), LangEnum.en) }}
@@ -60,6 +60,7 @@ onMounted(updateWishUid)
 
 // Subscribe to Wishes
 const wishes = ref<Wish[]>([])
+const sortedWishes = computed(() => wishes.value.sort((wa, wb) => wb.timestamp - wa.timestamp))
 const unsubscribeWishes = ref<Unsubscribe>()
 onMounted(() => {
   wishesFirestore.subscribeCollection(wishMap => {
@@ -210,8 +211,9 @@ export default {
   &__wrapper {
     display: grid;
     grid-template-areas:
-      'name date'
-      'content content';
+      'name'
+      'date'
+      'content';
     grid-template-columns: auto 1fr;
     align-items: baseline;
     column-gap: 20px;
@@ -227,14 +229,19 @@ export default {
   }
 
   &__date {
-    @include font($size: $font-xs);
     grid-area: date;
+    @include pc {
+      @include font($size: $font-xs);
+    }
+    @include sp {
+      @include font($size: $font-xxs);
+    }
   }
 
   &__content {
     @include font($size: $font-sm);
     grid-area: content;
-    word-break: break-all;
+    word-break: break-word;
   }
 
   &__empty-text {

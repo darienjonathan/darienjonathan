@@ -29,13 +29,14 @@
             :data-is-blur="isButtonBlur"
           ) {{ inviteeRSVP ? 'Review Your RSVP' : 'Reception Dinner RSVP' }}
         a.bottom__button.bottom__button--right(
+          v-if="isNotInvited"
           :href="streamingButtonLink"
           :data-is-blur="isButtonBlur"
           target="_blank"
           rel="noopener noreferrer"
           role="button"
         ) {{ 'Attend Online' }}
-      .bottom__text {{ 'Live streaming starts at 10:00 AM UTC+7' }}
+      .bottom__text(v-if="isNotInvited") {{ 'Live streaming starts at 10:00 AM UTC+7' }}
 </template>
 <script lang="ts" setup>
 import dayjs from 'dayjs'

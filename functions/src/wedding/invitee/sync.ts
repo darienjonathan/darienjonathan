@@ -3,7 +3,7 @@ import {
   invitees as inviteesFirestoreFn,
   inviteeRSVP as inviteeRSVPFirestoreFn,
 } from '~/lib/firebase/firestore/collections'
-import { getSheetRows, getSheets } from '~/lib/google-sheets'
+import { getSheetRows, getSheets, parseCellValue } from '~/lib/google-sheets'
 import { onRequest } from 'firebase-functions/v2/https'
 import FirestoreCollection from '~/lib/firebase/firestore/Firestore'
 
@@ -52,7 +52,7 @@ const getInviteeMapFromSpreadsheet = async () => {
     const invitee = inviteePropertyIndexes.reduce<Invitee>(
       (result, property, index) => ({
         ...result,
-        [property]: row[index],
+        [property]: parseCellValue(row[index]),
       }),
       parseInvitee({})
     )
@@ -67,7 +67,7 @@ const getInviteeMapFromSpreadsheet = async () => {
     const inviteeRSVP = inviteeRSVPPropertyIndexes.reduce<InviteeRSVP>(
       (result, property, index) => ({
         ...result,
-        [property]: row[index + inviteeRSVPIndexOffset + 1],
+        [property]: parseCellValue(row[index + inviteeRSVPIndexOffset + 1]),
       }),
       parseInviteeRSVP({})
     )

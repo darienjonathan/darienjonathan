@@ -13,6 +13,7 @@
             .info__main {{ 'Gereja Kristus Yesus (GKY)\nMangga Besar' }}
             .info__sub {{ 'Saturday, 6 January 2024,\n10:00 AM WIB' }}
           .item__info
+            .info__sub {{ 'We would love to have your physical presence at our marriage\'s holy matrimony. However, if you are unable to attend physically, please attend online through below link:' }}
             a.button(
               :href="streamingButtonLink"
               target="_blank"
@@ -45,7 +46,6 @@
 import { useInvitee } from '~/composables/wedding/useInvitee'
 import MRSVPNotes from '~/components/molecules/wedding/MRSVPNotes.vue'
 import useMap from '~/composables/wedding/useMap'
-import RSVPForm from '~/components/organisms/wedding/RSVPForm.vue'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
 import ConfirmRSVPModal from '~/components/organisms/wedding/ConfirmRSVPModal.vue'
 
@@ -101,7 +101,7 @@ const handleClickRSVPButton = () => {
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Events',
-  components: { RSVPForm, ConfirmRSVPModal },
+  components: { ConfirmRSVPModal },
 }
 </script>
 <style lang="scss" scoped>
@@ -167,6 +167,18 @@ $reversed-content-class: ".content[data-order='reverse']";
   }
 }
 .item {
+  &__info {
+    &:not(:last-child) {
+      @include pc {
+        margin-bottom: 12px;
+      }
+
+      @include sp {
+        margin-bottom: 8px;
+      }
+    }
+  }
+
   &__text {
     @include pc {
       margin-right: 32px;

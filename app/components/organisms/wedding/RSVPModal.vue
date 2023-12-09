@@ -14,6 +14,7 @@ AModal.rsvp-modal(
       )
       template(v-if="canRSVP || canEditRSVP")
         RSVPForm(
+          :key="String(forceRerender)"
           :invitee="invitee"
           :inviteeRSVP="inviteeRSVP"
           @submit="handleSubmit"
@@ -60,6 +61,18 @@ const { canRSVP, canEditRSVP } = useInvitee(toRef(props, 'invitee'), toRef(props
 const handleSubmit = (inviteeRSVP: InviteeRSVP) => {
   emit('submit', inviteeRSVP)
 }
+
+const forceRerender = ref(0)
+watch(
+  () => props.inviteeRSVP,
+  () => {
+    forceRerender.value += 1
+  },
+  {
+    immediate: true,
+    deep: true,
+  }
+)
 </script>
 <script lang="ts">
 export default {
