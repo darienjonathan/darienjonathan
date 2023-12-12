@@ -1,4 +1,38 @@
-<template lang="pug"></template>
+<template lang="pug">
+.songlist
+  .bg
+    img.bg__image(src="~/assets/images/wedding/kv.jpg")
+  .content
+    .tagline
+      .tagline__group
+        .tagline__item.tagline__item--main.tagline__item--ja 恵みを語るメロディー
+        .tagline__item.tagline__item--sub.tagline__item--cursive The Melody of Grace
+      .tagline__rgroup
+        .tagline__item.tagline__item--main DARIEN & DAISY
+        .tagline__item.tagline__item--sub 6 January 2024
+    .heading
+      .heading__main {{ 'KNOW US MORE' }}
+      .heading__sub {{ 'Through Songs We Love' }}
+
+    .description
+      .description__text {{ 'These are the list of songs curated by the couple to accompany us through the dinner reception.' }}
+      .description__text {{ 'They tell stories about their lives, both as an individual and as a couple.' }}
+      .description__text {{ 'While listening to the melodies, take a look below for how these songs shape and identify them.' }}
+
+    .list
+      template(v-for="(song, index) in songList")
+        .list__item.item
+          .item__head(@click="handleClickAccordion(index)")
+            .item__title {{ `${song.title} - ${song.author}` }}
+            .item__theme {{ song.theme.join(', ') }}
+            Transition(name="fade")
+              .item__accordion-btn.material-icons-outlined(v-if="isSongDescriptionOpen(index)") expand_less
+              .item__accordion-btn.material-icons-outlined(v-else) expand_more
+          .item__description-wrapper(:style="{ height: songHeight(index) }")
+            .item__description(ref="songDescriptionRef")
+              template(v-for="description in song.description")
+                .item__description-text {{ description }}
+</template>
 <script setup lang="ts">
 // --------------------------------------------------
 // Song List
@@ -9,6 +43,11 @@ type Song = {
   author: string
   theme: string[]
   description: string[]
+}
+
+type SongState = {
+  height: string
+  isOpen: boolean
 }
 
 const songList: Song[] = [
@@ -39,7 +78,7 @@ const songList: Song[] = [
     theme: ['High School', 'Music'],
     description: [
       "While he is not part of the school's official band (Cressendo), at least he shares the so-called musician's taste with those cool people in Cressendo.",
-      'This song exemplifies our taste of music at that time, and he strived to be able to enjoy and to be able to add songs like this to his repertoire.',
+      'This song exemplifies their taste of music at that time, and he strived to be able to enjoy and to be able to add songs like this to his repertoire.',
       'This period was where he first learned the existence of chords outside the basic ones (major, minor, dominant seventh), with major/minor seventh chords being the chords he practiced the most to be able to use.',
     ],
   },
@@ -49,7 +88,7 @@ const songList: Song[] = [
     theme: ['High School', 'Music'],
     description: [
       'A song he played with his talented highschool friends in a school event.',
-      'Masterful drumming, cool rap, exquisite jazzy voice, added with the chant of "Front Pembela Ronald!" (the name of the band we made for the event) made an unforgettable memory for him.',
+      'Masterful drumming, cool rap, exquisite jazzy voice, added with the chant of "Front Pembela Ronald!" (the name of the band they made for the event) made an unforgettable memory for him.',
       'That was his very first experience playing with a band outside of church.',
     ],
   },
@@ -122,8 +161,8 @@ const songList: Song[] = [
     author: 'Katon Bagaskara',
     theme: ['Music'],
     description: [
-      'He does not really care about the lyrics of this song.',
-      'However, the notation choices, chord progressions, scale changes, interludes.... wow.',
+      'The lyrics are not why he loves this song so much.',
+      'The notation choices, chord progressions, scale changes, interludes.... they are the reason.',
       'This song is truly peak Indonesian Ballad.',
     ],
   },
@@ -148,6 +187,26 @@ const songList: Song[] = [
     ],
   },
 ]
+
+const songDescriptionRef = ref<HTMLElement[]>([])
+const songState = ref<SongState[]>(songList.map(() => ({ height: 'auto', isOpen: false })))
+
+onMounted(() => {
+  songDescriptionRef.value.forEach((val, index) => {
+    songState.value[index].height = `${val.clientHeight}px`
+  })
+})
+
+const isSongDescriptionOpen = (index: number) => songState.value[index].isOpen
+const songHeight = (index: number) =>
+  songState.value[index].isOpen ? songState.value[index].height : 0
+
+const handleClickAccordion = (clickedIndex: number) => {
+  songState.value = songState.value.map((val, index) => ({
+    ...val,
+    isOpen: clickedIndex !== index ? false : !val.isOpen,
+  }))
+}
 
 // --------------------------------------------------
 // Meta Tags
@@ -219,4 +278,200 @@ export default {
   name: 'WeddingSongList',
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import '~/assets/css/main';
+
+.songlist {
+  min-height: 100vh;
+  background-color: rgba($wedding_brown, 1);
+}
+
+.bg {
+  & {
+    @include size(vw(100), 100vh);
+    position: fixed;
+    top: 0;
+    transition: filter 1s;
+    filter: blur(15px);
+
+    &::after {
+      @include size(100%, 100%);
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      background-color: rgba($black, 0.25);
+    }
+  }
+
+  &__image {
+    @include size(100%, 100%);
+    @include absolute;
+    object-fit: cover;
+  }
+}
+
+.content {
+  position: relative;
+  @include pc {
+    padding: 20px 40px;
+  }
+
+  @include sp {
+    padding: 20px;
+  }
+}
+
+.description {
+  & {
+    margin-bottom: 40px;
+  }
+
+  &__text {
+    @include font($line-height: 1.4);
+    @include sp {
+      @include font($size: $font-sm, $line-height: 1.4);
+    }
+    &:not(:last-child) {
+      margin-bottom: 8px;
+    }
+  }
+}
+
+.tagline {
+  @include flex($justify: space-between);
+  margin-bottom: 30px;
+
+  &__item {
+    @include font-family('marcellus');
+    @include flex($direction: column);
+    text-align: center;
+
+    &--main {
+      @include font($size: $font-lg, $letter-spacing: 0.2rem);
+      margin-bottom: 6px;
+
+      @include sp {
+        @include font($size: $font-sm, $letter-spacing: 0.1rem);
+      }
+    }
+
+    &--sub {
+      @include font($letter-spacing: 0.1rem);
+      @include sp {
+        @include font($size: $font-xs, $letter-spacing: 0.05rem);
+      }
+    }
+
+    &--ja {
+      @include font-family('biz-ud-mincho');
+    }
+
+    &--cursive {
+      @include font-family('rochester');
+    }
+  }
+}
+
+.heading {
+  @include font-family('marcellus');
+  text-align: center;
+  margin-bottom: 60px;
+
+  &__main {
+    @include font($size: $font-huge);
+    margin-bottom: 4px;
+  }
+
+  &__sub {
+    @include font($size: $font-lg);
+  }
+}
+
+.list {
+  &__item {
+    box-shadow: 0 0 10px 0.5px rgba($white, 0.5);
+    &:not(:last-child) {
+      margin-bottom: 24px;
+    }
+
+    @include pc {
+      padding: 16px;
+    }
+
+    @include sp {
+      padding: 12px;
+    }
+  }
+}
+
+.item {
+  &__head {
+    display: grid;
+    gap: 4px 16px;
+    grid-template-areas:
+      'title accordion-btn'
+      'theme accordion-btn';
+    grid-template-columns: 1fr auto;
+    cursor: pointer;
+  }
+
+  &__title,
+  &__theme {
+    @include font-family('marcellus');
+  }
+
+  &__title {
+    grid-area: title;
+
+    @include pc {
+      @include font($size: $font-lg);
+    }
+  }
+
+  &__theme {
+    @include sp {
+      @include font($size: $font-sm);
+    }
+    grid-area: theme;
+  }
+
+  &__accordion-btn {
+    @include font($size: $font-huge);
+    grid-area: accordion-btn;
+    align-self: center;
+    justify-self: center;
+  }
+
+  &__description-wrapper {
+    overflow: hidden;
+    transition: height 0.25s ease-in-out;
+  }
+
+  &__description {
+    @include font($line-height: 1.6);
+    padding: 12px 0 0 6px;
+
+    @include sp {
+      @include font($size: $font-sm, $line-height: 1.6);
+    }
+  }
+
+  &__description-text {
+    &:not(:last-child) {
+      margin-bottom: 8px;
+    }
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
