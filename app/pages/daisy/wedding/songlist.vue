@@ -15,7 +15,7 @@
       .heading__sub {{ 'Through Songs We Love' }}
 
     .description
-      .description__text {{ 'These are the list of songs curated by the couple to accompany us through the dinner reception.' }}
+      .description__text {{ 'These are the list of songs curated by the couple to accompany us through the wedding reception.' }}
       .description__text {{ 'They tell stories about their lives, both as an individual and as a couple.' }}
       .description__text {{ 'While listening to the melodies, take a look below for how these songs shape and identify them.' }}
 
