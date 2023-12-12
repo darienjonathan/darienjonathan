@@ -58,7 +58,7 @@ const songList: Song[] = [
     description: [
       'The song that perfectly describes how we see our lives and our relationship, hence our tagline for this wedding: Melody of Grace / 恵みを語るメロディー.',
       'Who are both of us but despicable sinners not worthy of love, yet God gave His own Son - Jesus Christ - to save us from eternal lovelessnes,',
-      'and to grace us with the opportunity to taste the shadow of true love through this relationship and this wedding we all enjoy together.',
+      'and to grace us with the opportunity to taste the teaser of true love through this wedding we all enjoy together.',
     ],
   },
   {
@@ -77,9 +77,10 @@ const songList: Song[] = [
     author: 'Glenn Fredly',
     theme: ['High School', 'Music'],
     description: [
-      "While he is not part of the school's official band (Cressendo), at least he shares the so-called musician's taste with those cool people in Cressendo.",
+      "While he is not part of the school's official band (Cressendo), at least he shares some of the so-called musician's taste with those cool people in Cressendo.",
       'This song exemplifies their taste of music at that time, and he strived to be able to enjoy and to be able to add songs like this to his repertoire.',
       'This period was where he first learned the existence of chords outside the basic ones (major, minor, dominant seventh), with major/minor seventh chords being the chords he practiced the most to be able to use.',
+      'You will hear those major/minor seventh chords whenever he plays, to the point that he got criticized for overusing them. he he.',
     ],
   },
   {
@@ -88,7 +89,7 @@ const songList: Song[] = [
     theme: ['High School', 'Music'],
     description: [
       'A song he played with his talented highschool friends in a school event.',
-      'Masterful drumming, cool rap, exquisite jazzy voice, added with the chant of "Front Pembela Ronald!" (the name of the band they made for the event) made an unforgettable memory for him.',
+      'Masterful drumming, cool rap, exquisite jazzy voice, combined the "Front Pembela Ronald!" (the name of the band they made for the event) chant heard accross the auditorium when they were performing made an unforgettable memory for him.',
       'That was his very first experience playing with a band outside of church.',
     ],
   },
@@ -97,7 +98,7 @@ const songList: Song[] = [
     author: 'HiVi!',
     theme: ['Relationship'],
     description: [
-      'The song that he likes so much, and she knows about it.',
+      'A song that he likes so much, and she knows about it.',
       'The day after her rejection towards his feelings, the radio she were tuning in, in pure coincidence, played this song, which brought the remembrance of him, and together with it, mixed feelings, to her.',
       'While being in a relationship with him was not an option (at that time), thought of having their friendship also ended made her gloomy, to say the least.',
     ],
@@ -135,7 +136,7 @@ const songList: Song[] = [
     description: [
       'Friendship has a apex importance in our lives.',
       "If not because of our friends working behind the scene encouraging us to stick together again after the separation, we won't be here at the first place.",
-      'We also would like to see ourselves being friends in addition to being lovers, because while what we sometimes thought as love burns fast, friendship is part of the anchor of unfailing love.',
+      'We also would like to see ourselves being friends in addition to being lovers, because while what we sometimes thought as love burns fast, friendship, we believe, is part of the anchor of unfailing love.',
     ],
   },
   {
