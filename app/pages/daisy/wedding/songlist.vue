@@ -135,7 +135,7 @@ const songList: Song[] = [
     author: 'McFly',
     theme: ['Friendship'],
     description: [
-      'Friendship has a apex importance in our lives.',
+      'Friendship has an apex importance in our lives.',
       "If not because of our friends working behind the scene encouraging us to stick together again after the separation, we won't be here at the first place.",
       'We also would like to see ourselves being friends in addition to being lovers, because while what we sometimes thought as love burns fast, friendship, we believe, is part of the anchor of unfailing love.',
     ],
@@ -185,7 +185,7 @@ const songList: Song[] = [
     description: [
       'Who sees my brokenness and carries me when I am frail and weak? Who brings me food for my table, who cares for all of my needs?',
       'We are but helpless people, floating only by the Grace of Jesus Christ through everyone around us (families, friends, churches, workplaces, and you. Yes, you. Thankyou for being part of our lives.)',
-      'To the one thing true, Jesus, It Is You.',
+      'To the One thing true, Jesus, It Is You.',
     ],
   },
 ]
