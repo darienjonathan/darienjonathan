@@ -21,17 +21,18 @@
 
     .list
       template(v-for="(song, index) in songList")
-        .list__item.item
-          .item__head(@click="handleClickAccordion(index)")
-            .item__title {{ `${song.title} - ${song.author}` }}
-            .item__theme {{ song.theme.join(', ') }}
-            Transition(name="fade")
-              .item__accordion-btn.material-icons-outlined(v-if="isSongDescriptionOpen(index)") expand_less
-              .item__accordion-btn.material-icons-outlined(v-else) expand_more
-          .item__description-wrapper(:style="{ height: songHeight(index) }")
-            .item__description(ref="songDescriptionRef")
-              template(v-for="description in song.description")
-                .item__description-text {{ description }}
+        .list__item-wrapper
+          .list__item.item
+            .item__head(@click="handleClickAccordion(index)")
+              .item__title {{ `${song.title} - ${song.author}` }}
+              .item__theme {{ song.theme.join(', ') }}
+              Transition(name="fade")
+                .item__accordion-btn.material-icons-outlined(v-if="isSongDescriptionOpen(index)") expand_less
+                .item__accordion-btn.material-icons-outlined(v-else) expand_more
+            .item__description-wrapper(:style="{ height: songHeight(index) }")
+              .item__description(ref="songDescriptionRef")
+                template(v-for="description in song.description")
+                  .item__description-text {{ description }}
 </template>
 <script setup lang="ts">
 // --------------------------------------------------
@@ -391,11 +392,16 @@ export default {
 }
 
 .list {
+  & {
+    display: grid;
+    gap: 24px;
+
+    @include pc {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
   &__item {
     box-shadow: 0 0 10px 0.5px rgba($white, 0.5);
-    &:not(:last-child) {
-      margin-bottom: 24px;
-    }
 
     @include pc {
       padding: 16px;
@@ -415,6 +421,7 @@ export default {
       'title accordion-btn'
       'theme accordion-btn';
     grid-template-columns: 1fr auto;
+    align-content: center;
     cursor: pointer;
   }
 
