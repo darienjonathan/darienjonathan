@@ -161,7 +161,7 @@ const songList: Song[] = [
     author: 'Katon Bagaskara',
     theme: ['Music'],
     description: [
-      'The lyrics are not why he loves this song so much.',
+      'The lyrics are not the reason why he loves this song so much.',
       'The notation choices, chord progressions, scale changes, interludes.... they are the reason.',
       'This song is truly peak Indonesian Ballad.',
     ],
