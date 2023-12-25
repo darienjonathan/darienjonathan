@@ -36,7 +36,7 @@
           rel="noopener noreferrer"
           role="button"
         ) {{ 'Attend Online' }}
-      .bottom__text(v-if="isNotInvited") {{ 'Live streaming starts at 10:00 AM UTC+7' }}
+      .bottom__text(v-if="isNotInvited") {{ 'Live streaming starts at 10:00 AM WIB (UTC+7)' }}
 </template>
 <script lang="ts" setup>
 import dayjs from 'dayjs'
