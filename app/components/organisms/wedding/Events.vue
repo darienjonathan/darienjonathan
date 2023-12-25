@@ -11,7 +11,7 @@
         .item__text
           .item__info
             .info__main {{ 'Gereja Kristus Yesus (GKY)\nMangga Besar' }}
-            .info__sub {{ 'Saturday, 6 January 2024,\n10:00 AM WIB' }}
+            .info__sub {{ 'Saturday, 6 January 2024,\n10:00 AM WIB (UTC+7)' }}
           .item__info
             .info__sub {{ 'We would love to have your physical presence at our marriage\'s holy matrimony. However, if you are unable to attend physically, please attend online through below link:' }}
             a.button(
