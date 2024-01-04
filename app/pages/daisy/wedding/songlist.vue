@@ -63,28 +63,6 @@ const songList: Song[] = [
     ],
   },
   {
-    title: 'Rainbow Connection',
-    author: 'Diana Panton',
-    theme: ['Misc.'],
-    // TODO
-    description: [
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-    ],
-  },
-  {
-    title: 'My Everything',
-    author: 'Glenn Fredly',
-    theme: ['High School', 'Music'],
-    description: [
-      "While he is not part of the school's official band (Cressendo), at least he shares some of the so-called musician's taste with those cool people in Cressendo.",
-      'This song exemplifies their taste of music at that time, and he strived to be able to enjoy and to be able to add songs like this to his repertoire.',
-      'This period was where he first learned the existence of chords outside the basic ones (major, minor, dominant seventh), with major/minor seventh chords being the chords he practiced the most to be able to use.',
-      'You will hear those major/minor seventh chords whenever he plays, to the point that he got criticized for overusing them. he he.',
-    ],
-  },
-  {
     title: 'Just the Two Of Us',
     author: 'Stevie Wonder',
     theme: ['High School', 'Music'],
@@ -92,6 +70,16 @@ const songList: Song[] = [
       'A song he played with his talented highschool friends in a school event.',
       'Masterful drumming, cool rap, exquisite jazzy voice, combined the "Front Pembela Ronald!" (the name of the band they made for the event) chant heard accross the auditorium when they were performing made an unforgettable memory for him.',
       'That was his very first experience playing with a band outside of church.',
+    ],
+  },
+  {
+    title: "You've Got A Friend",
+    author: 'McFly',
+    theme: ['Friendship'],
+    description: [
+      'Friendship has an apex importance in our lives.',
+      "If not because of our friends working behind the scene encouraging us to stick together again after the separation, we won't be here at the first place.",
+      'We also would like to see ourselves being friends in addition to being lovers, because while what we sometimes thought as love burns fast, friendship, we believe, is part of the anchor of unfailing love.',
     ],
   },
   {
@@ -115,6 +103,16 @@ const songList: Song[] = [
     ],
   },
   {
+    title: 'Negeri Di Awan',
+    author: 'Katon Bagaskara',
+    theme: ['Music'],
+    description: [
+      'The lyrics are not the reason why he loves this song so much.',
+      'The notation choices, chord progressions, scale changes, interludes.... they are the reason.',
+      'This song is truly peak Indonesian Ballad.',
+    ],
+  },
+  {
     title: "Siapkah Kau 'Tuk Jatuh Cinta Lagi",
     author: 'HiVi!',
     theme: ['Relationship'],
@@ -131,13 +129,13 @@ const songList: Song[] = [
     ],
   },
   {
-    title: "You've Got A Friend",
-    author: 'McFly',
-    theme: ['Friendship'],
+    title: 'I Can Wait Forever',
+    author: 'Air Supply',
+    theme: ['Relationship'],
     description: [
-      'Friendship has an apex importance in our lives.',
-      "If not because of our friends working behind the scene encouraging us to stick together again after the separation, we won't be here at the first place.",
-      'We also would like to see ourselves being friends in addition to being lovers, because while what we sometimes thought as love burns fast, friendship, we believe, is part of the anchor of unfailing love.',
+      "We had a more than 1 year period when we weren't able to meet each other due to the COVID-19 pandemic.",
+      "It wasn't easy, but the wait was worth it.",
+      "In addition, this song's bassline is gorgeous",
     ],
   },
   {
@@ -150,32 +148,14 @@ const songList: Song[] = [
     ],
   },
   {
-    title: 'I Can Wait Forever',
-    author: 'Air Supply',
-    theme: ['Relationship'],
-    // TODO
+    title: 'My Everything',
+    author: 'Glenn Fredly',
+    theme: ['High School', 'Music'],
     description: [
-      'Another song that reflects our LDR lives; a long and important phase of our relationship.',
-    ],
-  },
-  {
-    title: 'Negeri Di Awan',
-    author: 'Katon Bagaskara',
-    theme: ['Music'],
-    description: [
-      'The lyrics are not the reason why he loves this song so much.',
-      'The notation choices, chord progressions, scale changes, interludes.... they are the reason.',
-      'This song is truly peak Indonesian Ballad.',
-    ],
-  },
-  {
-    title: 'Anyone At All',
-    author: "Carole King (You've Got Mail)",
-    theme: ['Misc.'],
-    description: [
-      '"Don\'t you think daisies are the friendliest flower?"',
-      'That is part of the conversation being played at the film.',
-      'But don\'t we agree that such description also fits with the "Daisy" we have here?',
+      "While he is not part of the school's official band (Cressendo), at least he shares some of the so-called musician's taste with those cool people in Cressendo.",
+      'This song exemplifies their taste of music at that time, and he strived to be able to enjoy and to be able to add songs like this to his repertoire.',
+      'This period was where he first learned the existence of chords outside the basic ones (major, minor, dominant seventh), with major/minor seventh chords being the chords he practiced the most to be able to use.',
+      'You will hear those major/minor seventh chords whenever he plays, to the point that he got criticized for overusing them. he he.',
     ],
   },
   {
