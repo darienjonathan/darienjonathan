@@ -24,7 +24,7 @@
 
   template(v-if="isReceptionInvitation") 
     .content(data-order="reverse")
-      .content__heading {{ 'RECEPTION DINNER' }}
+      .content__heading {{ 'WEDDING RECEPTION' }}
       .content__item
         .item__text
           .item__info
@@ -33,7 +33,7 @@
         .item__graphic.item__graphic--map(ref="receptionMapElementRef")
   template(v-if="shouldShowRSVPSection")
     .content
-      .content__heading {{ 'RECEPTION DINNER RSVP' }}
+      .content__heading {{ 'WEDDING RECEPTION RSVP' }}
       .content__item
         MRSVPNotes(
           :invitee="invitee"
@@ -77,7 +77,7 @@ const {
 
 const subHeadingText = computed(() => {
   if (isReceptionInvitation.value)
-    return "We would love to have your presence and blessings at our marriage's holy matrimony and dinner reception."
+    return "We would love to have your presence and blessings at our marriage's holy matrimony and wedding reception."
   if (isMatrimonyInvitation.value)
     return "We would love to have your presence and blessings at our marriage's holy matrimony."
   return "We would love to have your presence and blessings at the live streaming of our marriage's holy matrimony."

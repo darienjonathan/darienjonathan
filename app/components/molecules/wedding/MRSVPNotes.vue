@@ -31,10 +31,10 @@
     .info
       .info__description
         template(v-if="isBeforeRSVPDeadline")
-          span.info__description-text {{ 'Due to limited space, and to ensure the smooth running of the events, We kindly ask your cooperation by confirming your attendance to the dinner reception before ' }}
+          span.info__description-text {{ 'Due to limited space, and to ensure the smooth running of the events, We kindly ask your cooperation by confirming your attendance to the wedding reception before ' }}
           span.info__description-text.info__description-text--focus {{ `${rsvpDeadlineString}.` }}
         template(v-else="isBeforeRSVPDeadline")
-          span.info__description-text {{ 'Due to limited space, and to ensure the smooth running of the events, We kindly ask your cooperation by confirming your attendance to the dinner reception ' }}
+          span.info__description-text {{ 'Due to limited space, and to ensure the smooth running of the events, We kindly ask your cooperation by confirming your attendance to the wedding reception ' }}
           span.info__description-text.info__description-text--focus {{ 'as soon as possible.' }}
       .info__note
         .info__note-text.info__note-text--focus {{ 'Unconfirmed attendance is considered as not attending.' }}
