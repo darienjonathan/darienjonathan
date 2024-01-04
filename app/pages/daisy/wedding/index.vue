@@ -88,47 +88,6 @@ const isDataLoaded = ref(false)
 const invitee = ref<Invitee | null>()
 const inviteeRSVP = ref<InviteeRSVP | null>()
 
-// dummy
-watch(
-  uid,
-  () => {
-    if (uid.value === 'DUMMY') {
-      invitee.value = {
-        databaseName: 'Kevin Jonathan',
-        invitationType: 'reception',
-        inviteePrefix: 'Mr.',
-        inviteeSuffix: 'family',
-        databasePhoneNumber: '+6281234567890',
-        adultGuestNumber: 1,
-        childrenGuestNumber: 1,
-      }
-    }
-    if (uid.value === 'RSVP_DUMMY') {
-      invitee.value = {
-        databaseName: 'Kevin Jonathan',
-        inviteePrefix: 'Mr.',
-        invitationType: 'reception',
-        inviteeSuffix: 'family',
-        databasePhoneNumber: '+6281234567890',
-        adultGuestNumber: 1,
-        childrenGuestNumber: 1,
-      }
-      inviteeRSVP.value = {
-        name: 'Kevin Jonathan',
-        adultGuestNumber: 1,
-        childrenGuestNumber: 1,
-        isAttendingReception: false,
-        phoneNumber: '+6281234567890',
-      }
-    }
-
-    isDataLoaded.value = true
-  },
-  {
-    immediate: true,
-  }
-)
-
 const setInvitee = async () => {
   if (!uid.value) return
   const fetchedInvitee = await inviteesFirestore.loadDocument(uid.value)
@@ -144,7 +103,6 @@ const setInviteeRSVP = async () => {
 watch(
   uid,
   async () => {
-    if (['DUMMY', 'RSVP_DUMMY'].includes(uid.value)) return
     await Promise.all([setInvitee(), setInviteeRSVP()])
     isDataLoaded.value = true
   },
