@@ -135,7 +135,7 @@ const songList: Song[] = [
     description: [
       "We had a more than 1 year period when we weren't able to meet each other due to the COVID-19 pandemic.",
       "It wasn't easy, but the wait was worth it.",
-      "In addition, this song's bassline is gorgeous",
+      "In addition, this song's bassline is gorgeous.",
     ],
   },
   {
