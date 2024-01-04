@@ -27,7 +27,7 @@
           .bottom__button.bottom__button--left(
             @click="handleClickRSVPButton"
             :data-is-blur="isButtonBlur"
-          ) {{ inviteeRSVP ? 'Review Your RSVP' : 'Reception Dinner RSVP' }}
+          ) {{ inviteeRSVP ? 'Review Your RSVP' : 'Wedding Reception RSVP' }}
         a.bottom__button.bottom__button--right(
           v-if="isNotInvited"
           :href="streamingButtonLink"
