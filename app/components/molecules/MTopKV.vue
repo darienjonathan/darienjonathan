@@ -10,7 +10,7 @@
       href="https://github.com/darienjonathan/darienjonathan"
       target="_blank"
     )
-      img.sns__icon(src="@/assets/images/sns/icon-github.png")
+      img.sns__icon(src="@/assets/images/sns/icon-github-white.png")
       | github
     a.sns__item(
       href="https://instagram.com/darienjonathan"
