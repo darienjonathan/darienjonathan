@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { parseString } from '~/types/model/parse'
 
-export interface Tag {
+export type Tag = {
   text: string
   bgColor: string
 }

@@ -4,4 +4,4 @@ export const signInStatus = <const>{
   signedOut: 'signedOut',
 }
 
-export type SignInStatus = typeof signInStatus[keyof typeof signInStatus]
+export type SignInStatus = (typeof signInStatus)[keyof typeof signInStatus]

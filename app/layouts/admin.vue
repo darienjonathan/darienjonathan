@@ -12,6 +12,10 @@ Default
 import Default from '~/layouts/default.vue'
 import MSignInModal from '~/components/molecules/MSignInModal.vue'
 
+defineOptions({
+  name: 'AdminLayout',
+})
+
 const router = useRouter()
 const { signInStatus } = useAuth()
 
@@ -23,12 +27,6 @@ watch(
   },
   {
     immediate: true,
-  }
+  },
 )
-</script>
-<script lang="ts">
-export default {
-  name: 'AdminLayout',
-  components: { Default, MSignInModal },
-}
 </script>

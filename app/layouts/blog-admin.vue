@@ -7,10 +7,8 @@ Admin
 <script lang="ts" setup>
 import Admin from '~/layouts/admin.vue'
 import MHeader from '~/components/molecules/admin/blog/MHeader.vue'
-</script>
-<script lang="ts">
-export default {
+
+defineOptions({
   name: 'BlogAdminLayout',
-  components: { Admin, MHeader },
-}
+})
 </script>

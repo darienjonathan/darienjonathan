@@ -27,20 +27,24 @@ AModal(
 </template>
 
 <script lang="ts" setup>
-import { FirebaseError } from '@firebase/util'
+import type { FirebaseError } from '@firebase/util'
 import AModal from '~/components/atoms/AModal.vue'
 import useMedia from '~/composables/useMedia'
 
-const { isSP } = useMedia()
-
-const { signIn } = useAuth()
-
-const props = defineProps({
-  isOpen: {
-    type: Boolean,
-    default: false,
-  },
+defineOptions({
+  name: 'MSignInModal',
 })
+
+type Props = {
+  isOpen: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  isOpen: false,
+})
+
+const { isSP } = useMedia()
+const { signIn } = useAuth()
 
 const firebaseError = ref<FirebaseError>()
 const email = ref<string>('')
@@ -75,14 +79,8 @@ watch(
     } else {
       document.removeEventListener('keypress', enterListener)
     }
-  }
+  },
 )
-</script>
-<script lang="ts">
-export default {
-  name: 'MSignInModal',
-  components: { AModal },
-}
 </script>
 
 <style lang="scss" scoped>

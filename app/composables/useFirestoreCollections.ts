@@ -1,20 +1,20 @@
-import { Wish, parseWish } from '~/types/model/wedding/wish'
-import { Media, parseMedia } from '~/types/model/blog/media'
-import { parsePost, parsePostComment, Post, PostComment } from '~/types/model/blog/post'
-import { parseRole, Role } from '~/types/model/blog/role'
-import { parseTag, Tag } from '~/types/model/blog/tag'
-import { parseUser, parseUserInfo, User, UserInfo } from '~/types/model/user'
+import type { Wish } from '~/types/model/wedding/wish'
+import { parseWish } from '~/types/model/wedding/wish'
+import type { Media } from '~/types/model/blog/media'
+import { parseMedia } from '~/types/model/blog/media'
+import type { Post, PostComment } from '~/types/model/blog/post'
+import { parsePost, parsePostComment } from '~/types/model/blog/post'
+import type { Role } from '~/types/model/blog/role'
+import { parseRole } from '~/types/model/blog/role'
+import type { Tag } from '~/types/model/blog/tag'
+import { parseTag } from '~/types/model/blog/tag'
+import type { User, UserInfo } from '~/types/model/user'
+import { parseUser, parseUserInfo } from '~/types/model/user'
 import useFirestore from '~/composables/firebase/firestore/useFirestore'
-import {
-  parseQuestion as parseDaisyProposalQuestion,
-  Question as DaisyProposalQuestion,
-} from '~/types/model/others/daisy/proposal'
-import {
-  Invitee,
-  parseInvitee,
-  InviteeRSVP,
-  parseInviteeRSVP,
-} from '~~/types/model/wedding/invitee'
+import type { Question as DaisyProposalQuestion } from '~/types/model/others/daisy/proposal'
+import { parseQuestion as parseDaisyProposalQuestion } from '~/types/model/others/daisy/proposal'
+import type { Invitee, InviteeRSVP } from '~~/types/model/wedding/invitee'
+import { parseInvitee, parseInviteeRSVP } from '~~/types/model/wedding/invitee'
 
 const useFirestoreCollections = () => {
   const usePosts = () => useFirestore<Post>('posts', parsePost)

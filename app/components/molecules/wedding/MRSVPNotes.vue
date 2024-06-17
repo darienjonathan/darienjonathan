@@ -45,6 +45,10 @@
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
 import { useInvitee } from '~/composables/wedding/useInvitee'
 
+defineOptions({
+  name: 'MRSVPNotes',
+})
+
 type Props = {
   invitee: Invitee | null
   inviteeRSVP: InviteeRSVP | null
@@ -75,11 +79,6 @@ const invitationStatusText = computed(() => {
     return props.inviteeRSVP.isAttendingReception ? 'attending' : 'not attending'
   return 'yet to confirm your RSVP'
 })
-</script>
-<script lang="ts">
-export default {
-  name: 'MRSVPNotes',
-}
 </script>
 
 <style lang="scss" scoped>

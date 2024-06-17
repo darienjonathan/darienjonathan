@@ -6,7 +6,7 @@ import { UserInfo } from '~/types/model/user'
 
 const getRoleUid = async (roleName: string) => {
   const role = await roles().loadDocumentByQuery(
-    new FirestoreQueryBuilder<Role>().eq('name', roleName)
+    new FirestoreQueryBuilder<Role>().eq('name', roleName),
   )
   if (!role) return
   return role.id
@@ -35,7 +35,6 @@ export const onCreate = getFunctions()
         email: user.email,
       })
     } catch (err) {
-      // eslint-disable-next-line no-console
       console.error(err)
       return err
     }
@@ -50,7 +49,7 @@ export const onDelete = getFunctions()
       }
       const userInfoCollection = userInfo()
       const userInfoDocument = await userInfoCollection.loadDocumentByQuery(
-        new FirestoreQueryBuilder<UserInfo>().eq('email', user.email)
+        new FirestoreQueryBuilder<UserInfo>().eq('email', user.email),
       )
       if (!userInfoDocument) {
         throw new Error('No User Document')
@@ -58,7 +57,6 @@ export const onDelete = getFunctions()
       userInfoCollection.deleteDocument(userInfoDocument.id)
       return users().deleteDocument(userInfoDocument.id)
     } catch (err) {
-      // eslint-disable-next-line no-console
       console.error(err)
       return err
     }

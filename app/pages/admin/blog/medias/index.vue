@@ -33,6 +33,10 @@ import MMediaListItem from '~/components/molecules/admin/blog/media/MMediaListIt
 import type { Media } from '~/types/model/blog/media'
 import AModal from '~/components/atoms/AModal.vue'
 
+defineOptions({
+  name: 'AdminBlogMediasIndexPage',
+})
+
 const { useMedias } = useFirestoreCollections()
 const mediasFirestore = useMedias()
 const images = ref<Map<string, Media>>(new Map())
@@ -71,16 +75,10 @@ const handleConfirmDelete = async () => {
   await mediasFirestore.deleteRecord(uidToBeDeleted.value)
   isDeleteModalOpen.value = false
 }
-</script>
-<script lang="ts">
+
 definePageMeta({
   layout: 'blog-admin',
 })
-
-export default {
-  name: 'AdminBlogMediasIndexPage',
-  components: { MMediaListItem, AModal },
-}
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';

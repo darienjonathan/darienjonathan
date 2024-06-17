@@ -4,15 +4,13 @@ OMediaBuilder.media-new
 <script lang="ts" setup>
 import OMediaBuilder from '~/components/organisms/admin/blog/media/OMediaBuilder.vue'
 
+defineOptions({
+  name: 'AdminBlogMediasNewPage',
+})
+
 definePageMeta({
   layout: 'blog-admin',
 })
-</script>
-<script lang="ts">
-export default {
-  name: 'AdminBlogMediasNewPage',
-  components: { OMediaBuilder },
-}
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';

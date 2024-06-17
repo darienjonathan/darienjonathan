@@ -27,12 +27,11 @@
       .item__label {{ 'Account Holder\'s Name' }}
       .item__value {{ 'Daisy Christina' }}
 </template>
-<script lang="ts" setup></script>
-<script lang="ts">
-export default {
+<script lang="ts" setup>
+defineOptions({
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Registry',
-}
+})
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';

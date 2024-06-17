@@ -83,20 +83,17 @@ import MInput from '~/components/molecules/wedding/MInput.vue'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
 import { useInvitee } from '~/composables/wedding/useInvitee'
 
+defineOptions({
+  name: 'RSVPForm',
+})
+
 type Props = {
   invitee: Invitee
   inviteeRSVP: InviteeRSVP | null
 }
 
-const props = defineProps({
-  invitee: {
-    type: Object as () => Props['invitee'],
-    required: true,
-  },
-  inviteeRSVP: {
-    type: Object as () => Props['inviteeRSVP'],
-    default: null,
-  },
+const props = withDefaults(defineProps<Props>(), {
+  inviteeRSVP: null,
 })
 
 const emit = defineEmits<{ (e: 'submit', inviteeRSVP: InviteeRSVP): void }>()
@@ -165,7 +162,7 @@ const initializeFormValues = () => {
 
   const basePhoneNumber = props.inviteeRSVP?.phoneNumber || props.invitee?.databasePhoneNumber
   const existingCode = phoneCodeList.find(c =>
-    basePhoneNumber?.slice(1).startsWith(String(c.number))
+    basePhoneNumber?.slice(1).startsWith(String(c.number)),
   )
   const defaultCode = phoneCodeList.find(c => c.isDefault)
   phoneCodeNumber.value = existingCode?.number || defaultCode?.number
@@ -219,12 +216,6 @@ const canSubmit = computed(() => {
 
 const handleSubmit = () => {
   emit('submit', inviteeRSVPToSubmit.value)
-}
-</script>
-<script lang="ts">
-export default {
-  name: 'RSVPForm',
-  components: { MInput },
 }
 </script>
 <style lang="scss" scoped>
