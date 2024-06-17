@@ -15,7 +15,7 @@ type PutArgs<T extends File | string> = {
   customMetadata?: UploadMetadata['customMetadata']
 }
 
-type PutStringArgs extends PutArgs<string> = {
+type PutStringArgs = PutArgs<string> & {
   stringFormat?: StringFormat
 }
 

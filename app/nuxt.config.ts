@@ -4,6 +4,15 @@ export default defineNuxtConfig({
   image: {
     dir: 'assets/images',
   },
+  nitro: {
+    firebase: {
+      gen: 2,
+      nodeVersion: '20',
+      httpsOptions: {
+        region: 'asia-southeast2',
+      },
+    },
+  },
   build: {
     transpile: ['@googlemaps/js-api-loader'],
   },

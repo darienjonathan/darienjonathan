@@ -3,7 +3,7 @@
 import type { ASelect } from '~/types/components'
 import { parseArray, parseString, parseNumber } from '~/types/model/parse'
 
-export type Question extends Omit<ASelect, 'isDisabled'> = {
+export type Question = Omit<ASelect, 'isDisabled'> & {
   correctAnswerIndex: number
   order: number
   stage: number
