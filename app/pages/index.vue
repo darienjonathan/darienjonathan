@@ -21,18 +21,16 @@
         | instagram
 </template>
 <script lang="ts" setup>
+defineOptions({
+  name: 'IndexPage',
+})
+
 // TODO: remove if page has more features
 const router = useRouter()
 onMounted(() => {
   router.replace('/blogs')
 })
 </script>
-<script lang="ts">
-export default {
-  name: 'IndexPage',
-}
-</script>
-
 <style lang="scss" scoped>
 @import '~/assets/css/main';
 

@@ -45,25 +45,24 @@ import { useInvitee } from '~/composables/wedding/useInvitee'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
 dayjs.extend(isSameOrAfter)
 
+defineOptions({
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: 'Hero',
+})
+
 type Props = {
   invitee: Invitee | null
   inviteeRSVP: InviteeRSVP | null
 }
 
-const props = defineProps({
-  invitee: {
-    type: Object as () => Props['invitee'],
-    default: null,
-  },
-  inviteeRSVP: {
-    type: Object as () => Props['inviteeRSVP'],
-    default: null,
-  },
+const props = withDefaults(defineProps<Props>(), {
+  invitee: null,
+  inviteeRSVP: null,
 })
 
 const { isReceptionInvitation, isMatrimonyInvitation, isNotInvited } = useInvitee(
   toRef(props, 'invitee'),
-  toRef(props, 'inviteeRSVP')
+  toRef(props, 'inviteeRSVP'),
 )
 
 const invitationTypeText = computed(() => {
@@ -81,8 +80,8 @@ const inviteeNameText = computed(() => {
     props.invitee?.inviteeSuffix === 'family'
       ? ' & Family'
       : props.invitee?.inviteeSuffix === 'partner'
-      ? ' & Partner'
-      : ''
+        ? ' & Partner'
+        : ''
   return `For ${inviteePrefix}${inviteeName.value}${inviteeSuffix}`
 })
 
@@ -106,7 +105,7 @@ onMounted(() => {
     {
       rootMargin: '0px',
       threshold: [0.0, 1.0],
-    }
+    },
   )
   observer.observe(observerElementRef.value)
   observerInstance.value = observer
@@ -136,7 +135,7 @@ onMounted(() => {
     {
       rootMargin: '150px',
       threshold: [0.0, 1.0],
-    }
+    },
   )
   observer.observe(buttonObserverElementRef.value)
   buttonObserverInstance.value = observer
@@ -158,12 +157,6 @@ const shouldShowRSVPButton = computed(() => {
 
 const config = useRuntimeConfig().public.wedding
 const streamingButtonLink = computed(() => config.streamingLink)
-</script>
-<script lang="ts">
-export default {
-  // eslint-disable-next-line vue/multi-word-component-names
-  name: 'Hero',
-}
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';
@@ -325,7 +318,10 @@ export default {
   border-radius: 8px;
   cursor: pointer;
   filter: drop-shadow(0 0 5px $white);
-  transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out, opacity 0.5s;
+  transition:
+    background-color 0.25s ease-in-out,
+    color 0.25s ease-in-out,
+    opacity 0.5s;
   &:hover {
     background-color: rgba($white, 0.05);
   }

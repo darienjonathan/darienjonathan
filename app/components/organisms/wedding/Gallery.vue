@@ -48,6 +48,11 @@ import image10 from '~/assets/images/wedding/gallery/image_10.jpg'
 
 const imageSrcs = [image1, image2, image3, image4, image5, image6, image7, image8, image9, image10]
 
+defineOptions({
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: 'Gallery',
+})
+
 type ImageState = {
   src: string
   order: number
@@ -158,12 +163,6 @@ const handleSelectImage = (imageState: ImageState) => {
 const handleCloseModal = () => {
   selectedImage.value = undefined
   isModalOpen.value = false
-}
-</script>
-<script lang="ts">
-export default {
-  // eslint-disable-next-line vue/multi-word-component-names
-  name: 'Gallery',
 }
 </script>
 <style lang="scss" scoped>

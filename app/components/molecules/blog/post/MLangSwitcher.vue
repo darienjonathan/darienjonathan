@@ -13,6 +13,10 @@ import { langList } from '~/types/lang'
 import type { Lang, LangEnumType } from '~/types/lang'
 import { languageSwitcher } from '~/utils/translations/blog'
 
+defineOptions({
+  name: 'MLangSwitcher',
+})
+
 type LangItem = Lang<{
   val: LangEnumType
   isActive: boolean
@@ -42,7 +46,7 @@ const langItem: LangItem = reactive({
 })
 
 const shouldHide = computed(
-  () => Object.values(langItem).filter(val => !val.isDisabled).length <= 1
+  () => Object.values(langItem).filter(val => !val.isDisabled).length <= 1,
 )
 
 onMounted(() => {
@@ -57,7 +61,7 @@ onMounted(() => {
 })
 
 const currentLang = computed<LangEnumType | undefined>(() =>
-  langList.find(lang => langItem[lang].isActive)
+  langList.find(lang => langItem[lang].isActive),
 )
 watch(currentLang, lang => {
   if (!lang) return
@@ -69,11 +73,6 @@ const changeActiveLang = (langKey: LangEnumType) => {
   langs.forEach((key: LangEnumType) => {
     langItem[key].isActive = key === langKey
   })
-}
-</script>
-<script lang="ts">
-export default {
-  name: 'MLangSwitcher',
 }
 </script>
 <style lang="scss" scoped>

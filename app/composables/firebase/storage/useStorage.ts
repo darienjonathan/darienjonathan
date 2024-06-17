@@ -1,22 +1,21 @@
+import type { StorageReference, UploadMetadata } from 'firebase/storage'
 import {
   deleteObject,
   listAll,
   ref as reference,
-  StorageReference,
   StringFormat,
   uploadBytes,
-  UploadMetadata,
   uploadString,
 } from 'firebase/storage'
 import { getBase64Mime } from '~/utils/getMime'
 
-interface PutArgs<T extends File | string> {
+type PutArgs<T extends File | string> = {
   file: T
   fileName: string
   customMetadata?: UploadMetadata['customMetadata']
 }
 
-interface PutStringArgs extends PutArgs<string> {
+type PutStringArgs extends PutArgs<string> = {
   stringFormat?: StringFormat
 }
 
@@ -36,7 +35,7 @@ const useStorage = (path: string, allowedTypes?: string[]) => {
 
   const createMetadata = (
     customMetadata: UploadMetadata['customMetadata'],
-    type: string | undefined
+    type: string | undefined,
   ): UploadMetadata => {
     return {
       ...customMetadata,

@@ -31,6 +31,10 @@ import MLangSwitcher from '~/components/molecules/blog/post/MLangSwitcher.vue'
 import AMarkdown from '~/components/atoms/AMarkdown.vue'
 import MPageLoading from '~/components/molecules/MPageLoading.vue'
 
+defineOptions({
+  name: 'BlogPage',
+})
+
 // Page Logic
 
 const route = useRoute()
@@ -97,14 +101,14 @@ const meta = computed(() => {
       ...['description', 'og:description', 'twitter:description'].map(name => ({
         name,
         content: description,
-      }))
+      })),
     )
   }
   metaArr.push(
     ...['og:title', 'twitter:title'].map(name => ({
       name,
       content: metaTitle.value,
-    }))
+    })),
   )
   return metaArr
 })
@@ -117,12 +121,6 @@ useHead({
 definePageMeta({
   layout: 'default',
 })
-</script>
-<script lang="ts">
-export default {
-  name: 'BlogPage',
-  components: { MPageLoading, MLangSwitcher, AMarkdown },
-}
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';

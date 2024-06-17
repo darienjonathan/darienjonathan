@@ -53,7 +53,9 @@ import useMedia from '~/composables/useMedia'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
 import ALoading from '~/components/atoms/ALoading.vue'
 
-const { isSP } = useMedia()
+defineOptions({
+  name: 'ConfirmRSVPModal',
+})
 
 type Props = {
   isOpen: boolean
@@ -64,44 +66,20 @@ type Props = {
   hasError: boolean
 }
 
-const props = defineProps({
-  isOpen: {
-    type: Boolean as () => Props['isOpen'],
-    default: false,
-  },
-  invitee: {
-    type: Object as () => Props['invitee'],
-    required: true,
-  },
-  inviteeRSVP: {
-    type: Object as () => Props['inviteeRSVP'],
-    required: true,
-  },
-  isSubmitting: {
-    type: Boolean as () => Props['isSubmitting'],
-    default: false,
-  },
-  isSubmitCompleted: {
-    type: Boolean as () => Props['isSubmitCompleted'],
-    default: false,
-  },
-  hasError: {
-    type: Boolean as () => Props['hasError'],
-    default: false,
-  },
+const props = withDefaults(defineProps<Props>(), {
+  isOpen: false,
+  isSubmitting: false,
+  isSubmitCompleted: false,
+  hasError: false,
 })
 
 defineEmits(['close', 'confirmRSVP'])
 
+const { isSP } = useMedia()
+
 const attendanceValueText = computed(() =>
-  props.inviteeRSVP?.isAttendingReception ? 'Attending' : 'Not Attending'
+  props.inviteeRSVP?.isAttendingReception ? 'Attending' : 'Not Attending',
 )
-</script>
-<script lang="ts">
-export default {
-  name: 'ConfirmRSVPModal',
-  components: { AModal, ALoading },
-}
 </script>
 
 <style lang="scss" scoped>

@@ -19,11 +19,14 @@
       img.sns__icon(src="@/assets/images/sns/icon-ig.png")
       | instagram
 </template>
-<script lang="ts">
-export default {
+<script setup lang="ts">
+defineOptions({
   name: 'MTopKV',
+})
+
+definePageMeta({
   layout: 'default',
-}
+})
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';

@@ -21,7 +21,7 @@
 <script lang="ts" setup>
 import { useModalStore } from '~/store'
 
-interface Props {
+type Props = {
   type: 'default' | 'full-size' | 'auto' | 'frameless'
   width: string
   height: string
@@ -69,7 +69,7 @@ watch(
   },
   {
     immediate: true,
-  }
+  },
 )
 
 const handleClose = () => {

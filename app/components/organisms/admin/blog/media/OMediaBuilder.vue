@@ -43,15 +43,18 @@
 import type { MediaType } from '~/types/model/blog/media'
 import AModal from '~/components/atoms/AModal.vue'
 
-const props = defineProps({
-  mediaUid: {
-    type: String,
-    default: undefined,
-  },
-  actionType: {
-    type: String as () => 'edit' | 'new',
-    default: 'new',
-  },
+defineOptions({
+  name: 'OMediaBuilder',
+})
+
+type Props = {
+  mediaUid?: string
+  actionType: 'edit' | 'new'
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  mediaUid: undefined,
+  actionType: 'new',
 })
 
 const router = useRouter()
@@ -145,12 +148,6 @@ const handleCloseUploadSuccessModal = () => {
 }
 
 const isUploadSuccessModalOpen = ref(false)
-</script>
-<script lang="ts">
-export default {
-  name: 'OMediaBuilder',
-  components: { AModal },
-}
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';

@@ -67,17 +67,19 @@ import AMarkdown from '~/components/atoms/AMarkdown.vue'
 import MLangSwitcher from '~/components/molecules/blog/post/MLangSwitcher.vue'
 import { asyncReplace } from '~/utils/string'
 import type { Post } from '~/types/model/blog/post'
-import ASelect from '~~/components/atoms/ASelect.vue'
 
-const props = defineProps({
-  postUid: {
-    type: String,
-    default: undefined,
-  },
-  actionType: {
-    type: String as () => 'edit' | 'new',
-    default: 'new',
-  },
+defineOptions({
+  name: 'OPostBuilder',
+})
+
+type Props = {
+  postUid?: string
+  actionType: 'edit' | 'new'
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  postUid: undefined,
+  actionType: 'new',
 })
 
 const { useMedias, usePosts: usePostsFirestore } = useFirestoreCollections()
@@ -159,8 +161,8 @@ const convertUidToMedia = (text: string) => {
       media.type === 'image'
         ? await imagesStorage.getDownloadURL(media.fileName)
         : media.type === 'video'
-        ? await videosStorage.getDownloadURL(media.fileName)
-        : ''
+          ? await videosStorage.getDownloadURL(media.fileName)
+          : ''
     return `![](${url})`
   }
   return asyncReplace(text, regex, replacementFn)
@@ -265,12 +267,6 @@ onMounted(() => {
   if (props.actionType === 'new') return
   initializePost()
 })
-</script>
-<script lang="ts">
-export default {
-  name: 'OPostBuilder',
-  components: { MLangSwitcher, AModal, AMarkdown, ASelect },
-}
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';

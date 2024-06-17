@@ -26,7 +26,10 @@ import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
 import ConfirmRSVPModal from '~/components/organisms/wedding/ConfirmRSVPModal.vue'
 import useUid from '~/composables/wedding/useUid'
 
-const { uid } = useUid()
+defineOptions({
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: 'Events',
+})
 
 type Props = {
   isRSVPModalOpen: boolean
@@ -34,20 +37,13 @@ type Props = {
   databaseInviteeRSVP: InviteeRSVP | null
 }
 
-defineProps({
-  isRSVPModalOpen: {
-    type: Boolean as () => Props['isRSVPModalOpen'],
-    default: false,
-  },
-  invitee: {
-    type: Object as () => Props['invitee'],
-    default: null,
-  },
-  databaseInviteeRSVP: {
-    type: Object as () => Props['databaseInviteeRSVP'],
-    default: null,
-  },
+withDefaults(defineProps<Props>(), {
+  isRSVPModalOpen: false,
+  invitee: null,
+  databaseInviteeRSVP: null,
 })
+
+const { uid } = useUid()
 
 const emit = defineEmits(['closeRSVPModal', 'promptUpdateInviteeRSVP'])
 
@@ -75,7 +71,7 @@ onMounted(initializeConfirmRSVPModalStates)
 watch(() => confirmRSVPModalStates.isOpen, initializeConfirmRSVPModalStates)
 
 const shouldCloseModal = computed(
-  () => confirmRSVPModalStates.isSubmitCompleted && !confirmRSVPModalStates.hasError
+  () => confirmRSVPModalStates.isSubmitCompleted && !confirmRSVPModalStates.hasError,
 )
 
 const handleCloseRSVPSubmission = () => {
@@ -114,13 +110,6 @@ const handleConfirmRSVP = () => {
       confirmRSVPModalStates.isSubmitting = false
       confirmRSVPModalStates.isSubmitCompleted = true
     })
-}
-</script>
-<script lang="ts">
-export default {
-  // eslint-disable-next-line vue/multi-word-component-names
-  name: 'Events',
-  components: { RSVPModal, ConfirmRSVPModal },
 }
 </script>
 <style lang="scss" scoped>

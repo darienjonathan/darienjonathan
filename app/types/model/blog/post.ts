@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Lang } from '~/types/lang'
+import type { Lang } from '~/types/lang'
 import { parseArray, parseNumber, parseString, parseBoolean } from '~/types/model/parse'
 
 export const parseLang = (data: any): Lang => ({
@@ -10,7 +9,7 @@ export const parseLang = (data: any): Lang => ({
   ja: parseString(data.ja),
 })
 
-export interface Post {
+export type Post = {
   authorUid: string
   slug: string
   title: Partial<Lang>
@@ -22,7 +21,7 @@ export interface Post {
   isDraft: boolean
 }
 
-export interface PostComment {
+export type PostComment = {
   author: string
   content: string
 }

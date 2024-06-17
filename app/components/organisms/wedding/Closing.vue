@@ -4,12 +4,11 @@
     .text__main {{ 'For by grace you have been saved through faith. And this is not your own doing; it is the gift of God, not a result of works, so that no one may boast. For we are his workmanship, created in Christ Jesus for good works, which God prepared beforehand, that we should walk in them.' }}
     .text__sub {{ 'Ephesians 2:8-10 (ESV)' }}
 </template>
-<script lang="ts" setup></script>
-<script lang="ts">
-export default {
+<script lang="ts" setup>
+defineOptions({
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Closing',
-}
+})
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';
