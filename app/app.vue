@@ -31,19 +31,19 @@ const meta = computed(() => {
     ...['description', 'og:description', 'twitter:description'].map(name => ({
       name,
       content: description,
-    }))
+    })),
   )
   metaArr.push(
     ...['og:title', 'twitter:title'].map(name => ({
       name,
       content: title,
-    }))
+    })),
   )
   metaArr.push(
     ...['og:image', 'twitter:image'].map(name => ({
       name,
       content: image,
-    }))
+    })),
   )
 
   metaArr.push({

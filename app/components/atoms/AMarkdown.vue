@@ -2,6 +2,10 @@
 .a-markdown(v-html="markdownHTML")
 </template>
 <script lang="ts" setup>
+defineOptions({
+  name: 'AMarkdown',
+})
+
 const { $md } = useNuxtApp()
 const props = defineProps({
   content: {

@@ -26,10 +26,12 @@ import MRSVPNotes from '~/components/molecules/wedding/MRSVPNotes.vue'
 import AModal from '~/components/atoms/AModal.vue'
 import useMedia from '~/composables/useMedia'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
-import ALoading from '~/components/atoms/ALoading.vue'
 import RSVPForm from '~/components/organisms/wedding/RSVPForm.vue'
-
 import { useInvitee } from '~/composables/wedding/useInvitee'
+
+defineOptions({
+  name: 'RSVPModal',
+})
 
 type Props = {
   isOpen: boolean
@@ -37,19 +39,9 @@ type Props = {
   inviteeRSVP: InviteeRSVP | null
 }
 
-const props = defineProps({
-  isOpen: {
-    type: Boolean as () => Props['isOpen'],
-    default: false,
-  },
-  invitee: {
-    type: Object as () => Props['invitee'],
-    required: true,
-  },
-  inviteeRSVP: {
-    type: Object as () => Props['inviteeRSVP'],
-    default: null,
-  },
+const props = withDefaults(defineProps<Props>(), {
+  isOpen: false,
+  inviteeRSVP: null,
 })
 
 const emit = defineEmits(['close', 'submit'])
@@ -71,16 +63,9 @@ watch(
   {
     immediate: true,
     deep: true,
-  }
+  },
 )
 </script>
-<script lang="ts">
-export default {
-  name: 'RSVPModal',
-  components: { AModal, ALoading },
-}
-</script>
-
 <style lang="scss" scoped>
 @import '@/assets/css/main';
 

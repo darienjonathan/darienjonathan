@@ -30,12 +30,10 @@
           .biodata__parent {{ 'Mr. Sie Manule &' }}
           .biodata__parent {{ 'Mrs. Wilyanti Tjahjana' }}
 </template>
-✝ LATIN CROSS Unicode: U+271D, UTF-8: E2 9C 9D
-<script lang="ts" setup></script>
-<script lang="ts">
-export default {
+<script lang="ts" setup>
+defineOptions({
   name: 'AboutUs',
-}
+})
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';

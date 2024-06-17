@@ -11,7 +11,7 @@ const postComments = (postId: string) =>
   new FirestoreWrapper<PostComment>(
     `posts/${postId}/comments`,
     'posts/{postUid}/comments/{commentUid}',
-    parsePostComment
+    parsePostComment,
   )
 const medias = () => new FirestoreWrapper<Media>('medias', 'medias/{mediaUid}', parseMedia)
 const tags = () => new FirestoreWrapper<Tag>('tags', 'tags/{tagUid}', parseTag)

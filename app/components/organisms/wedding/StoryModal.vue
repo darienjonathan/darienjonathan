@@ -19,36 +19,25 @@ AModal.story-modal(
 
 <script lang="ts" setup>
 import AModal from '~/components/atoms/AModal.vue'
-import ALoading from '~/components/atoms/ALoading.vue'
 import type { Story } from '~/types/model/wedding/story'
+
+defineOptions({
+  name: 'StoryModal',
+})
 
 type Props = {
   isOpen: boolean
   story: Story
 }
 
-const props = defineProps({
-  isOpen: {
-    type: Boolean as () => Props['isOpen'],
-    default: false,
-  },
-  story: {
-    type: Object as () => Props['story'],
-    required: true,
-  },
+const props = withDefaults(defineProps<Props>(), {
+  isOpen: false,
 })
 
 const { isSP } = useMedia()
 
 defineEmits(['close'])
 </script>
-<script lang="ts">
-export default {
-  name: 'StoryModal',
-  components: { AModal, ALoading },
-}
-</script>
-
 <style lang="scss" scoped>
 @import '@/assets/css/main';
 

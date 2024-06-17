@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { parseString, parseNumber, parseBoolean } from '~/types/model/parse'
@@ -54,7 +53,7 @@ export const parseInviteeSuffix = (inviteeSuffix: any): InviteeSuffix => {
   return null
 }
 
-export interface Invitee {
+export type Invitee = {
   databaseName: string
   invitationType: InvitationType
   inviteePrefix: InviteePrefix
@@ -74,7 +73,7 @@ export const parseInvitee = (data: any): Invitee => ({
   childrenGuestNumber: parseNumber(data.childrenGuestNumber),
 })
 
-export interface InviteeRSVP {
+export type InviteeRSVP = {
   name: string
   isAttendingReception: boolean
   phoneNumber: string

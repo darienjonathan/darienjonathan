@@ -47,22 +47,19 @@ import { useInvitee } from '~/composables/wedding/useInvitee'
 import MRSVPNotes from '~/components/molecules/wedding/MRSVPNotes.vue'
 import useMap from '~/composables/wedding/useMap'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
-import ConfirmRSVPModal from '~/components/organisms/wedding/ConfirmRSVPModal.vue'
+
+defineOptions({
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: 'Events',
+})
 
 type Props = {
   invitee: Invitee
   databaseInviteeRSVP: InviteeRSVP | null
 }
 
-const props = defineProps({
-  invitee: {
-    type: Object as () => Props['invitee'],
-    required: true,
-  },
-  databaseInviteeRSVP: {
-    type: Object as () => Props['databaseInviteeRSVP'],
-    default: null,
-  },
+const props = withDefaults(defineProps<Props>(), {
+  databaseInviteeRSVP: null,
 })
 
 const {
@@ -89,19 +86,12 @@ const streamingButtonLink = computed(() => config.streamingLink)
 const { receptionMapElementRef, holyMatrimonyMapElementRef } = useMap()
 
 const shouldShowRSVPSection = computed(
-  () => canRSVP.value || canReviewRSVP.value || shouldContact.value
+  () => canRSVP.value || canReviewRSVP.value || shouldContact.value,
 )
 const emit = defineEmits(['RSVPButtonClick'])
 
 const handleClickRSVPButton = () => {
   emit('RSVPButtonClick')
-}
-</script>
-<script lang="ts">
-export default {
-  // eslint-disable-next-line vue/multi-word-component-names
-  name: 'Events',
-  components: { ConfirmRSVPModal },
 }
 </script>
 <style lang="scss" scoped>
@@ -281,7 +271,10 @@ $reversed-content-class: ".content[data-order='reverse']";
   border-radius: 8px;
   cursor: pointer;
   filter: drop-shadow(0 0 5px $white);
-  transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out, opacity 0.5s;
+  transition:
+    background-color 0.25s ease-in-out,
+    color 0.25s ease-in-out,
+    opacity 0.5s;
   &:hover {
     background-color: rgba($white, 0.05);
   }

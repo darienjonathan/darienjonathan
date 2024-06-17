@@ -35,6 +35,9 @@
                   .item__description-text {{ description }}
 </template>
 <script setup lang="ts">
+defineOptions({
+  name: 'WeddingSongList',
+})
 // --------------------------------------------------
 // Song List
 // --------------------------------------------------
@@ -223,19 +226,19 @@ const meta = computed(() => {
     ...['og:title', 'twitter:title'].map(name => ({
       name,
       content: title,
-    }))
+    })),
   )
   metaArr.push(
     ...['description', 'og:description', 'twitter:description'].map(name => ({
       name,
       content: description,
-    }))
+    })),
   )
   metaArr.push(
     ...['og:image', 'twitter:image'].map(name => ({
       name,
       content: image,
-    }))
+    })),
   )
   return metaArr
 })
@@ -254,11 +257,6 @@ useHead({
 definePageMeta({
   layout: 'base',
 })
-</script>
-<script lang="ts">
-export default {
-  name: 'WeddingSongList',
-}
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';

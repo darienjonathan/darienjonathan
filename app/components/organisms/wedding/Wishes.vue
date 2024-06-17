@@ -36,6 +36,11 @@ import useUid from '~/composables/wedding/useUid'
 import type { Wish } from '~/types/model/wedding/wish'
 import { formatWithDay } from '~/utils/date'
 
+defineOptions({
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: 'Wishes',
+})
+
 const WISH_UID_LOCALSTORAGE_KEY = 'wish_uid'
 
 const { uid } = useUid()
@@ -60,7 +65,7 @@ onMounted(updateWishUid)
 
 // Subscribe to Wishes
 const wishes = ref<Wish[]>([])
-const sortedWishes = computed(() => wishes.value.sort((wa, wb) => wb.timestamp - wa.timestamp))
+const sortedWishes = computed(() => [...wishes.value].sort((wa, wb) => wb.timestamp - wa.timestamp))
 const unsubscribeWishes = ref<Unsubscribe>()
 onMounted(() => {
   wishesFirestore.subscribeCollection(wishMap => {
@@ -116,12 +121,6 @@ const handleSubmit = () => {
     localStorage.setItem(WISH_UID_LOCALSTORAGE_KEY, uid)
     updateWishUid()
   })
-}
-</script>
-<script lang="ts">
-export default {
-  // eslint-disable-next-line vue/multi-word-component-names
-  name: 'Wishes',
 }
 </script>
 <style lang="scss" scoped>

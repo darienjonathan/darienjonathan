@@ -14,6 +14,10 @@
     .icon.material-icons-outlined(@click="signOut") logout
 </template>
 <script lang="ts" setup>
+defineOptions({
+  name: 'MHeader',
+})
+
 const { signOut } = useAuth()
 const route = useRoute()
 

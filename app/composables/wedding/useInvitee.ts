@@ -1,4 +1,4 @@
-import { Invitee, InviteeRSVP } from 'types/model/wedding/invitee'
+import type { Invitee, InviteeRSVP } from 'types/model/wedding/invitee'
 import dayjs from 'dayjs'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 
@@ -13,14 +13,14 @@ const getIsNotInvited = (invitationType?: InvitationType) =>
 export const useInvitee = (invitee: Ref<Invitee | null>, inviteeRSVP: Ref<InviteeRSVP | null>) => {
   const config = useRuntimeConfig().public.wedding
   const isBeforeRSVPDeadline = computed(() =>
-    dayjs().isSameOrBefore(dayjs.unix(config.rsvpDeadline))
+    dayjs().isSameOrBefore(dayjs.unix(config.rsvpDeadline)),
   )
 
   const hasDeclinedReceptionInvitation = computed(
     () =>
       getIsReceptionInvitation(invitee.value?.invitationType) &&
       !isBeforeRSVPDeadline.value &&
-      inviteeRSVP.value?.isAttendingReception === false
+      inviteeRSVP.value?.isAttendingReception === false,
   )
 
   const isReceptionInvitation = computed(() => {
@@ -33,7 +33,7 @@ export const useInvitee = (invitee: Ref<Invitee | null>, inviteeRSVP: Ref<Invite
   const isMatrimonyInvitation = computed(
     () =>
       getIsMatrimonyInvitation(invitee.value?.invitationType) ||
-      hasDeclinedReceptionInvitation.value
+      hasDeclinedReceptionInvitation.value,
   )
 
   const isNotInvited = computed(() => getIsNotInvited(invitee.value?.invitationType))

@@ -15,11 +15,10 @@
     )
       img.footer__icon.footer__icon--blog(src="@/assets/images/sns/blog.png")
 </template>
-<script lang="ts" setup></script>
-<script lang="ts">
-export default {
+<script lang="ts" setup>
+defineOptions({
   name: 'WeddingFooter',
-}
+})
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';

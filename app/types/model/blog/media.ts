@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { parseString } from '~/types/model/parse'
 
 export type MediaType = 'image' | 'video'
 
-export interface Media {
+export type Media = {
   fileLocation: string
   type: MediaType
   caption: string

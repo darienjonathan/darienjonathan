@@ -25,24 +25,25 @@
     )
 </template>
 <script lang="ts" setup>
-import type { Invitee } from 'types/model/wedding/invitee'
-import StoryModal from '~/components/organisms/wedding/StoryModal.vue'
+import type { Invitee } from '~/types/model/wedding/invitee'
 import type { Story } from '~/types/model/wedding/story'
+import StoryModal from '~/components/organisms/wedding/StoryModal.vue'
 
 import story1 from '~/assets/images/wedding/story/story_1.jpg'
 import story2 from '~/assets/images/wedding/story/story_2.jpg'
 import story3 from '~/assets/images/wedding/story/story_3.jpg'
 import story4 from '~/assets/images/wedding/story/story_4.jpg'
 
+defineOptions({
+  name: 'OurStory',
+})
+
 type Props = {
   invitee: Invitee | null
 }
 
-defineProps({
-  invitee: {
-    type: Object as () => Props['invitee'],
-    default: null,
-  },
+withDefaults(defineProps<Props>(), {
+  invitee: null,
 })
 
 const stories: Story[] = [
@@ -106,12 +107,6 @@ const handleStoryClick = (index: number) => {
 const handleCloseStoryModal = () => {
   selectedStoryIndex.value = undefined
   isStoryModalOpen.value = false
-}
-</script>
-<script lang="ts">
-export default {
-  name: 'OurStory',
-  components: { StoryModal },
 }
 </script>
 <style lang="scss" scoped>
