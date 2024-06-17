@@ -1,9 +1,6 @@
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
   modules: ['@pinia/nuxt', '@nuxt/eslint'],
-  image: {
-    dir: 'assets/images',
-  },
   nitro: {
     firebase: {
       gen: 2,
