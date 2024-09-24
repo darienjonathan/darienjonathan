@@ -1,9 +1,16 @@
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
-  modules: ['@pinia/nuxt'],
-  image: {
-    dir: 'assets/images',
+  nitro: {
+    preset: 'firebase',
+    firebase: {
+      nodeVersion: '18',
+      gen: 2,
+      httpsOptions: {
+        region: 'asia-southeast2',
+      },
+    }
   },
+  modules: ['@pinia/nuxt'],
   build: {
     transpile: ['@googlemaps/js-api-loader'],
   },
