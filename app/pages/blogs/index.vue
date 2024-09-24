@@ -39,6 +39,8 @@ const unsubscribePosts = ref<Unsubscribe>()
 
 const isFirstFetchDone = ref(false)
 onMounted(() => {
+  postsFirestore.queryBuilder
+    .orderBy('createdAt', 'desc')
   unsubscribePosts.value = postsFirestore.subscribeCollection(response => {
     if (response) {
       response.forEach((post, key) => {

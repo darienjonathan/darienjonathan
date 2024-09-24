@@ -26,6 +26,7 @@ const posts = ref(new Map<string, Post>())
 
 const unsubscribePosts = ref<Unsubscribe>()
 onMounted(() => {
+  postsFirestore.queryBuilder.orderBy('createdAt', 'desc')
   unsubscribePosts.value = postsFirestore.subscribeCollection(response => {
     if (response) posts.value = response
   })
