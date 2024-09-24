@@ -1,5 +1,10 @@
 import * as functions from 'firebase-functions'
 
+export const defaultSettings = {
+  region: 'asia-southeast2',
+}
+
+
 /**
  * regionを指定したfunctionsを返す
  * envを使いたいので、基本的には引数のregionは指定しない。
@@ -21,5 +26,5 @@ export default function getFunctions(region?: string): functions.FunctionBuilder
   }
 
   // regionもenvもない場合はfallbackとしてregionのデフォルト
-  return functions.region('us-central1')
+  return functions.region(defaultSettings.region)
 }

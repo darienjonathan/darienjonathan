@@ -10,7 +10,7 @@ export const LangEnum = <const>{
   ja: 'ja',
 }
 
-export const DEFAULT_LANG = LangEnum.id
+export const DEFAULT_LANG = LangEnum.en
 
 export type LangEnumType = (typeof LangEnum)[keyof typeof LangEnum]
 
