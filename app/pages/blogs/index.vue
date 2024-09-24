@@ -113,6 +113,7 @@ definePageMeta({
     @include pc {
       grid-template-columns: repeat(3, 1fr);
       max-width: 1200px;
+      margin: 0 auto;
     }
     @include sp {
       grid-template-columns: 100%;
