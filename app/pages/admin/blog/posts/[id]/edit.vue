@@ -7,6 +7,10 @@ OPostBuilder.edit(
 <script lang="ts" setup>
 import OPostBuilder from '~/components/organisms/admin/blog/post/OPostBuilder.vue'
 
+defineOptions({
+  name: 'AdminBlogPostsEditPage',
+})
+
 const postUid = ref()
 const route = useRoute()
 postUid.value = route.params.id
@@ -14,12 +18,6 @@ postUid.value = route.params.id
 definePageMeta({
   layout: 'blog-admin',
 })
-</script>
-<script lang="ts">
-export default {
-  name: 'AdminBlogPostsEditPage',
-  components: { OPostBuilder },
-}
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';

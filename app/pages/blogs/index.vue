@@ -31,6 +31,10 @@ import { formatWithDay } from '~/utils/date'
 import { getContent } from '~/utils/blog/getContent'
 import ALoading from '~/components/atoms/ALoading.vue'
 
+defineOptions({
+  name: 'BlogsIndexPage',
+})
+
 const { usePosts } = useFirestoreCollections()
 const postsFirestore = usePosts()
 const posts = ref(new Map<string, Post>())
@@ -61,13 +65,10 @@ const route = useRoute()
 const handleReadMore = (slug: string) => {
   navigateTo(`${route.path}/${slug}`.replace(/\/+/g, '/'))
 }
-</script>
-<script lang="ts">
-export default {
-  name: 'BlogsIndexPage',
-  components: { MTopKV, ALoading },
+
+definePageMeta({
   layout: 'default',
-}
+})
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';
@@ -112,6 +113,7 @@ export default {
     @include pc {
       grid-template-columns: repeat(3, 1fr);
       max-width: 1200px;
+      margin: 0 auto;
     }
     @include sp {
       grid-template-columns: 100%;

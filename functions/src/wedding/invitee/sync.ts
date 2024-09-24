@@ -54,7 +54,7 @@ const getInviteeMapFromSpreadsheet = async () => {
         ...result,
         [property]: parseCellValue(row[index]),
       }),
-      parseInvitee({})
+      parseInvitee({}),
     )
     inviteeMap.set(inviteeUid, parseInvitee(invitee))
 
@@ -69,7 +69,7 @@ const getInviteeMapFromSpreadsheet = async () => {
         ...result,
         [property]: parseCellValue(row[index + inviteeRSVPIndexOffset + 1]),
       }),
-      parseInviteeRSVP({})
+      parseInviteeRSVP({}),
     )
     inviteeRSVPMap.set(inviteeUid, parseInviteeRSVP(inviteeRSVP))
   })
@@ -83,7 +83,7 @@ const getInviteeMapFromSpreadsheet = async () => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const syncSpreadsheetToFirestore = async <T extends Record<string, any>>(
   spreadsheetMap: Map<string, T>,
-  firestoreInstance: FirestoreCollection<T>
+  firestoreInstance: FirestoreCollection<T>,
 ) => {
   const firestoreCollectionMap = await firestoreInstance.loadCollection()
 

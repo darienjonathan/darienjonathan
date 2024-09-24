@@ -18,13 +18,15 @@
 <script lang="ts" setup>
 import type { Media } from '~/types/model/blog/media'
 
-const props = defineProps({
-  media: {
-    type: Object as () => Media,
-    default: () => ({}),
-  },
+defineOptions({
+  name: 'MMediaListItem',
 })
 
+type Props = {
+  media: Media
+}
+
+const props = defineProps<Props>()
 const storage = useNuxtApp().$firebase.storage
 const url = ref()
 watch(
@@ -34,13 +36,8 @@ watch(
   },
   {
     immediate: true,
-  }
+  },
 )
-</script>
-<script lang="ts">
-export default {
-  name: 'MMediaListItem',
-}
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';

@@ -20,6 +20,10 @@ import type { Post } from '~/types/model/blog/post'
 import AModal from '~/components/atoms/AModal.vue'
 import MPostListItem from '~/components/molecules/admin/blog/post/MPostListItem.vue'
 
+defineOptions({
+  name: 'AdminBlogPostsIndexPage',
+})
+
 const { usePosts } = useFirestoreCollections()
 const postsFirestore = usePosts()
 const posts = ref(new Map<string, Post>())
@@ -56,12 +60,6 @@ const handleConfirmDelete = async () => {
 definePageMeta({
   layout: 'blog-admin',
 })
-</script>
-<script lang="ts">
-export default {
-  name: 'AdminBlogPostsIndexPage',
-  components: { MPostListItem, AModal },
-}
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';

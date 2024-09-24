@@ -39,7 +39,7 @@
 <script lang="ts" setup>
 import { useProvideLoading } from '~/composables/dependencyInjection/useLoadingDependencyInjection'
 import Hero from '~/components/organisms/wedding/Hero.vue'
-import Events from '~/components/organisms/wedding/Events.vue'
+import type Events from '~/components/organisms/wedding/Events.vue'
 import type { Invitee, InviteeRSVP } from '~/types/model/wedding/invitee'
 import AboutUs from '~/components/organisms/wedding/AboutUs.vue'
 import MPageLoading from '~~/components/molecules/MPageLoading.vue'
@@ -51,6 +51,10 @@ import Closing from '~~/components/organisms/wedding/Closing.vue'
 import Footer from '~~/components/organisms/wedding/Footer.vue'
 import RSVP from '~/components/organisms/wedding/RSVP.vue'
 import Registry from '~/components/organisms/wedding/Registry.vue'
+
+defineOptions({
+  name: 'WeddingPage',
+})
 
 useProvideLoading('wedding')
 
@@ -69,7 +73,7 @@ const handleLoadingDone = () => {
 const eventsElementRef = ref<InstanceType<typeof Events> | null>()
 const handleNavClick = () => {
   if (!eventsElementRef.value) return
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
   const element = eventsElementRef.value.$el as HTMLElement
   const eventsTop = element.getBoundingClientRect().top
   scrollTo(0, eventsTop)
@@ -108,7 +112,7 @@ watch(
   },
   {
     immediate: true,
-  }
+  },
 )
 
 // --------------------------------------------------
@@ -154,19 +158,19 @@ const meta = computed(() => {
     ...['og:title', 'twitter:title'].map(name => ({
       name,
       content: title,
-    }))
+    })),
   )
   metaArr.push(
     ...['description', 'og:description', 'twitter:description'].map(name => ({
       name,
       content: description,
-    }))
+    })),
   )
   metaArr.push(
     ...['og:image', 'twitter:image'].map(name => ({
       name,
       content: image,
-    }))
+    })),
   )
   return metaArr
 })
@@ -185,24 +189,6 @@ useHead({
 definePageMeta({
   layout: 'base',
 })
-</script>
-<script lang="ts">
-export default {
-  name: 'WeddingPage',
-  components: {
-    MPageLoading,
-    Hero,
-    Events,
-    AboutUs,
-    OurStory,
-    Wishes,
-    Gallery,
-    Closing,
-    Registry,
-    Footer,
-    RSVP,
-  },
-}
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';

@@ -58,7 +58,11 @@ import AMarkdown from '~/components/atoms/AMarkdown.vue'
 import AModal from '~/components/atoms/AModal.vue'
 import MSignInModal from '~/components/molecules/MSignInModal.vue'
 
-interface Item {
+defineOptions({
+  name: 'MarkdownPage',
+})
+
+type Item = {
   name: string
   url: string
   content: string
@@ -111,7 +115,7 @@ const handleRetrieveItemList = async () => {
       name: item.name,
       url: await getDownloadURL(item),
       content: '',
-    }))
+    })),
   )
 }
 watch(itemList, handleRetrieveItemList, {
@@ -138,7 +142,7 @@ watch(
   },
   {
     deep: true,
-  }
+  },
 )
 
 const handleDelete = async (name: string) => {
@@ -146,12 +150,6 @@ const handleDelete = async (name: string) => {
   if (itemIndex === -1) return
   await posts.deleteItem(name)
   itemList.value = itemList.value.filter((_item, index) => index !== itemIndex)
-}
-</script>
-<script lang="ts">
-export default {
-  name: 'MarkdownPage',
-  components: { AMarkdown, AModal, MSignInModal },
 }
 </script>
 <style lang="scss" scoped>

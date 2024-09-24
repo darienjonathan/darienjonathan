@@ -13,16 +13,15 @@
 import type { Post } from '~/types/model/blog/post'
 import { getContent } from '~/utils/blog/getContent'
 
+defineOptions({
+  name: 'MPostListItem',
+})
+
 type Props = {
   post: Post
 }
 
 defineProps<Props>()
-</script>
-<script lang="ts">
-export default {
-  name: 'MMediaListItem',
-}
 </script>
 <style lang="scss" scoped>
 @import '~/assets/css/main';

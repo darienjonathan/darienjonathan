@@ -1,16 +1,15 @@
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
+  modules: ['@pinia/nuxt', '@nuxt/eslint'],
   nitro: {
-    preset: 'firebase',
     firebase: {
-      nodeVersion: '18',
       gen: 2,
+      nodeVersion: '20',
       httpsOptions: {
         region: 'asia-southeast2',
       },
-    }
+    },
   },
-  modules: ['@pinia/nuxt'],
   build: {
     transpile: ['@googlemaps/js-api-loader'],
   },

@@ -73,6 +73,10 @@ import ASelect from '~/components/atoms/ASelect.vue'
 import type { Question } from '~/types/model/others/daisy/proposal'
 import { wait } from '~/utils/wait'
 
+defineOptions({
+  name: 'ProposalPage',
+})
+
 // constants
 
 const MAX_MISS_TO_PASS = 2
@@ -119,7 +123,7 @@ const unwatchQuestionWatcher = watch(questions, q => {
 const proposalQuestion = ref<Question>()
 const proposalQuestionAnswer = ref()
 const isProposalQuestionAnswerCorrect = computed(
-  () => proposalQuestionAnswer.value === proposalQuestion.value?.correctAnswerIndex
+  () => proposalQuestionAnswer.value === proposalQuestion.value?.correctAnswerIndex,
 )
 
 proposalQuestionsFirestore.loadCollection().then(q => {
@@ -138,7 +142,7 @@ const setCorrectAnswerCount = () => {
   correctAnswerCount.value = answers.value.reduce(
     (count: number, answer: number | undefined, index: number) =>
       (count += answer === questions.value[index].correctAnswerIndex ? 1 : 0),
-    0
+    0,
   )
 }
 const getIsAnswerCorrect = (index: number) =>
@@ -147,7 +151,7 @@ const getIsAnswerCorrect = (index: number) =>
 // Submission Logic
 
 const willPass = computed(
-  () => correctAnswerCount.value + MAX_MISS_TO_PASS >= questions.value.length
+  () => correctAnswerCount.value + MAX_MISS_TO_PASS >= questions.value.length,
 )
 const isPassed = ref(false)
 const submissionCount = ref(0)
@@ -159,7 +163,7 @@ watch(
     if (!isAllQuestionAnswered.value) return
     canSubmit.value = true
   },
-  { deep: true }
+  { deep: true },
 )
 
 const progressRef = ref<HTMLDivElement>()
@@ -185,7 +189,7 @@ const handleAnswerSubmission = () => {
 // Hint logic
 
 const shouldShowHint = computed(
-  () => submissionCount.value >= SUBMISSION_COUNT_FOR_HINT || isPassed.value
+  () => submissionCount.value >= SUBMISSION_COUNT_FOR_HINT || isPassed.value,
 )
 
 // Rewards Logic
@@ -210,12 +214,6 @@ const handleProposalQuestionAnswerChange = (item: number) => {
 definePageMeta({
   layout: 'base',
 })
-</script>
-<script lang="ts">
-export default {
-  name: 'ProposalPage',
-  components: { ASelect },
-}
 </script>
 
 <style lang="scss" scoped>
@@ -280,7 +278,9 @@ $hr-padding: 32px;
     background-color: white;
     padding: 20px 0;
     text-align: right;
-    transition: background-color 0.5s, color 0.5s;
+    transition:
+      background-color 0.5s,
+      color 0.5s;
     transition-timing-function: ease-in-out;
     &[data-status='passed'] {
       background-color: green;
@@ -364,7 +364,9 @@ $hr-padding: 32px;
     &__ring-image {
       width: 100%;
       padding-top: $hr-padding;
-      transition: opacity 6s, filter 12s;
+      transition:
+        opacity 6s,
+        filter 12s;
       &[data-shown='false'] {
         opacity: 0;
         filter: blur(10rem);
