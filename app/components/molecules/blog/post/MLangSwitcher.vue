@@ -49,7 +49,7 @@ const shouldHide = computed(
   () => Object.values(langItem).filter(val => !val.isDisabled).length <= 1,
 )
 
-onMounted(() => {
+watchEffect(() => {
   let isActiveFound = false
   for (const lang of langList) {
     langItem[lang].isDisabled = props.disabledLangs?.includes(lang) || false
