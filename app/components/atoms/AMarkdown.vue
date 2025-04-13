@@ -27,7 +27,8 @@ const markdownHTML = computed(() => {
 :deep(h1),
 :deep(h2),
 :deep(h3),
-:deep(p) {
+:deep(p),
+:deep(hr) {
   margin: 16px 0;
 }
 
